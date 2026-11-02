@@ -1,0 +1,1999 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>國小三年級・全能探索島 | 蛋蛋老師與六大領域</title>
+  <meta name="description" content="國小三年級 3D 學習島嶼：自然、數學、國語、英語、社會、台語，6大領域、36題精選素養題，蛋蛋老師陪伴巡遊。">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 64 64%27%3E%3Ccircle cx=%2732%27 cy=%2732%27 r=%2730%27 fill=%27%233a8fc7%27/%3E%3Ccircle cx=%2732%27 cy=%2736%27 r=%2716%27 fill=%27%23a3c77c%27/%3E%3C/svg%3E">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Bebas+Neue&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <style>
+    /* 配色系統比照原站 */
+    :root {
+      --sky: #a9d6ea;
+      --water: #68b2bc;
+      --sand: #ead7ac;
+      --grass: #a3c77c;
+      --paper: #fffdf8;
+      --paper2: #f7f3e8;
+      --ink: #27363a;
+      --muted: #5f7176;
+      --line: #e3ddd0;
+      --accent: #e0643a;
+      --accent-ink: #ffffff;
+      --accent-soft: #fbe4d9;
+      --good: #2f9a5d;
+      --good-soft: #dff2e6;
+      --bad: #d2453b;
+      --bad-soft: #fbe3e0;
+      --star: #f2b11c;
+      --exam: #2f6fa3;
+      --exam-ink: #ffffff;
+      --exam-soft: #dcebf6;
+      --chip: #f3efe5;
+      --shadow: 0 10px 30px rgba(39, 54, 58, 0.18);
+      --f-display: "Bebas Neue", "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      --f-body: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;
+      --sbw: 520px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: var(--f-body);
+      color: var(--ink);
+      background: var(--sky);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    #app {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* 3D 舞台 */
+    #stage {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      transition: width 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    body.split-open #stage {
+      width: calc(100% - var(--sbw));
+    }
+    @media (max-width: 900px) {
+      body.split-open #stage {
+        width: 100%;
+      }
+    }
+
+    /* 頂部控制列 */
+    #top {
+      position: absolute;
+      top: 14px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .top-left, .top-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      pointer-events: auto;
+    }
+
+    .brand-pill {
+      background: var(--paper);
+      padding: 6px 14px 6px 10px;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(39, 54, 58, 0.16);
+      cursor: pointer;
+    }
+    .brand-logo-text {
+      font-family: var(--f-display);
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      line-height: 1;
+    }
+    .brand-meta {
+      border-left: 2px solid var(--line);
+      padding-left: 8px;
+    }
+    .brand-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .top-pill {
+      background: var(--paper);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 4px 14px rgba(39, 54, 58, 0.15);
+      cursor: pointer;
+      border: 0;
+      color: var(--ink);
+      transition: transform 0.15s;
+    }
+    .top-pill:hover { transform: translateY(-1px); }
+    .top-pill .star-ic { color: var(--star); }
+    .top-pill.btn-round {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      justify-content: center;
+      border-radius: 50%;
+    }
+
+    /* 3D 浮空標籤 Pin */
+    #pins {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .pin {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      pointer-events: auto;
+      background: var(--paper);
+      border: 0;
+      border-radius: 999px;
+      box-shadow: 0 6px 18px rgba(39, 54, 58, 0.22);
+      padding: 5px 12px 5px 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: 700;
+      transition: transform 0.15s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .pin:hover {
+      transform: translate(-50%, -108%) scale(1.06);
+      z-index: 6;
+    }
+    .pin .no {
+      font-family: var(--f-display);
+      color: var(--accent-ink);
+      background: var(--accent);
+      border-radius: 999px;
+      min-width: 26px;
+      height: 26px;
+      display: grid;
+      place-items: center;
+      font-size: 14px;
+    }
+    .pin .st {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .pin.done .no { background: var(--good); }
+
+    /* 人物浮動氣泡 */
+    .walker-bubble {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(4px);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      pointer-events: none;
+      white-space: nowrap;
+      border: 1px solid var(--line);
+      z-index: 6;
+      transition: opacity 0.3s;
+    }
+    .walker-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 5px solid rgba(255, 255, 255, 0.95);
+    }
+    .walker-bubble.teacher {
+      border-color: #f59e0b;
+      color: #92400e;
+    }
+
+    /* 底部提示文字 */
+    #bottom-hint {
+      position: absolute;
+      bottom: 16px;
+      left: 20px;
+      z-index: 6;
+      background: rgba(255, 253, 248, 0.92);
+      backdrop-filter: blur(8px);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      box-shadow: 0 4px 12px rgba(39, 54, 58, 0.12);
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* 右側抽屜面板 (THE ISLAND INDEX) */
+    #panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: var(--sbw);
+      max-width: 100%;
+      background: linear-gradient(180deg, var(--paper) 0%, var(--paper2) 100%);
+      border-left: 1px solid var(--line);
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.18);
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(105%);
+      transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      overflow: hidden;
+    }
+    body.split-open #panel {
+      transform: translateX(0);
+    }
+
+    @media (max-width: 900px) {
+      #panel {
+        top: auto;
+        height: 85%;
+        width: 100%;
+        border-radius: 24px 24px 0 0;
+        border-left: 0;
+        transform: translateY(105%);
+      }
+      body.split-open #panel {
+        transform: translateY(0);
+      }
+    }
+
+    .p-head {
+      padding: 24px 24px 16px 24px;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+    }
+    .p-tag {
+      font-family: var(--f-display);
+      font-size: 14px;
+      color: var(--accent);
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    .p-title-wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+    .p-title {
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .p-close-btn {
+      background: var(--chip);
+      border: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: var(--muted);
+      transition: all 0.2s;
+    }
+    .p-close-btn:hover { background: #e5dec9; color: var(--ink); }
+
+    .p-intro {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+
+    .p-progress-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .prog-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 10px 14px;
+    }
+    .prog-card-top {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .prog-card-val {
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--ink);
+      margin: 2px 0;
+    }
+    .prog-card-sub {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .tab-pills {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+      background: var(--chip);
+      padding: 4px;
+      border-radius: 999px;
+    }
+    .tab-pill {
+      flex: 1;
+      border: 0;
+      background: transparent;
+      padding: 8px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .tab-pill.active {
+      background: var(--ink);
+      color: #ffffff;
+    }
+
+    .p-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 24px 60px 24px;
+    }
+
+    .chap-group-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.5px;
+      margin: 16px 0 10px 0;
+    }
+    .chap-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chap-card:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(39, 54, 58, 0.08);
+    }
+    .chap-card-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .chap-num {
+      font-family: var(--f-display);
+      font-size: 24px;
+      font-weight: 900;
+      color: var(--accent);
+      min-width: 28px;
+    }
+    .chap-info h4 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 2px;
+    }
+    .chap-info p {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .chap-card-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .quiz-view {
+      display: none;
+    }
+    .quiz-view.active {
+      display: block;
+    }
+    .back-btn-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .q-item {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .q-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .q-txt {
+      font-size: 15px;
+      font-weight: 700;
+      line-height: 1.6;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .speak-btn {
+      background: var(--chip);
+      border: 0;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .opts-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .opt-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border: 2px solid var(--line);
+      border-radius: 10px;
+      background: #ffffff;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--ink);
+      cursor: pointer;
+      transition: all 0.15s;
+      text-align: left;
+    }
+    .opt-row:hover:not(:disabled) {
+      border-color: #b0c4de;
+      background: #fafbfc;
+    }
+    .opt-idx {
+      font-family: var(--f-display);
+      font-size: 16px;
+      font-weight: 900;
+      color: var(--muted);
+      min-width: 20px;
+    }
+    .opt-row.correct {
+      border-color: var(--good) !important;
+      background: var(--good-soft) !important;
+      color: #14532d !important;
+    }
+    .opt-row.wrong {
+      border-color: var(--bad) !important;
+      background: var(--bad-soft) !important;
+      color: #7f1d1d !important;
+    }
+    .q-exp {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: var(--chip);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--ink);
+      display: none;
+    }
+    .q-exp.show { display: block; }
+  </style>
+</head>
+<body class="split-open">
+
+  <div id="app">
+    <!-- 頂部控制列 -->
+    <header id="top">
+      <div class="top-left">
+        <div class="brand-pill" onclick="app.resetIslandView()">
+          <span class="brand-logo-text">LEARNING ISLAND.</span>
+          <div class="brand-meta">
+            <div class="brand-title">小學三年級・全能探索島</div>
+            <div class="brand-sub">國小 108 課綱・六大領域 (含台語)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="top-right">
+        <button class="top-pill" onclick="app.openDrawer()">
+          <span class="star-ic">★</span>
+          <span>星星 <b id="topStarsVal">0 / 36</b></span>
+        </button>
+
+        <button class="top-pill" onclick="app.openDrawer()">
+          <span>🏅</span>
+          <span>領域金旗 <b id="topMedalsVal">0 / 6</b></span>
+        </button>
+
+        <button class="top-pill" onclick="app.toggleDrawer()" title="展開/收合側邊目錄">
+          <span>📖</span>
+          <span>目錄清單</span>
+        </button>
+
+        <button class="top-pill btn-round" onclick="app.resetProgress()" title="重新開始探險">
+          🔄
+        </button>
+      </div>
+    </header>
+
+    <!-- 3D 舞台 Canvas -->
+    <div id="stage"></div>
+
+    <!-- 3D 浮空標籤（Pins）與角色氣泡 -->
+    <div id="pins"></div>
+
+    <!-- 底部小提示 -->
+    <div id="bottom-hint">
+      <span>🚶</span> 探險小學生與蛋蛋老師正在木棧道巡遊・點島嶼開始挑戰・拖曳滑鼠 360° 旋轉
+    </div>
+
+    <!-- 右側抽屜面板 (THE ISLAND INDEX) -->
+    <aside id="panel">
+      <div class="p-head">
+        <div class="p-tag">THE ISLAND INDEX</div>
+        <div class="p-title-wrap">
+          <h2 class="p-title">把重點，連成島。</h2>
+          <button class="p-close-btn" onclick="app.closeDrawer()">✕</button>
+        </div>
+        <p class="p-intro">6 座島、6 大領域、36 題精選素養題。選一個島，讀重點、做練習、拿星星。</p>
+
+        <!-- 進度小卡 -->
+        <div class="p-progress-grid">
+          <div class="prog-card">
+            <div class="prog-card-top">★ 總取得星</div>
+            <div class="prog-card-val" id="cardStarsVal">0 <span style="font-size:12px;font-weight:normal;color:var(--muted);">/ 36 顆星</span></div>
+            <div class="prog-card-sub">每答對 1 題獲得 1 顆星</div>
+          </div>
+          <div class="prog-card">
+            <div class="prog-card-top">🚩 島嶼金旗</div>
+            <div class="prog-card-val" id="cardMedalsVal">0 <span style="font-size:12px;font-weight:normal;color:var(--muted);">/ 6 面</span></div>
+            <div class="prog-card-sub">單一島嶼全部答對得金旗</div>
+          </div>
+        </div>
+
+        <!-- 分頁切換 -->
+        <div class="tab-pills">
+          <button class="tab-pill active" id="tabIslandBtn" onclick="app.switchTab('island')">島嶼學習 (36題)</button>
+          <button class="tab-pill" id="tabReviewBtn" onclick="app.switchTab('review')">錯題燈塔 (<span id="wrongTabCount">0</span>)</button>
+        </div>
+      </div>
+
+      <!-- 面板：目錄列表 -->
+      <div class="p-body" id="panelIndexBody">
+        <div class="chap-group-title">中年級主科領域・探險章節</div>
+
+        <!-- 01 自然 -->
+        <div class="chap-card" onclick="app.openSubjectQuiz('nature')">
+          <div class="chap-card-left">
+            <div class="chap-num">01</div>
+            <div class="chap-info">
+              <h4>🌿 自然探險島</h4>
+              <p>植物構造、神奇磁鐵、空氣水與動物</p>
+            </div>
+          </div>
+          <div class="chap-card-right">
+            <span id="chapStars-nature">★ 0/6</span>
+            <span>→</span>
+          </div>
+        </div>
+        <div style="margin: -4px 0 12px 0; text-align: right;">
+          <button class="top-pill" style="font-size:12px;padding:4px 12px;background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;" onclick="event.stopPropagation();app.openPlantAtlas()">
+            🖼️ 點此查看【植物根莖葉・彩圖圖鑑】
+          </button>
+        </div>
+
+        <!-- 02 數學 -->
+        <div class="chap-card" onclick="app.openSubjectQuiz('math')">
+          <div class="chap-card-left">
+            <div class="chap-num">02</div>
+            <div class="chap-info">
+              <h4>🧮 數學奇幻島</h4>
+              <p>萬以內加減、乘除餘數、真分數、小數與時間</p>
+            </div>
+          </div>
+          <div class="chap-card-right">
+            <span id="chapStars-math">★ 0/6</span>
+            <span>→</span>
+          </div>
+        </div>
+
+        <!-- 03 國語 -->
+        <div class="chap-card" onclick="app.openSubjectQuiz('mandarin')">
+          <div class="chap-card-left">
+            <div class="chap-num">03</div>
+            <div class="chap-info">
+              <h4>📖 國語智慧島</h4>
+              <p>部首查字典、修辭辨析、成語與閱讀理解</p>
+            </div>
+          </div>
+          <div class="chap-card-right">
+            <span id="chapStars-mandarin">★ 0/6</span>
+            <span>→</span>
+          </div>
+        </div>
+
+        <!-- 04 英語 -->
+        <div class="chap-card" onclick="app.openSubjectQuiz('english')">
+          <div class="chap-card-left">
+            <div class="chap-num">04</div>
+            <div class="chap-info">
+              <h4>🔤 英語歡樂小鎮</h4>
+              <p>Phonics 短母音、日常教室單字與對話問答</p>
+            </div>
+          </div>
+          <div class="chap-card-right">
+            <span id="chapStars-english">★ 0/6</span>
+            <span>→</span>
+          </div>
+        </div>
+
+        <!-- 05 社會 -->
+        <div class="chap-card" onclick="app.openSubjectQuiz('social')">
+          <div class="chap-card-left">
+            <div class="chap-num">05</div>
+            <div class="chap-info">
+              <h4>🏘️ 社會生活聚落</h4>
+              <p>地圖方位、社區公設119、傳統節慶與生活禮儀</p>
+            </div>
+          </div>
+          <div class="chap-card-right">
+            <span id="chapStars-social">★ 0/6</span>
+            <span>→</span>
+          </div>
+        </div>
+
+        <!-- 06 台語 (新增) -->
+        <div class="chap-card" onclick="app.openSubjectQuiz('taigi')">
+          <div class="chap-card-left">
+            <div class="chap-num" style="color:#059669;">06</div>
+            <div class="chap-info">
+              <h4>🗣️ 歡喜講台語島 (本土語言)</h4>
+              <p>問候𠢕早、身體部位跤、水果芎蕉、青蛙水雞與生活習俗</p>
+            </div>
+          </div>
+          <div class="chap-card-right" style="color:#059669;">
+            <span id="chapStars-taigi">★ 0/6</span>
+            <span>→</span>
+          </div>
+        </div>
+
+        <div class="chap-group-title">自主複習與強化</div>
+
+        <!-- 錯題島 -->
+        <div class="chap-card" onclick="app.switchTab('review')">
+          <div class="chap-card-left">
+            <div class="chap-num" style="color:#8b5cf6;">✎</div>
+            <div class="chap-info">
+              <h4>錯題複習島</h4>
+              <p>答錯的題目會留在這裡，再次答對才會消除</p>
+            </div>
+          </div>
+          <div class="chap-card-right" style="color:#8b5cf6;">
+            <span id="reviewCardBadge">0 題</span>
+            <span>→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 面板：作答題目 -->
+      <div class="p-body quiz-view" id="panelQuizBody">
+        <div class="back-btn-row" onclick="app.showIndexList()">
+          <span>‹ 返回目錄島嶼</span>
+        </div>
+        <div id="quizContainer"></div>
+      </div>
+
+      <!-- 植物彩圖圖鑑對話框 -->
+      <div class="p-body quiz-view" id="panelPlantAtlas">
+        <div class="back-btn-row" onclick="app.showIndexList()">
+          <span>‹ 返回目錄島嶼</span>
+        </div>
+        <h3 style="font-size:18px;font-weight:900;color:#065f46;margin-bottom:12px;">🌿 國小三年級・植物根莖葉圖解彩圖手冊</h3>
+        
+        <!-- 圖 1: 葉脈與根系 -->
+        <div class="q-item" style="padding:14px;margin-bottom:16px;">
+          <h4 style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:8px;">圖一：【葉脈與根系】黃金配對</h4>
+          <svg viewBox="0 0 460 220" width="100%" height="auto" style="border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0;">
+            <!-- 左半部：雙子葉/網狀脈/軸根 -->
+            <rect x="10" y="10" width="215" height="200" rx="10" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+            <text x="117" y="32" font-size="14" font-weight="bold" fill="#166534" text-anchor="middle">網狀脈 ＋ 軸根系（雙子葉）</text>
+            <!-- 網狀脈葉片 -->
+            <path d="M50 100 Q100 45 150 100 Q100 135 50 100 Z" fill="#86efac" stroke="#16a34a" stroke-width="2"/>
+            <line x1="50" y1="100" x2="150" y2="100" stroke="#15803d" stroke-width="2.5"/>
+            <line x1="80" y1="100" x2="100" y2="75" stroke="#15803d" stroke-width="1.5"/>
+            <line x1="80" y1="100" x2="100" y2="120" stroke="#15803d" stroke-width="1.5"/>
+            <line x1="110" y1="100" x2="130" y2="80" stroke="#15803d" stroke-width="1.5"/>
+            <line x1="110" y1="100" x2="130" y2="115" stroke="#15803d" stroke-width="1.5"/>
+            <!-- 地面與軸根 -->
+            <line x1="40" y1="145" x2="195" y2="145" stroke="#a16207" stroke-dasharray="3,3" stroke-width="1.5"/>
+            <text x="117" y="142" font-size="11" fill="#78350f" text-anchor="middle">土面</text>
+            <!-- 粗主根 -->
+            <line x1="117" y1="145" x2="117" y2="200" stroke="#b45309" stroke-width="5" stroke-linecap="round"/>
+            <text x="155" y="175" font-size="11" font-weight="bold" fill="#b45309">← 粗大主根</text>
+            <!-- 細側根 -->
+            <line x1="117" y1="158" x2="90" y2="170" stroke="#d97706" stroke-width="1.8"/>
+            <line x1="117" y1="168" x2="140" y2="182" stroke="#d97706" stroke-width="1.8"/>
+            <line x1="117" y1="180" x2="95" y2="192" stroke="#d97706" stroke-width="1.8"/>
+            <text x="117" y="118" font-size="11" fill="#166534" text-anchor="middle">鳳仙花、榕樹、咸豐草</text>
+
+            <!-- 右半部：單子葉/平行脈/鬚根 -->
+            <rect x="235" y="10" width="215" height="200" rx="10" fill="#eff6ff" stroke="#bfdbfe" stroke-width="1.5"/>
+            <text x="342" y="32" font-size="14" font-weight="bold" fill="#1e40af" text-anchor="middle">平行脈 ＋ 鬚根系（單子葉）</text>
+            <!-- 平行脈葉片 (長條型) -->
+            <path d="M260 90 Q342 75 425 90 Q342 105 260 90 Z" fill="#93c5fd" stroke="#2563eb" stroke-width="2"/>
+            <line x1="260" y1="90" x2="425" y2="90" stroke="#1d4ed8" stroke-width="2"/>
+            <path d="M275 86 Q342 78 410 86" stroke="#3b82f6" stroke-width="1.2" fill="none"/>
+            <path d="M275 94 Q342 102 410 94" stroke="#3b82f6" stroke-width="1.2" fill="none"/>
+            <!-- 地面與鬚根 -->
+            <line x1="250" y1="145" x2="435" y2="145" stroke="#a16207" stroke-dasharray="3,3" stroke-width="1.5"/>
+            <text x="342" y="142" font-size="11" fill="#78350f" text-anchor="middle">土面</text>
+            <!-- 叢生細根 (無主根) -->
+            <path d="M342 145 Q320 170 310 198 M342 145 Q330 175 325 200 M342 145 Q342 175 342 202 M342 145 Q355 175 360 200 M342 145 Q368 170 375 198 M342 145 Q310 160 295 185 M342 145 Q375 160 390 185" stroke="#d97706" stroke-width="2" fill="none"/>
+            <text x="342" y="118" font-size="11" fill="#1e40af" text-anchor="middle">水稻、玉米、蔥、竹子</text>
+            <text x="400" y="175" font-size="11" font-weight="bold" fill="#b45309">無主根 (鬚鬚)</text>
+          </svg>
+        </div>
+
+        <!-- 圖 2: 四種葉序 -->
+        <div class="q-item" style="padding:14px;margin-bottom:16px;">
+          <h4 style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:8px;">圖二：【四種葉序】葉在莖上的排列方式</h4>
+          <svg viewBox="0 0 460 170" width="100%" height="auto" style="border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0;">
+            <!-- 互生 -->
+            <g transform="translate(15, 10)">
+              <rect width="100" height="150" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="50" y="24" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">互生</text>
+              <line x1="50" y1="35" x2="50" y2="135" stroke="#78350f" stroke-width="3.5"/>
+              <!-- 左葉 -->
+              <ellipse cx="28" cy="65" rx="14" ry="7" fill="#86efac" stroke="#16a34a" transform="rotate(-20 28 65)"/>
+              <!-- 右葉 -->
+              <ellipse cx="72" cy="90" rx="14" ry="7" fill="#86efac" stroke="#16a34a" transform="rotate(20 72 90)"/>
+              <!-- 左葉 -->
+              <ellipse cx="28" cy="115" rx="14" ry="7" fill="#86efac" stroke="#16a34a" transform="rotate(-20 28 115)"/>
+              <text x="50" y="142" font-size="10" fill="#64748b" text-anchor="middle">一節1片左右錯開</text>
+            </g>
+            <!-- 對生 -->
+            <g transform="translate(125, 10)">
+              <rect width="100" height="150" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="50" y="24" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">對生</text>
+              <line x1="50" y1="35" x2="50" y2="135" stroke="#78350f" stroke-width="3.5"/>
+              <ellipse cx="26" cy="70" rx="14" ry="7" fill="#86efac" stroke="#16a34a" transform="rotate(-15 26 70)"/>
+              <ellipse cx="74" cy="70" rx="14" ry="7" fill="#86efac" stroke="#16a34a" transform="rotate(15 74 70)"/>
+              <ellipse cx="26" cy="105" rx="14" ry="7" fill="#86efac" stroke="#16a34a" transform="rotate(-15 26 105)"/>
+              <ellipse cx="74" cy="105" rx="14" ry="7" fill="#86efac" stroke="#16a34a" transform="rotate(15 74 105)"/>
+              <text x="50" y="142" font-size="10" fill="#64748b" text-anchor="middle">一節2片兩兩相對</text>
+            </g>
+            <!-- 輪生 -->
+            <g transform="translate(235, 10)">
+              <rect width="100" height="150" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="50" y="24" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">輪生</text>
+              <line x1="50" y1="35" x2="50" y2="135" stroke="#78350f" stroke-width="3.5"/>
+              <ellipse cx="25" cy="80" rx="13" ry="6" fill="#86efac" stroke="#16a34a" transform="rotate(-30 25 80)"/>
+              <ellipse cx="75" cy="80" rx="13" ry="6" fill="#86efac" stroke="#16a34a" transform="rotate(30 75 80)"/>
+              <ellipse cx="40" cy="72" rx="12" ry="5" fill="#4ade80" stroke="#16a34a" transform="rotate(-70 40 72)"/>
+              <ellipse cx="60" cy="72" rx="12" ry="5" fill="#4ade80" stroke="#16a34a" transform="rotate(70 60 72)"/>
+              <text x="50" y="142" font-size="10" fill="#64748b" text-anchor="middle">一節3片以上成圈</text>
+            </g>
+            <!-- 叢生 -->
+            <g transform="translate(345, 10)">
+              <rect width="100" height="150" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+              <text x="50" y="24" font-size="13" font-weight="bold" fill="#0f172a" text-anchor="middle">叢生</text>
+              <line x1="15" y1="125" x2="85" y2="125" stroke="#78350f" stroke-width="2"/>
+              <ellipse cx="32" cy="115" rx="15" ry="6" fill="#86efac" stroke="#16a34a" transform="rotate(-35 32 115)"/>
+              <ellipse cx="68" cy="115" rx="15" ry="6" fill="#86efac" stroke="#16a34a" transform="rotate(35 68 115)"/>
+              <ellipse cx="42" cy="100" rx="16" ry="6" fill="#4ade80" stroke="#16a34a" transform="rotate(-70 42 100)"/>
+              <ellipse cx="58" cy="100" rx="16" ry="6" fill="#4ade80" stroke="#16a34a" transform="rotate(70 58 100)"/>
+              <ellipse cx="50" cy="95" rx="16" ry="6" fill="#22c55e" stroke="#16a34a" transform="rotate(-90 50 95)"/>
+              <text x="50" y="142" font-size="10" fill="#64748b" text-anchor="middle">密生近地面如一叢</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- 圖 3: 吃根還是吃莖常考題 -->
+        <div class="q-item" style="padding:14px;">
+          <h4 style="font-size:15px;font-weight:800;color:#0f172a;margin-bottom:8px;">圖三：【易混淆常考】我們吃的是根？還是莖？</h4>
+          <svg viewBox="0 0 460 170" width="100%" height="auto" style="border-radius:10px;background:#f8fafc;border:1px solid #e2e8f0;">
+            <!-- 吃根 -->
+            <g transform="translate(15, 10)">
+              <rect width="135" height="150" rx="10" fill="#fff7ed" stroke="#fed7aa"/>
+              <text x="67" y="24" font-size="13" font-weight="bold" fill="#c2410c" text-anchor="middle">🥕 吃「根」(儲藏根)</text>
+              <!-- 紅蘿蔔 -->
+              <polygon points="67,125 54,60 80,60" fill="#fb923c" stroke="#ea580c" stroke-width="2"/>
+              <path d="M60,60 Q55,42 50,38 M67,60 Q67,40 67,36 M74,60 Q79,42 84,38" stroke="#16a34a" stroke-width="2.5" fill="none"/>
+              <text x="67" y="142" font-size="11" font-weight="bold" fill="#7c2d12" text-anchor="middle">紅蘿蔔、白蘿蔔、地瓜</text>
+            </g>
+            <!-- 吃莖 -->
+            <g transform="translate(162, 10)">
+              <rect width="135" height="150" rx="10" fill="#fefce8" stroke="#fef08a"/>
+              <text x="67" y="24" font-size="13" font-weight="bold" fill="#a16207" text-anchor="middle">🥔 吃「莖」(地下塊莖)</text>
+              <!-- 馬鈴薯 (帶芽眼) -->
+              <ellipse cx="67" cy="85" rx="36" ry="26" fill="#fde047" stroke="#ca8a04" stroke-width="2"/>
+              <circle cx="55" cy="78" r="2.5" fill="#854d0e"/>
+              <circle cx="78" cy="82" r="2.5" fill="#854d0e"/>
+              <circle cx="62" cy="94" r="2.5" fill="#854d0e"/>
+              <text x="96" y="76" font-size="10" fill="#854d0e">芽眼</text>
+              <line x1="82" y1="80" x2="94" y2="76" stroke="#854d0e" stroke-width="1"/>
+              <text x="67" y="142" font-size="11" font-weight="bold" fill="#713f12" text-anchor="middle">馬鈴薯、蓮藕、芋頭、薑</text>
+            </g>
+            <!-- 吃葉 -->
+            <g transform="translate(310, 10)">
+              <rect width="135" height="150" rx="10" fill="#f0fdf4" stroke="#bbf7d0"/>
+              <text x="67" y="24" font-size="13" font-weight="bold" fill="#15803d" text-anchor="middle">🧅 吃「葉」(肥厚鱗葉)</text>
+              <!-- 洋蔥層次剖面 -->
+              <circle cx="67" cy="85" r="28" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+              <ellipse cx="67" cy="85" rx="20" ry="24" fill="none" stroke="#22c55e" stroke-width="1.5"/>
+              <ellipse cx="67" cy="85" rx="12" ry="18" fill="none" stroke="#4ade80" stroke-width="1.5"/>
+              <path d="M67,57 Q67,42 67,38" stroke="#16a34a" stroke-width="2.5"/>
+              <text x="67" y="142" font-size="11" font-weight="bold" fill="#14532d" text-anchor="middle">洋蔥、高麗菜、大白菜</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script>
+    /**
+     * ========================================================
+     * 六大領域・36 道精選題庫（含本土語言・臺灣台語）
+     * ========================================================
+     */
+    const LESSONS = [
+      { id: 'nature', no: '01', title: '自然探險島', icon: '🌿', x: -16, z: -12, color: '#2f9a5d' },
+      { id: 'math', no: '02', title: '數學奇幻島', icon: '🧮', x: 16, z: -12, color: '#e0643a' },
+      { id: 'mandarin', no: '03', title: '國語智慧島', icon: '📖', x: -22, z: 6, color: '#2f6fa3' },
+      { id: 'english', no: '04', title: '英語歡樂小鎮', icon: '🔤', x: 22, z: 6, color: '#d94a3a' },
+      { id: 'social', no: '05', title: '社會生活聚落', icon: '🏘️', x: -12, z: 22, color: '#8b5cf6' },
+      { id: 'taigi', no: '06', title: '歡喜講台語島', icon: '🗣️', x: 12, z: 22, color: '#059669' }
+    ];
+
+    const QUESTIONS = [
+      // 01 自然 (6 題)
+      {
+        id: 1, sub: 'nature', topic: '植物的根與葉脈',
+        q: '大雄在花園拔了一株鳳仙花，觀察發現它的葉脈像網子一樣交錯分佈。請問這是什麼葉脈？它的根通常屬於哪一種型態？',
+        opts: ['平行脈、軸根系', '網狀脈、軸根系', '平行脈、鬚根系', '網狀脈、鬚根系'],
+        ans: 1,
+        exp: '鳳仙花屬於雙子葉植物，通常具備「網狀脈」與有粗大主根的「軸根系」；單子葉植物（如水稻、玉米）則是平行脈與鬚根系。'
+      },
+      {
+        id: 2, sub: 'nature', topic: '神奇磁鐵',
+        q: '小華拿兩根條形磁鐵玩遊戲，下列哪一種操作方式會感覺到兩根磁鐵「互相排斥、向外推開」？',
+        opts: ['N極靠近S極', 'S極靠近N極', 'N極靠近N極', '磁鐵兩極靠近正中間'],
+        ans: 2,
+        exp: '磁鐵的基本性質是「同極相斥、異極相吸」。N極遇到N極、或S極遇到S極會互相排斥。'
+      },
+      {
+        id: 3, sub: 'nature', topic: '水的神奇力量',
+        q: '把一條乾毛巾的下端浸在裝有紅墨水的水盆中，過了一會兒發現紅墨水慢慢往上爬升染紅了毛巾，這主要是利用水的哪一種現象？',
+        opts: ['毛細現象', '浮力現象', '表面張力', '蒸發現象'],
+        ans: 0,
+        exp: '水沿著毛巾纖維的細小縫隙往上移動的現象稱為「毛細現象」。植物根部吸收水分送到葉子也是相同的原理。'
+      },
+      {
+        id: 4, sub: 'nature', topic: '空氣與風',
+        q: '把一個塑膠袋在空中揮一揮並綁緊，用雙手用力擠壓時會感覺鼓鼓的、很有彈性。這證明了空氣具有什麼特性？',
+        opts: ['空氣具有特定顏色', '空氣佔有空間，且可被壓縮', '空氣極為沉重無法推動', '空氣分子不會移動'],
+        ans: 1,
+        exp: '空氣看不見摸不著，但確實「佔有空間」；受到外力擠壓時可被壓縮，並產生反彈的力量。'
+      },
+      {
+        id: 5, sub: 'nature', topic: '動物運動構造',
+        q: '青蛙在陸地上用強壯的後腿跳躍，到了水裡則張開腳趾間的構造游泳。請問青蛙腳趾間幫助划水的構造叫什麼？',
+        opts: ['魚鰭', '腳蹼（蹼）', '尖爪', '魚鰓'],
+        ans: 1,
+        exp: '青蛙腳趾間生有薄膜構造稱為「蹼」，滑水時就像划船的船槳，能增加推力游得更快。'
+      },
+      {
+        id: 6, sub: 'nature', topic: '風向與風速',
+        q: '校園氣象台上的風向計箭頭正指著「東方」，操場上的旗子則往「西方」飄揚。請問現在吹的是什麼風？',
+        opts: ['東風', '西風', '南風', '北風'],
+        ans: 0,
+        exp: '「風向」是指「風吹來的方向」。風向計箭頭指向風吹來的方向，所以指向東方代表吹「東風」。'
+      },
+
+      // 02 數學 (6 題)
+      {
+        id: 7, sub: 'math', topic: '萬以內的數',
+        q: '小明的存錢筒打開後，裡面有 5 張一千元、8 個一百元、0 個十元和 3 個一元硬幣，請問他一共存了多少元？',
+        opts: ['5830 元', '5803 元', '5083 元', '583 元'],
+        ans: 1,
+        exp: '千位是 5、百位是 8、十位是 0、個位是 3，合起來是 5803（五千八百零三）元。'
+      },
+      {
+        id: 8, sub: 'math', topic: '三位數乘一位數',
+        q: '文具行一盒精裝彩色筆賣 125 元，老師買了 4 盒要當作期末獎勵，一共要付多少元？',
+        opts: ['450 元', '480 元', '500 元', '600 元'],
+        ans: 2,
+        exp: '125 × 4 = 500 元。（100×4=400，20×4=80，5×4=20，400+80+20=500）。'
+      },
+      {
+        id: 9, sub: 'math', topic: '除法與餘數',
+        q: '烘焙坊烤了 38 顆手工泡芙，想要每 5 顆裝成一袋，請問最多可以裝滿幾袋？還剩下幾顆泡芙？',
+        opts: ['裝滿 7 袋，剩下 3 顆', '裝滿 6 袋，剩下 8 顆', '裝滿 8 袋，剩下 2 顆', '裝滿 7 袋，剩下 4 顆'],
+        ans: 0,
+        exp: '38 ÷ 5 = 7 ... 餘數 3。餘數必須小於除數（5），所以可裝滿 7 袋，剩下 3 顆。'
+      },
+      {
+        id: 10, sub: 'math', topic: '認識真分數',
+        q: '媽媽把一個披薩平分成 8 塊，小英中午吃了其中的 3 塊，請問小英吃了多少「個」披薩？',
+        opts: ['3 個披薩', '8分之3 (3/8) 個披薩', '3分之8 (8/3) 個披薩', '8 個披薩'],
+        ans: 1,
+        exp: '將 1 個披薩平分成 8 等份，每份是 1/8 個。吃了 3 份就是吃了 3/8（八分之三）個披薩。'
+      },
+      {
+        id: 11, sub: 'math', topic: '一位小數',
+        q: '直尺上 1 公分等於 10 毫米（mm），1 毫米也就是 0.1 公分。如果一隻獨角仙體長 5 公分 6 毫米，用小數表示是多少公分？',
+        opts: ['56 公分', '5.6 公分', '0.56 公分', '5.06 公分'],
+        ans: 1,
+        exp: '6 毫米 = 0.6 公分，5 公分加上 0.6 公分等於 5.6 公分。'
+      },
+      {
+        id: 12, sub: 'math', topic: '經過時間計算',
+        q: '三年二班在下午 2 時 15 分開始進行數學闖關遊戲，活動歷時 45 分鐘，請問活動是在下午幾時幾分結束？',
+        opts: ['下午 2 時 45 分', '下午 3 時 00 分', '下午 3 時 15 分', '下午 2 時 60 分'],
+        ans: 1,
+        exp: '2時15分 + 45分鐘：15 + 45 = 60 分鐘，滿 60 分鐘進位 1 小時，因此是下午 3 時 00 分整。'
+      },
+
+      // 03 國語 (6 題)
+      {
+        id: 13, sub: 'mandarin', topic: '部首查字法',
+        q: '用部首查字典查「夢境」的「夢」字，應該先查哪一個部首？',
+        opts: ['木部', '夕部', '艹部', '冖部'],
+        ans: 1,
+        exp: '「夢」的部首是「夕」部，全字筆畫為 14 畫，扣除部首夕（3畫）剩餘筆畫 11 畫。'
+      },
+      {
+        id: 14, sub: 'mandarin', topic: '成語理解',
+        q: '這道題目困擾了大家很久，經老師輕輕一提點，小明立刻想通了做法。此時最適當的形容成語是：',
+        opts: ['豁然開朗', '水落石出', '守株待兔', '畫蛇添足'],
+        ans: 0,
+        exp: '「豁然開朗」比喻突然領悟明白。'
+      },
+      {
+        id: 15, sub: 'mandarin', topic: '修辭技巧',
+        q: '「春天的微風就像一雙溫柔的手，輕輕撫摸著大地綠油油的臉龐。」這句話主要運用了哪兩種修辭？',
+        opts: ['設問、排比', '譬喻、擬人', '誇飾、引用', '對偶、頂真'],
+        ans: 1,
+        exp: '「像一雙手」是譬喻；把微風當作人會「撫摸臉龐」是擬人法。'
+      },
+      {
+        id: 16, sub: 'mandarin', topic: '字形辨析',
+        q: '下列各句子括號中的用字，哪一個選項「完全正確」？',
+        opts: ['妹妹做事情很（仔細）', '他不小心把碗打（粹）了', '草木生機（篷）勃', '哥哥神（彩）飛揚'],
+        ans: 0,
+        exp: '(A) 仔細正確。(B) 應為打「碎」；(C) 應為生機「蓬」勃；(D) 應為神「采」飛揚。'
+      },
+      {
+        id: 17, sub: 'mandarin', topic: '閱讀理解',
+        q: '「台灣黑熊胸前有特別的白色 V 字形斑紋，擅長爬樹與游泳，主要以植物果實、嫩葉為食。」下列何者正確？',
+        opts: ['胸前有圓形白斑', '是純肉食動物', '不會游泳只會飛', '會爬樹，喜食植物果實嫩葉'],
+        ans: 3,
+        exp: '文中清楚提到：胸前是白色 V 字形斑紋、擅長爬樹與游泳、喜食果實嫩葉。'
+      },
+      {
+        id: 18, sub: 'mandarin', topic: '記敘文空間描寫',
+        q: '寫作記敘文時，下列哪一段文字最能生動表現出六何法中的「地點與空間景物」描寫？',
+        opts: ['走進青翠幽靜的植物園，高聳入雲的熱帶蕨類映入眼簾', '早上七點整，同學們在校門口集合', '這次旅程讓我學到了愛護大自然', '小華一邊吃三明治一邊聊天'],
+        ans: 0,
+        exp: '(A) 著重於植物園現場空間的具體景物描寫。'
+      },
+
+      // 04 英語 (6 題)
+      {
+        id: 19, sub: 'english', topic: 'Phonics 自然發音',
+        q: '下列哪一個單字的母音 a 發的是「短母音 /æ/」（像 cat 中的 a）？',
+        opts: ['bake', 'apple', 'lake', 'face'],
+        ans: 1,
+        exp: 'apple 發短母音 /æ/；bake, lake, face 的 a-e 發長母音 /eɪ/。'
+      },
+      {
+        id: 20, sub: 'english', topic: '教室單字',
+        q: '"I made a mistake in my drawing. May I borrow your ______?" 想擦掉錯誤，空格填入哪項文具？',
+        opts: ['ruler', 'eraser', 'pencil', 'notebook'],
+        ans: 1,
+        exp: '擦掉錯誤（mistake）需要用「橡皮擦（eraser）」。'
+      },
+      {
+        id: 21, sub: 'english', topic: '日常問候',
+        q: '老師問你："How are you doing today, Tim?" 當你感覺很棒時，最適當的回答是：',
+        opts: ['I am nine years old.', "I'm doing great, thank you!", 'My name is Tim.', 'It is a sunny morning.'],
+        ans: 1,
+        exp: '"How are you?" 是問候狀況，標準回答為 "I\'m great / fine, thank you!"。'
+      },
+      {
+        id: 22, sub: 'english', topic: 'Can you 句型',
+        q: '同學問你："Can you ride a bicycle?" 如果你「會騎腳踏車」，應該怎麼回答？',
+        opts: ['Yes, I can.', 'No, I am not.', 'Yes, I do.', 'No, I can.'],
+        ans: 0,
+        exp: '以 Can 開頭的問句，肯定回答為 "Yes, I can."。'
+      },
+      {
+        id: 23, sub: 'english', topic: 'How many 數量',
+        q: '老師問："How many ducks can you see?" 你看見「7 隻鴨子」，英文應該怎麼說？',
+        opts: ['There are five ducks.', 'There are seven ducks.', 'There are eleven ducks.', 'There is one duck.'],
+        ans: 1,
+        exp: '7 是 seven，兩隻以上用複數 ducks，所以是 "There are seven ducks."'
+      },
+      {
+        id: 24, sub: 'english', topic: '顏色描述',
+        q: '"What color is your new schoolbag?" 書包是「藍色配黃色」，英文該怎麼表達？',
+        opts: ['It is red and green.', 'It is blue and yellow.', 'It is black and white.', 'It is purple and pink.'],
+        ans: 1,
+        exp: '藍色是 blue，黃色是 yellow，所以是 "It is blue and yellow."'
+      },
+
+      // 05 社會 (6 題)
+      {
+        id: 25, sub: 'social', topic: '認識方位',
+        q: '早晨在操場上看見太陽正從正前方升起，請問你的「正後方」是哪一個方位？',
+        opts: ['東方', '西方', '南方', '北方'],
+        ans: 1,
+        exp: '太陽從東方升起，所以正前方是東；背後相對的就是「西方」。'
+      },
+      {
+        id: 26, sub: 'social', topic: '公共設施與報案',
+        q: '社區發生火警或有居民急性重病需要救護車時，應撥打哪一個電話求助？',
+        opts: ['撥打 110 聯絡警察局', '撥打 119 聯絡消防局', '撥打 104 查號台', '撥打 1999 市民專線'],
+        ans: 1,
+        exp: '發生火災與緊急救護撥打「119」聯絡消防局；竊盜刑案報警撥打「110」。'
+      },
+      {
+        id: 27, sub: 'social', topic: '家鄉特色產業',
+        q: '新北市「鶯歌」聞名全台灣的傳統工藝產業是什麼？',
+        opts: ['陶瓷產業', '木雕工藝', '貢糖製作', '玻璃吹製'],
+        ans: 0,
+        exp: '鶯歌擁有優良的黏土資源，以「陶瓷工藝」享譽全台。'
+      },
+      {
+        id: 28, sub: 'social', topic: '傳統節慶習俗',
+        q: '農曆五月初五端午節，河面上會舉行哪一項熱鬧刺激的傳統體育競技活動？',
+        opts: ['放天燈祈福', '划龍舟競渡', '踩高蹺遊行', '猜燈謎吃元宵'],
+        ans: 1,
+        exp: '端午節的代表民俗是「划龍舟」與包粽子；放天燈與猜燈謎是元宵節。'
+      },
+      {
+        id: 29, sub: 'social', topic: '親屬稱謂禮節',
+        q: '傳統親屬稱謂禮儀中，我們應該如何稱呼「爸爸的親哥哥」？',
+        opts: ['叔叔', '伯父（伯伯）', '舅舅', '姑丈'],
+        ans: 1,
+        exp: '爸爸的哥哥稱「伯父（伯伯）」；爸爸的弟弟稱「叔叔」；媽媽的兄弟稱「舅舅」。'
+      },
+      {
+        id: 30, sub: 'social', topic: '小公民道德',
+        q: '下列哪一種行為最能展現愛護生活環境的良好公德心？',
+        opts: ['在公園滑梯上塗鴉簽名', '遛狗時隨身帶塑膠袋清理狗便', '把飲料鋁箔包塞進花圃', '半夜在走廊大聲喧嘩'],
+        ans: 1,
+        exp: '隨手清理寵物便溺是維護公共環境清潔、展現公德心的良好行為。'
+      },
+
+      // 06 歡喜講台語 (本土語言 6 題)
+      {
+        id: 31, sub: 'taigi', topic: '早起問候',
+        q: '早起（tsá-khí）到學校看見老師或同學，用台語講「早安」，上適當的講法是哪一句？',
+        opts: ['多謝 (to-siā)', '𠢕早 (gâu-tsá)', '再會 (tsài-huē)', '歹勢 (pháinn-sè)'],
+        ans: 1,
+        exp: '台語的「𠢕早（gâu-tsá）」就是國語的「早安」，有稱讚對方起得真早、祝賀晨安的意思。多謝是謝謝，歹勢是不好意思。'
+      },
+      {
+        id: 32, sub: 'taigi', topic: '身體部位',
+        q: '大家愛聽的台語童謠：「點仔膠，黏著跤，叫阿爸，買豬跤...」請問歌詞中的「跤（kha）」是指身體的哪一個部位？',
+        opts: ['頭部 (thâu)', '目睭 (ba̍k-tsiu)', '腳 (kha)', '手 (tshiú)'],
+        ans: 2,
+        exp: '「跤（kha）」在台語中是指「腳（腿部與腳掌）」；手叫「手（tshiú）」；眼睛叫「目睭（ba̍k-tsiu）」。'
+      },
+      {
+        id: 33, sub: 'taigi', topic: '台灣在地水果',
+        q: '阿母去菜市場買了一大串黃澄澄的「芎蕉」，請問「芎蕉（kin-tsio）」是指哪一種甜甜的水果？',
+        opts: ['蘋果', '香蕉', '鳳梨 (王梨)', '西瓜'],
+        ans: 1,
+        exp: '台語的「芎蕉（kin-tsio）」是指香蕉；鳳梨台語叫「王梨（ông-lâi）」；西瓜叫「西瓜（si-kue）」。'
+      },
+      {
+        id: 34, sub: 'taigi', topic: '可愛動物生動名詞',
+        q: '草地上有一隻綠色的「水雞」跳來跳去，還發出「呱呱呱」的聲音。請問台語說的「水雞（tsuí-ke）」是指哪一種動物？',
+        opts: ['鴨子 (鴨仔)', '青蛙', '母雞', '烏龜 (龜仔)'],
+        ans: 1,
+        exp: '台語把「青蛙」叫做「水雞（tsuí-ke）」，因為牠生活在水邊、叫聲嘹亮而且肉質像雞肉一樣鮮嫩，是農村社會非常親切生動的稱呼！'
+      },
+      {
+        id: 35, sub: 'taigi', topic: '家庭親屬稱呼',
+        q: '放學轉來去，看見「阿嬤」在客廳笑瞇瞇等我吃點心。請問「阿嬤（a-má）」在家庭親屬稱呼中是指誰？',
+        opts: ['祖母／外婆', '媽媽 (阿母)', '姑姑 (阿姑)', '姐姐 (阿姊)'],
+        ans: 0,
+        exp: '在台灣生活中，「阿嬤（a-má）」是用來稱呼爸爸的母親（祖母/奶奶）或媽媽的母親（外婆）；祖父或外公則稱呼為「阿公（a-kong）」。'
+      },
+      {
+        id: 36, sub: 'taigi', topic: '天氣與生活生活經驗',
+        q: '夏天下午天色變烏，天空開始「落雨（lo̍h-hōo）」矣！請問「落雨」是什麼意思？出門愛記得帶啥物？',
+        opts: ['出大太陽，戴墨鏡', '落雪，穿羽絨衣', '落雨（下雨），帶雨傘或穿雨衣', '颳大風，關緊門窗'],
+        ans: 2,
+        exp: '「落雨（lo̍h-hōo）」是台語中「下雨」的意思，出門一定要記得帶「雨傘（hōo-suànn）」或穿「雨衣（hōo-i）」喔！'
+      }
+    ];
+
+    /**
+     * ========================================================
+     * 應用主程式：蛋蛋老師、小學生與阿柴，六大領域群島
+     * ========================================================
+     */
+    class IslandApp {
+      constructor() {
+        this.records = JSON.parse(localStorage.getItem('g3_records') || '{}');
+        this.wrongSet = new Set(JSON.parse(localStorage.getItem('g3_wrongs') || '[]'));
+        this.currentSub = 'nature';
+        
+        this.walkers = [];
+        this.boats = [];
+        this.clock = new THREE.Clock();
+
+        this.initThree();
+        this.renderPins();
+        this.updateStatsUI();
+      }
+
+      save() {
+        localStorage.setItem('g3_records', JSON.stringify(this.records));
+        localStorage.setItem('g3_wrongs', JSON.stringify(Array.from(this.wrongSet)));
+        this.updateStatsUI();
+        this.renderPins();
+      }
+
+      resetProgress() {
+        if (confirm('確定要清除所有星星與作答進度，重新開始嗎？')) {
+          this.records = {};
+          this.wrongSet.clear();
+          this.save();
+          this.showIndexList();
+        }
+      }
+
+      /* ---------------- 3D 場景建置 ---------------- */
+      initThree() {
+        const stage = document.getElementById('stage');
+        this.scene = new THREE.Scene();
+        this.scene.background = new THREE.Color(0xa9d6ea);
+        this.scene.fog = new THREE.Fog(0xa9d6ea, 60, 260);
+
+        this.camera = new THREE.PerspectiveCamera(38, stage.clientWidth / stage.clientHeight, 0.1, 700);
+        this.camera.position.set(-20, 60, 80);
+
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer.setSize(stage.clientWidth, stage.clientHeight);
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        this.renderer.shadowMap.enabled = true;
+        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        stage.appendChild(this.renderer.domElement);
+
+        this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+        this.controls.enableDamping = true;
+        this.controls.dampingFactor = 0.08;
+        this.controls.minDistance = 25;
+        this.controls.maxDistance = 160;
+        this.controls.maxPolarAngle = 1.25;
+        this.controls.target.set(0, 0, 5);
+
+        // 燈光
+        const hemi = new THREE.HemisphereLight(0xffffff, 0x8fb3a8, 0.8);
+        this.scene.add(hemi);
+
+        const sun = new THREE.DirectionalLight(0xfff3dc, 0.9);
+        sun.position.set(-40, 72, 38);
+        sun.castShadow = true;
+        sun.shadow.mapSize.set(2048, 2048);
+        sun.shadow.camera.left = -65;
+        sun.shadow.camera.right = 65;
+        sun.shadow.camera.top = 65;
+        sun.shadow.camera.bottom = -65;
+        this.scene.add(sun);
+
+        // 海水
+        const water = new THREE.Mesh(
+          new THREE.CircleGeometry(340, 64),
+          new THREE.MeshLambertMaterial({ color: 0x68b2bc })
+        );
+        water.rotation.x = -Math.PI / 2;
+        water.position.y = -0.3;
+        water.receiveShadow = true;
+        this.scene.add(water);
+
+        // 淺水光圈
+        const shallow = new THREE.Mesh(
+          new THREE.CircleGeometry(82, 48),
+          new THREE.MeshLambertMaterial({ color: 0x7fc0c8 })
+        );
+        shallow.rotation.x = -Math.PI / 2;
+        shallow.position.y = -0.18;
+        this.scene.add(shallow);
+
+        // 建造 6 大島嶼與環狀木棧道
+        this.buildIslandsAndBridges();
+
+        // 建造走動角色（小學生、蛋蛋老師、小柴犬）
+        this.createWalkers();
+
+        // 建造在海面上航行的帆船
+        this.createSailingBoats();
+
+        window.addEventListener('resize', () => {
+          this.camera.aspect = stage.clientWidth / stage.clientHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(stage.clientWidth, stage.clientHeight);
+        });
+
+        this.animate();
+      }
+
+      buildIslandsAndBridges() {
+        const M = c => new THREE.MeshLambertMaterial({ color: c, flatShading: true });
+        const mats = {
+          sand: M(0xead7ac),
+          grass: M(0xa3c77c),
+          wood: M(0xb98a5e),
+          white: M(0xfbf8f1),
+          roof: M(0xe0643a),
+          trunk: M(0x8a6248),
+          leaf: M(0x6fa85a),
+          leafTaigi: M(0x10b981)
+        };
+
+        // 建造 6 座島嶼
+        LESSONS.forEach(l => {
+          const g = new THREE.Group();
+          g.position.set(l.x, 0, l.z);
+
+          // 沙底
+          const s = new THREE.Mesh(new THREE.CylinderGeometry(7.8, 6.2, 1.4, 8), mats.sand);
+          s.position.y = 0.4;
+          s.receiveShadow = true;
+          g.add(s);
+
+          // 綠草頂
+          const gr = new THREE.Mesh(new THREE.CylinderGeometry(7.2, 7.6, 2.2, 8), mats.grass);
+          gr.position.y = 1.8;
+          gr.receiveShadow = true;
+          gr.castShadow = true;
+          g.add(gr);
+
+          // 建築物（台語島為古色古香的三合院紅瓦屋）
+          const bldg = new THREE.Mesh(new THREE.BoxGeometry(2.4, 1.8, 2.2), mats.white);
+          bldg.position.y = 3.6;
+          bldg.castShadow = true;
+          g.add(bldg);
+
+          const rfColor = l.id === 'taigi' ? 0xb91c1c : 0xe0643a;
+          const rf = new THREE.Mesh(new THREE.ConeGeometry(2, 1.4, 4), M(rfColor));
+          rf.position.y = 5.2;
+          rf.rotation.y = Math.PI / 4;
+          rf.castShadow = true;
+          g.add(rf);
+
+          // 樹木
+          for (let i = 0; i < 3; i++) {
+            const tr = new THREE.Group();
+            const ang = (i / 3) * Math.PI * 2 + 0.4;
+            tr.position.set(Math.cos(ang) * 4.0, 2.9, Math.sin(ang) * 4.0);
+            tr.add(new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.22, 1.2, 5), mats.trunk));
+            const top = new THREE.Mesh(new THREE.IcosahedronGeometry(0.9, 0), l.id === 'taigi' ? mats.leafTaigi : mats.leaf);
+            top.position.y = 1.2;
+            top.castShadow = true;
+            tr.add(top);
+            g.add(tr);
+          }
+
+          this.scene.add(g);
+        });
+
+        // 建造環狀木棧道（連接 6 座相鄰島嶼）
+        // 0(Nature) -> 1(Math) -> 3(English) -> 5(Taigi) -> 4(Social) -> 2(Mandarin) -> 0(Nature)
+        const ringOrder = [0, 1, 3, 5, 4, 2];
+        for (let i = 0; i < ringOrder.length; i++) {
+          const a = LESSONS[ringOrder[i]];
+          const b = LESSONS[ringOrder[(i + 1) % ringOrder.length]];
+
+          const dx = b.x - a.x;
+          const dz = b.z - a.z;
+          const dist = Math.sqrt(dx * dx + dz * dz);
+          const angle = Math.atan2(dz, dx);
+
+          const br = new THREE.Mesh(new THREE.BoxGeometry(dist - 7, 0.25, 1.6), mats.wood);
+          br.position.set((a.x + b.x) / 2, 1.8, (a.z + b.z) / 2);
+          br.rotation.y = -angle;
+          br.castShadow = true;
+          this.scene.add(br);
+        }
+      }
+
+      /* ---------------- 打造「蛋蛋老師」、小學生與阿柴 ---------------- */
+      createWalkers() {
+        // 環島 6 個路徑點
+        const ringPoints = [
+          new THREE.Vector3(-16, 2.9, -12), // 0: 自然
+          new THREE.Vector3(16, 2.9, -12),  // 1: 數學
+          new THREE.Vector3(22, 2.9, 6),    // 2: 英語
+          new THREE.Vector3(12, 2.9, 22),   // 3: 台語
+          new THREE.Vector3(-12, 2.9, 22),  // 4: 社會
+          new THREE.Vector3(-22, 2.9, 6)    // 5: 國語
+        ];
+
+        const ringPointsReverse = [...ringPoints].reverse();
+
+        // 角色 1：探險小學生
+        const student = this.buildHumanoid(0xfbbf24, 0x1e3a8a, 0xef4444, "探險小學生");
+        this.scene.add(student.mesh);
+        this.walkers.push({
+          data: student,
+          waypoints: ringPoints,
+          currentWp: 0,
+          progress: 0,
+          speed: 0.16,
+          name: "探險小學生"
+        });
+
+        // 角色 2：🍳「蛋蛋老師」！(可愛蛋形圓圓頭、黃白主廚/導師圍裙、圓圓眼鏡)
+        const danTeacher = this.buildDanDanTeacher();
+        this.scene.add(danTeacher.mesh);
+        this.walkers.push({
+          data: danTeacher,
+          waypoints: ringPointsReverse,
+          currentWp: 1,
+          progress: 0.4,
+          speed: 0.14,
+          name: "蛋蛋老師"
+        });
+
+        // 角色 3：阿柴（小柴犬）
+        const dog = this.buildDog();
+        this.scene.add(dog.mesh);
+        this.walkers.push({
+          data: dog,
+          waypoints: ringPoints,
+          currentWp: 0,
+          progress: 0.94,
+          speed: 0.16,
+          name: "阿柴"
+        });
+      }
+
+      // 蛋蛋老師專屬萌感模型
+      buildDanDanTeacher() {
+        const root = new THREE.Group();
+        const M = c => new THREE.MeshLambertMaterial({ color: c, flatShading: true });
+
+        // 身體：白底圍裙配暖黃
+        const torso = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.72, 0.42), M(0xfffbeb));
+        torso.position.y = 0.9;
+        torso.castShadow = true;
+        root.add(torso);
+
+        // 圍裙/背心（暖橘黃蛋黃色）
+        const vest = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.55, 0.45), M(0xf59e0b));
+        vest.position.set(0, 0.9, 0.02);
+        root.add(vest);
+
+        // 圓滾滾「蛋形」頭部（Egg-shaped head!）
+        const eggHead = new THREE.Mesh(new THREE.SphereGeometry(0.32, 12, 10), M(0xffedd5));
+        eggHead.scale.set(1.0, 1.25, 1.0);
+        eggHead.position.y = 1.55;
+        eggHead.castShadow = true;
+        root.add(eggHead);
+
+        // 蛋蛋老師招牌：金黃蛋殼荷包蛋帽子
+        const hatBase = new THREE.Mesh(new THREE.CylinderGeometry(0.38, 0.38, 0.08, 12), M(0xffffff));
+        hatBase.position.set(0, 1.95, 0);
+        root.add(hatBase);
+        const yolk = new THREE.Mesh(new THREE.SphereGeometry(0.18, 10, 8), M(0xf59e0b));
+        yolk.position.set(0, 2.02, 0);
+        root.add(yolk);
+
+        // 圓圓的黑框眼鏡
+        const glassMat = M(0x1e293b);
+        const gL = new THREE.Mesh(new THREE.TorusGeometry(0.08, 0.02, 6, 12), glassMat);
+        gL.position.set(-0.12, 1.58, 0.32);
+        root.add(gL);
+        const gR = new THREE.Mesh(new THREE.TorusGeometry(0.08, 0.02, 6, 12), glassMat);
+        gR.position.set(0.12, 1.58, 0.32);
+        root.add(gR);
+
+        // 雙腿
+        const legMat = M(0x475569);
+        const leftLeg = new THREE.Group();
+        leftLeg.position.set(-0.18, 0.6, 0);
+        const lm = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.6, 0.22), legMat);
+        lm.position.y = -0.3;
+        lm.castShadow = true;
+        leftLeg.add(lm);
+        root.add(leftLeg);
+
+        const rightLeg = new THREE.Group();
+        rightLeg.position.set(0.18, 0.6, 0);
+        const rm = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.6, 0.22), legMat);
+        rm.position.y = -0.3;
+        rm.castShadow = true;
+        rightLeg.add(rm);
+        root.add(rightLeg);
+
+        // 雙手
+        const armMat = M(0xfffbeb);
+        const leftArm = new THREE.Group();
+        leftArm.position.set(-0.4, 1.15, 0);
+        const laMesh = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.5, 0.15), armMat);
+        laMesh.position.y = -0.25;
+        leftArm.add(laMesh);
+        root.add(leftArm);
+
+        const rightArm = new THREE.Group();
+        rightArm.position.set(0.4, 1.15, 0);
+        const raMesh = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.5, 0.15), armMat);
+        raMesh.position.y = -0.25;
+        rightArm.add(raMesh);
+        root.add(rightArm);
+
+        return {
+          mesh: root,
+          leftLeg,
+          rightLeg,
+          leftArm,
+          rightArm,
+          isDog: false
+        };
+      }
+
+      buildHumanoid(shirtColor, pantsColor, backpackColor) {
+        const root = new THREE.Group();
+        const M = c => new THREE.MeshLambertMaterial({ color: c, flatShading: true });
+
+        const torso = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.65, 0.35), M(shirtColor));
+        torso.position.y = 0.9;
+        torso.castShadow = true;
+        root.add(torso);
+
+        const head = new THREE.Mesh(new THREE.SphereGeometry(0.24, 8, 6), M(0xfde68a));
+        head.position.y = 1.45;
+        head.castShadow = true;
+        root.add(head);
+
+        const cap = new THREE.Mesh(new THREE.ConeGeometry(0.26, 0.22, 6), M(pantsColor));
+        cap.position.set(0, 1.62, 0);
+        root.add(cap);
+
+        const bag = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.45, 0.2), M(backpackColor));
+        bag.position.set(0, 0.9, -0.24);
+        root.add(bag);
+
+        const legMat = M(pantsColor);
+        const leftLeg = new THREE.Group();
+        leftLeg.position.set(-0.16, 0.6, 0);
+        const lMesh = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.6, 0.2), legMat);
+        lMesh.position.y = -0.3;
+        lMesh.castShadow = true;
+        leftLeg.add(lMesh);
+        root.add(leftLeg);
+
+        const rightLeg = new THREE.Group();
+        rightLeg.position.set(0.16, 0.6, 0);
+        const rMesh = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.6, 0.2), legMat);
+        rMesh.position.y = -0.3;
+        rMesh.castShadow = true;
+        rightLeg.add(rMesh);
+        root.add(rightLeg);
+
+        const armMat = M(shirtColor);
+        const leftArm = new THREE.Group();
+        leftArm.position.set(-0.35, 1.1, 0);
+        const laMesh = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.5, 0.14), armMat);
+        laMesh.position.y = -0.25;
+        leftArm.add(laMesh);
+        root.add(leftArm);
+
+        const rightArm = new THREE.Group();
+        rightArm.position.set(0.35, 1.1, 0);
+        const raMesh = new THREE.Mesh(new THREE.BoxGeometry(0.14, 0.5, 0.14), armMat);
+        raMesh.position.y = -0.25;
+        rightArm.add(raMesh);
+        root.add(rightArm);
+
+        return { mesh: root, leftLeg, rightLeg, leftArm, rightArm, isDog: false };
+      }
+
+      buildDog() {
+        const root = new THREE.Group();
+        const M = c => new THREE.MeshLambertMaterial({ color: c, flatShading: true });
+        const fur = M(0xd97706);
+        const white = M(0xfffbeb);
+
+        const body = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.28, 0.55), fur);
+        body.position.y = 0.35;
+        body.castShadow = true;
+        root.add(body);
+
+        const head = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.24, 0.24), fur);
+        head.position.set(0, 0.55, 0.28);
+        root.add(head);
+
+        const earL = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.12, 4), fur);
+        earL.position.set(-0.08, 0.72, 0.25);
+        root.add(earL);
+        const earR = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.12, 4), fur);
+        earR.position.set(0.08, 0.72, 0.25);
+        root.add(earR);
+
+        const tail = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.18, 0.06), fur);
+        tail.position.set(0, 0.5, -0.28);
+        tail.rotation.x = -Math.PI / 4;
+        root.add(tail);
+
+        const legGeo = new THREE.BoxGeometry(0.08, 0.22, 0.08);
+        const legs = [];
+        [[-0.1, -0.16], [0.1, -0.16], [-0.1, 0.16], [0.1, 0.16]].forEach(([x, z]) => {
+          const lG = new THREE.Group();
+          lG.position.set(x, 0.22, z);
+          const lm = new THREE.Mesh(legGeo, white);
+          lm.position.y = -0.11;
+          lG.add(lm);
+          root.add(lG);
+          legs.push(lG);
+        });
+
+        return { mesh: root, legs, tail, isDog: true };
+      }
+
+      /* ---------------- 航行帆船 ---------------- */
+      createSailingBoats() {
+        const boatMat = new THREE.MeshLambertMaterial({ color: 0x8a6248, flatShading: true });
+        const sailMat = new THREE.MeshLambertMaterial({ color: 0xffffff, flatShading: true });
+
+        const boat1 = new THREE.Group();
+        const hull1 = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.6, 1.2), boatMat);
+        hull1.position.y = 0.2;
+        hull1.castShadow = true;
+        boat1.add(hull1);
+        const s1 = new THREE.Mesh(new THREE.ConeGeometry(1.2, 2.4, 3), sailMat);
+        s1.position.set(0, 1.5, 0);
+        s1.rotation.y = Math.PI / 2;
+        s1.castShadow = true;
+        boat1.add(s1);
+
+        this.scene.add(boat1);
+        this.boats.push({ mesh: boat1, radius: 38, speed: 0.005, angle: 0.8, bobOffset: 0 });
+
+        const boat2 = boat1.clone();
+        this.scene.add(boat2);
+        this.boats.push({ mesh: boat2, radius: 48, speed: -0.004, angle: 3.2, bobOffset: 2.5 });
+      }
+
+      /* ---------------- 3D 浮空標籤 Pin ---------------- */
+      renderPins() {
+        const container = document.getElementById('pins');
+        container.innerHTML = '';
+
+        LESSONS.forEach(l => {
+          const qList = QUESTIONS.filter(q => q.sub === l.id);
+          let correct = 0;
+          qList.forEach(q => {
+            if (this.records[q.id] && this.records[q.id].correct) correct++;
+          });
+          const isDone = (correct === qList.length);
+
+          const btn = document.createElement('button');
+          btn.className = `pin ${isDone ? 'done' : ''}`;
+          btn.id = `pin-${l.id}`;
+          btn.onclick = () => this.openSubjectQuiz(l.id);
+
+          btn.innerHTML = `
+            <span class="no" style="${l.id === 'taigi' ? 'background:#059669;' : ''}">${l.no}</span>
+            <span>${l.title.replace('島', '').replace('小鎮', '').replace('聚落', '')}</span>
+            <span class="st">★ ${correct}/${qList.length}</span>
+          `;
+          container.appendChild(btn);
+        });
+
+        // 小學生氣泡
+        this.studentBubble = document.createElement('div');
+        this.studentBubble.className = 'walker-bubble';
+        this.studentBubble.innerText = '🎒 巡遊探索中...';
+        container.appendChild(this.studentBubble);
+
+        // 蛋蛋老師氣泡
+        this.teacherBubble = document.createElement('div');
+        this.teacherBubble.className = 'walker-bubble teacher';
+        this.teacherBubble.innerText = '🍳 蛋蛋老師巡島中';
+        container.appendChild(this.teacherBubble);
+      }
+
+      updatePinPositions() {
+        if (!this.camera || !this.renderer) return;
+        const stage = document.getElementById('stage');
+        const w = stage.clientWidth;
+        const h = stage.clientHeight;
+
+        LESSONS.forEach(l => {
+          const pin = document.getElementById(`pin-${l.id}`);
+          if (!pin) return;
+
+          const vec = new THREE.Vector3(l.x, 6.5, l.z);
+          vec.project(this.camera);
+
+          if (vec.z > 1) {
+            pin.style.display = 'none';
+          } else {
+            pin.style.display = 'flex';
+            const sx = (vec.x * 0.5 + 0.5) * w;
+            const sy = (-(vec.y * 0.5) + 0.5) * h;
+            pin.style.left = `${sx}px`;
+            pin.style.top = `${sy}px`;
+          }
+        });
+
+        // 更新小學生氣泡
+        if (this.studentBubble && this.walkers.length > 0) {
+          const pos = this.walkers[0].data.mesh.position.clone();
+          pos.y += 2.2;
+          pos.project(this.camera);
+          if (pos.z > 1) {
+            this.studentBubble.style.display = 'none';
+          } else {
+            this.studentBubble.style.display = 'block';
+            this.studentBubble.style.left = `${(pos.x * 0.5 + 0.5) * w}px`;
+            this.studentBubble.style.top = `${(-(pos.y * 0.5) + 0.5) * h}px`;
+          }
+        }
+
+        // 更新蛋蛋老師氣泡
+        if (this.teacherBubble && this.walkers.length > 1) {
+          const pos = this.walkers[1].data.mesh.position.clone();
+          pos.y += 2.5;
+          pos.project(this.camera);
+          if (pos.z > 1) {
+            this.teacherBubble.style.display = 'none';
+          } else {
+            this.teacherBubble.style.display = 'block';
+            this.teacherBubble.style.left = `${(pos.x * 0.5 + 0.5) * w}px`;
+            this.teacherBubble.style.top = `${(-(pos.y * 0.5) + 0.5) * h}px`;
+          }
+        }
+      }
+
+      /* ---------------- 動畫更新：人物行走與小船 ---------------- */
+      updateWalkers(delta) {
+        const time = this.clock.getElapsedTime();
+
+        this.walkers.forEach(w => {
+          const wps = w.waypoints;
+          const curr = wps[w.currentWp];
+          const nextIdx = (w.currentWp + 1) % wps.length;
+          const next = wps[nextIdx];
+
+          const dist = curr.distanceTo(next);
+          w.progress += (w.speed * delta * 7) / dist;
+
+          if (w.progress >= 1) {
+            w.progress = 0;
+            w.currentWp = nextIdx;
+          }
+
+          const p1 = wps[w.currentWp];
+          const p2 = wps[(w.currentWp + 1) % wps.length];
+          const pos = new THREE.Vector3().lerpVectors(p1, p2, w.progress);
+          w.data.mesh.position.copy(pos);
+
+          const dir = new THREE.Vector3().subVectors(p2, p1).normalize();
+          const targetAngle = Math.atan2(dir.x, dir.z);
+          w.data.mesh.rotation.y = targetAngle;
+
+          const walkCycle = time * 8 * (w.speed / 0.16);
+
+          if (!w.data.isDog) {
+            w.data.leftLeg.rotation.x = Math.sin(walkCycle) * 0.6;
+            w.data.rightLeg.rotation.x = -Math.sin(walkCycle) * 0.6;
+            w.data.leftArm.rotation.x = -Math.sin(walkCycle) * 0.5;
+            w.data.rightArm.rotation.x = Math.sin(walkCycle) * 0.5;
+            w.data.mesh.position.y += Math.abs(Math.sin(walkCycle)) * 0.08;
+          } else {
+            w.data.legs[0].rotation.x = Math.sin(walkCycle) * 0.5;
+            w.data.legs[1].rotation.x = -Math.sin(walkCycle) * 0.5;
+            w.data.legs[2].rotation.x = -Math.sin(walkCycle) * 0.5;
+            w.data.legs[3].rotation.x = Math.sin(walkCycle) * 0.5;
+            w.data.tail.rotation.y = Math.sin(walkCycle * 2) * 0.4;
+            w.data.mesh.position.y += Math.abs(Math.sin(walkCycle)) * 0.05;
+          }
+        });
+
+        this.boats.forEach(b => {
+          b.angle += b.speed;
+          b.mesh.position.x = Math.cos(b.angle) * b.radius;
+          b.mesh.position.z = Math.sin(b.angle) * b.radius;
+          b.mesh.rotation.y = -b.angle + (b.speed > 0 ? -Math.PI / 2 : Math.PI / 2);
+          b.mesh.position.y = 0.2 + Math.sin(time * 2 + b.bobOffset) * 0.08;
+          b.mesh.rotation.z = Math.sin(time * 1.5 + b.bobOffset) * 0.05;
+        });
+      }
+
+      /* ---------------- 數據與介面更新 ---------------- */
+      updateStatsUI() {
+        let totalStars = 0;
+        let medals = 0;
+
+        LESSONS.forEach(l => {
+          const qList = QUESTIONS.filter(q => q.sub === l.id);
+          let correct = 0;
+          qList.forEach(q => {
+            if (this.records[q.id] && this.records[q.id].correct) correct++;
+          });
+          totalStars += correct;
+          if (correct === qList.length) medals++;
+
+          const span = document.getElementById(`chapStars-${l.id}`);
+          if (span) span.innerText = `★ ${correct}/${qList.length}`;
+        });
+
+        document.getElementById('topStarsVal').innerText = `${totalStars} / 36`;
+        document.getElementById('topMedalsVal').innerText = `${medals} / 6`;
+        document.getElementById('cardStarsVal').innerHTML = `${totalStars} <span style="font-size:12px;font-weight:normal;color:var(--muted);">/ 36 顆星</span>`;
+        document.getElementById('cardMedalsVal').innerHTML = `${medals} <span style="font-size:12px;font-weight:normal;color:var(--muted);">/ 6 面</span>`;
+        
+        const wrongCnt = this.wrongSet.size;
+        document.getElementById('wrongTabCount').innerText = wrongCnt;
+        document.getElementById('reviewCardBadge').innerText = `${wrongCnt} 題`;
+      }
+
+      /* ---------------- 側欄導航與作答 ---------------- */
+      openDrawer() {
+        document.body.classList.add('split-open');
+        this.onResize();
+      }
+
+      closeDrawer() {
+        document.body.classList.remove('split-open');
+        this.onResize();
+      }
+
+      toggleDrawer() {
+        document.body.classList.toggle('split-open');
+        this.onResize();
+      }
+
+      onResize() {
+        setTimeout(() => {
+          const stage = document.getElementById('stage');
+          this.camera.aspect = stage.clientWidth / stage.clientHeight;
+          this.camera.updateProjectionMatrix();
+          this.renderer.setSize(stage.clientWidth, stage.clientHeight);
+        }, 360);
+      }
+
+      resetIslandView() {
+        this.camera.position.set(-20, 60, 80);
+        this.controls.target.set(0, 0, 5);
+      }
+
+      openSubjectQuiz(subId) {
+        this.currentSub = subId;
+        this.openDrawer();
+        
+        const l = LESSONS.find(item => item.id === subId);
+        if (l) {
+          this.camera.position.set(l.x - 8, 28, l.z + 24);
+          this.controls.target.set(l.x, 3, l.z);
+        }
+
+        const qList = QUESTIONS.filter(q => q.sub === subId);
+        this.renderQuiz(qList);
+
+        document.getElementById('panelIndexBody').style.display = 'none';
+        document.getElementById('panelQuizBody').classList.add('active');
+      }
+
+      showIndexList() {
+        document.getElementById('panelQuizBody').classList.remove('active');
+        const atlas = document.getElementById('panelPlantAtlas');
+        if (atlas) atlas.classList.remove('active');
+        document.getElementById('panelIndexBody').style.display = 'block';
+        this.resetIslandView();
+      }
+
+      openPlantAtlas() {
+        this.openDrawer();
+        document.getElementById('panelIndexBody').style.display = 'none';
+        document.getElementById('panelQuizBody').classList.remove('active');
+        document.getElementById('panelPlantAtlas').classList.add('active');
+      }
+
+      switchTab(tab) {
+        document.getElementById('tabIslandBtn').classList.toggle('active', tab === 'island');
+        document.getElementById('tabReviewBtn').classList.toggle('active', tab === 'review');
+
+        if (tab === 'island') {
+          this.showIndexList();
+        } else {
+          const list = QUESTIONS.filter(q => this.wrongSet.has(q.id));
+          if (list.length === 0) {
+            alert('太棒了！目前錯題本空空如也，沒有待複習的題目！');
+            this.switchTab('island');
+            return;
+          }
+          this.renderQuiz(list);
+          document.getElementById('panelIndexBody').style.display = 'none';
+          document.getElementById('panelQuizBody').classList.add('active');
+        }
+      }
+
+      renderQuiz(list) {
+        const container = document.getElementById('quizContainer');
+        container.innerHTML = '';
+
+        list.forEach((q) => {
+          const rec = this.records[q.id];
+          const answered = !!rec;
+          const card = document.createElement('div');
+          card.className = 'q-item';
+
+          let optRows = '';
+          const chars = ['A', 'B', 'C', 'D'];
+          q.opts.forEach((o, i) => {
+            let rowCls = 'opt-row';
+            if (answered) {
+              if (i === q.ans) rowCls += ' correct';
+              else if (rec.chosen === i && !rec.correct) rowCls += ' wrong';
+            }
+            optRows += `
+              <button class="${rowCls}" ${answered ? 'disabled' : ''} onclick="app.answer(${q.id}, ${i})">
+                <span class="opt-idx">${chars[i]}</span>
+                <span>${o}</span>
+              </button>
+            `;
+          });
+
+          card.innerHTML = `
+            <div class="q-meta">
+              <span>第 ${q.id} 題・${q.topic}</span>
+              <span>${answered && rec.correct ? '★ 已答對' : '☆ 尚未完成'}</span>
+            </div>
+            <div class="q-txt">${q.q}</div>
+            <button class="speak-btn" onclick="app.speakText('${q.q}')">🔊 聽題目朗讀</button>
+            <div class="opts-list">${optRows}</div>
+            <div class="q-exp ${answered ? 'show' : ''}">
+              <b>💡 觀念解析：</b><br>${q.exp}
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      }
+
+      answer(qid, chosen) {
+        const q = QUESTIONS.find(item => item.id === qid);
+        if (!q) return;
+
+        const isCorrect = (chosen === q.ans);
+        if (isCorrect) {
+          this.wrongSet.delete(qid);
+          this.records[qid] = { chosen, correct: true };
+        } else {
+          this.wrongSet.add(qid);
+          this.records[qid] = { chosen, correct: false };
+        }
+
+        this.save();
+
+        if (document.getElementById('tabReviewBtn').classList.contains('active')) {
+          this.renderQuiz(QUESTIONS.filter(item => this.wrongSet.has(item.id)));
+        } else {
+          this.renderQuiz(QUESTIONS.filter(item => item.sub === this.currentSub));
+        }
+      }
+
+      speakText(text) {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utter = new SpeechSynthesisUtterance(text);
+          utter.lang = 'zh-TW';
+          utter.rate = 0.95;
+          window.speechSynthesis.speak(utter);
+        }
+      }
+
+      animate() {
+        requestAnimationFrame(() => this.animate());
+        const delta = this.clock.getDelta();
+
+        this.updateWalkers(delta);
+        this.controls.update();
+        this.renderer.render(this.scene, this.camera);
+        this.updatePinPositions();
+      }
+    }
+
+    let app;
+    window.addEventListener('DOMContentLoaded', () => {
+      app = new IslandApp();
+    });
+  </script>
+</body>
+</html>
