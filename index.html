@@ -564,6 +564,99 @@
       display: none;
     }
     .q-exp.show { display: block; }
+
+    /* 教學重點卡片與真實照片樣式 */
+    .lesson-hero {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .lesson-hero h3 {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .lesson-hero p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .lesson-card {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 16px;
+    }
+    .lesson-tag {
+      display: inline-block;
+      background: var(--good-soft);
+      color: #166534;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 2px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+    .lesson-h4 {
+      font-size: 16px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .lesson-desc {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #334155;
+      margin-bottom: 12px;
+    }
+    .photo-box {
+      margin: 12px 0;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+    }
+    .photo-img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+      background: #e2e8f0;
+    }
+    .photo-caption {
+      padding: 12px 14px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--ink);
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+    }
+    .photo-credit {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+    .lesson-cta-btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      border: 0;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-size: 15px;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 16px;
+      box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+      transition: transform 0.15s;
+    }
+    .lesson-cta-btn:hover {
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body class="split-open">
@@ -762,12 +855,25 @@
         </div>
       </div>
 
-      <!-- 面板：作答題目 -->
+      <!-- 面板：教學與作答題目 -->
       <div class="p-body quiz-view" id="panelQuizBody">
         <div class="back-btn-row" onclick="app.showIndexList()">
           <span>‹ 返回目錄島嶼</span>
         </div>
-        <div id="quizContainer"></div>
+
+        <!-- 子分頁：重點教學 vs 闖關題目 -->
+        <div class="tab-pills" style="margin-bottom:16px;">
+          <button class="tab-pill active" id="subTabLessonBtn" onclick="app.switchSubTab('lesson')">📖 蛋蛋老師圖文教學 (實拍照)</button>
+          <button class="tab-pill" id="subTabQuizBtn" onclick="app.switchSubTab('quiz')">🎯 課後挑戰闖關 (<span id="quizTabCount">6</span>題)</button>
+        </div>
+
+        <!-- 1. 教學內容區 (包含真實照片圖鑑) -->
+        <div id="lessonContainer">
+          <!-- 動態載入教學圖文 -->
+        </div>
+
+        <!-- 2. 測驗作答區 -->
+        <div id="quizContainer" style="display:none;"></div>
       </div>
 
       <!-- 植物彩圖圖鑑對話框 -->
@@ -932,6 +1038,132 @@
       { id: 'social', no: '05', title: '社會生活聚落', icon: '🏘️', x: -12, z: 22, color: '#8b5cf6' },
       { id: 'taigi', no: '06', title: '歡喜講台語島', icon: '🗣️', x: 12, z: 22, color: '#059669' }
     ];
+
+    /**
+     * ========================================================
+     * 蛋蛋老師圖文教學庫（含真實植物照片與觀察要點）
+     * ========================================================
+     */
+    const LESSON_CONTENT = {
+      nature: {
+        title: "🌿 植物的身體・根莖葉秘密圖鑑",
+        subtitle: "蛋蛋老師帶你看真實照片，認識植物各器官的構造與神奇功能！",
+        sections: [
+          {
+            tag: "第一課・葉脈的秘密",
+            heading: "網狀脈 vs 平行脈（真實植物照片對照）",
+            desc: "葉子是植物製造養分的廚房。葉脈就像葉片裡的輸送水管與公路網！",
+            photos: [
+              {
+                title: "【真實照片】雙子葉植物・網狀脈特寫",
+                src: "https://upload.wikimedia.org/wikipedia/commons/8/80/Salix_reticulata_%285027764096%29.jpg",
+                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
+                tip: "👀 觀察重點：看清楚了嗎？粗大的主脈穿過中間，兩旁分出細小的側脈，交織成密密麻麻的「漁網狀」。雙子葉植物（如榕樹、鳳仙花、菩提樹）都是這種葉脈！"
+              },
+              {
+                title: "【真實照片】單子葉植物・平行脈特寫",
+                src: "https://upload.wikimedia.org/wikipedia/commons/3/35/Corymbium_glabrum_var._glabrum_1DS-II_1-C4370.jpg",
+                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
+                tip: "👀 觀察重點：葉脈像一條條鐵軌一樣從葉基筆直通到葉尖！撕開時會順著葉脈裂成整齊的長條。水稻、玉米、蔥、竹葉都是平行脈！"
+              }
+            ]
+          },
+          {
+            tag: "第二課・抓緊大地的根",
+            heading: "軸根系 vs 鬚根系（真實根部對照）",
+            desc: "根生長在泥土中，負責把植物牢牢固定在土裡，並吸收水分和礦物質。",
+            photos: [
+              {
+                title: "【真實照片】軸根系（新鮮紅蘿蔔實拍）",
+                src: "https://upload.wikimedia.org/wikipedia/commons/f/ff/CarrotRoots.jpg",
+                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
+                tip: "👀 觀察重點：正中央有一根又粗又大直直往下鑽的「主根」，周圍長出較細小的「側根」。抓地力非常穩固！"
+              },
+              {
+                title: "【真實照片】鬚根系（雜草與蔥蒜實拍）",
+                src: "https://upload.wikimedia.org/wikipedia/commons/3/39/Fibrous_root.jpg",
+                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
+                tip: "👀 觀察重點：仔細看！沒有任何一條特別粗的主根，全部都是由莖底部分散長出的細毛根，像老爺爺的鬍鬚一樣密密麻麻！"
+              }
+            ]
+          },
+          {
+            tag: "第三課・生活大解密",
+            heading: "餐桌上的蔬菜：我們吃的是根還是莖？",
+            desc: "考試最常考的易混淆大魔王！蛋蛋老師教你用真實構造一秒分辨：",
+            photos: [
+              {
+                title: "【真實照片】馬鈴薯發芽（證明它是地下塊莖！）",
+                src: "https://upload.wikimedia.org/wikipedia/commons/0/0f/Potato_sprouting.jpg",
+                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
+                tip: "👀 觀察重點：看到馬鈴薯表皮凹陷處冒出綠綠的小芽了嗎？這些凹陷處叫做「芽眼」！只有「莖」才會長芽長節，根不會長芽！所以馬鈴薯是地下塊莖，不是根喔！"
+              },
+              {
+                title: "【真實照片】洋蔥切開剖面（證明它是肉質鱗葉！）",
+                src: "https://upload.wikimedia.org/wikipedia/commons/6/6a/White_onion_cross_section.jpg",
+                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
+                tip: "👀 觀察重點：切開洋蔥看到一層層白白厚厚包在一起的，其實是變形儲存水分與養分的「肉質鱗葉」！洋蔥我們吃的是葉子！"
+              }
+            ]
+          },
+          {
+            tag: "第四課・葉子在莖上的隊形",
+            heading: "輪生葉（黑板樹真實照片）",
+            desc: "葉子在莖上的排列方式稱為「葉序」，主要有互生、對生、輪生、叢生四種。",
+            photos: [
+              {
+                title: "【真實照片】校園常見黑板樹・輪生葉特寫",
+                src: "https://upload.wikimedia.org/wikipedia/commons/4/41/Alstonia_scholaris_leaves.jpg",
+                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
+                tip: "👀 觀察重點：抬頭看校園的黑板樹！在同一個節點上，4～7 片葉子圍成一圈向外展開，就像撐開的一把小雨傘，這就是「輪生」！"
+              }
+            ]
+          }
+        ]
+      },
+      math: {
+        title: "🧮 數學奇幻島・觀念加油站",
+        subtitle: "四則運算、有餘數除法與分數小數小撇步！",
+        tips: [
+          { title: "💡 乘法直式小撇步", text: "三位數乘以一位數時，個位、十位、百位分別相乘，滿十要記得進位！例如 125 × 4：個位 5×4=20 記0進2，十位 2×4+2=10 記0進1，百位 1×4+1=5，答案是 500！" },
+          { title: "💡 除法與餘數鐵律", text: "餘數一定要小於除數！如果除數是 5，餘數只能是 0, 1, 2, 3, 4。如果剩下 5 顆以上，代表還可以再分一袋！" },
+          { title: "💡 分數是什麼？", text: "把一個完整的物品「平分成幾份」，分母就是總份數，分子就是吃了或拿了幾份！例如切成 8 等份吃 3 塊，就是吃了 3/8 個！" }
+        ]
+      },
+      mandarin: {
+        title: "📖 國語智慧島・寫作與字詞秘笈",
+        subtitle: "修辭手法、成語應用與段落大意快速掌握！",
+        tips: [
+          { title: "💡 譬喻法 vs 擬人法", text: "看到句子裡有「好像、宛如、像...一樣」是在打比方，這就是【譬喻法】；把風、小鳥、大樹當成人會說話、會撫摸、會害羞，這就是【擬人法】！" },
+          { title: "💡 記敘文六何法 (5W1H)", text: "寫作好文章要掌握：人物(Who)、時間(When)、地點(Where)、事情(What)、原因(Why)、如何進行(How)！寫校外教學時多描寫現場空間景物，文章會更生動！" }
+        ]
+      },
+      english: {
+        title: "🔤 英語歡樂小鎮・Phonics與日常會話",
+        subtitle: "自然發音短母音規則與日常生活情境問答！",
+        tips: [
+          { title: "💡 Phonics 短母音 a", text: "短母音 a 發音像嘴巴張大發出的 /æ/，例如 apple (蘋果)、cat (貓咪)、bag (書包)、hat (帽子)！長母音 a-e 則發 /eɪ/，如 bake, lake, face。" },
+          { title: "💡 Can you...? 句型問答", text: "別人問你 Can you swim? (你會游泳嗎？)，肯定回答請說 \"Yes, I can.\"；不會的話說 \"No, I can't.\"" }
+        ]
+      },
+      social: {
+        title: "🏘️ 社會生活聚落・生活好公民指南",
+        subtitle: "看懂生活地圖方位、公共設施與節慶民俗！",
+        tips: [
+          { title: "💡 東西南北方位口訣", text: "早上太陽從【東方】升起，面向東方時：背後是【西方】，右手邊是【南方】，左手邊是【北方】！" },
+          { title: "💡 緊急電話記牢牢", text: "火警火災、救護車緊急送醫打【119】找消防局；車禍、竊盜報警打【110】找警察局；查電話號碼打 104！" }
+        ]
+      },
+      taigi: {
+        title: "🗣️ 歡喜講台語・生活常用台語圖鑑",
+        subtitle: "教育部標準台灣台語，學會日常問候與台灣好味道！",
+        tips: [
+          { title: "💡 早晨問候：𠢕早 (gâu-tsá)", text: "「𠢕」是有本領、厲害的意思，「𠢕早」誇獎別人起得真早，就是早安的意思！多謝是謝謝，歹勢是不好意思。" },
+          { title: "💡 動物趣味稱呼：水雞 (tsuí-ke)", text: "台語稱青蛙為「水雞」，因為牠住在水邊，早年農村覺得青蛙肉質鮮美如雞肉，所以叫水雞！" },
+          { title: "💡 甜美水果：芎蕉 (kin-tsio)", text: "香蕉一整串像弓一樣彎彎的，所以台語叫「芎蕉（kin-tsio）」！鳳梨叫「王梨（ông-lâi）」，象徵旺旺來！" }
+        ]
+      }
+    };
 
     const QUESTIONS = [
       // 01 自然 (6 題)
@@ -1854,6 +2086,79 @@
         this.controls.target.set(0, 0, 5);
       }
 
+      switchSubTab(tab) {
+        document.getElementById('subTabLessonBtn').classList.toggle('active', tab === 'lesson');
+        document.getElementById('subTabQuizBtn').classList.toggle('active', tab === 'quiz');
+
+        if (tab === 'lesson') {
+          document.getElementById('lessonContainer').style.display = 'block';
+          document.getElementById('quizContainer').style.display = 'none';
+        } else {
+          document.getElementById('lessonContainer').style.display = 'none';
+          document.getElementById('quizContainer').style.display = 'block';
+        }
+      }
+
+      renderLesson(subId) {
+        const container = document.getElementById('lessonContainer');
+        const lesson = LESSON_CONTENT[subId];
+        if (!lesson) {
+          container.innerHTML = '<p style="padding:20px;color:var(--muted);">此科目教學內容準備中...</p>';
+          return;
+        }
+
+        let html = `
+          <div class="lesson-hero">
+            <h3>${lesson.title}</h3>
+            <p>${lesson.subtitle}</p>
+          </div>
+        `;
+
+        if (lesson.sections) {
+          lesson.sections.forEach(sec => {
+            let photosHtml = '';
+            sec.photos.forEach(p => {
+              photosHtml += `
+                <div class="photo-box">
+                  <img src="${p.src}" alt="${p.title}" class="photo-img" loading="lazy" />
+                  <div class="photo-caption">
+                    <div style="font-weight:800;color:#0f172a;margin-bottom:4px;">${p.title}</div>
+                    <div>${p.tip}</div>
+                    <div class="photo-credit">來源：${p.credit}</div>
+                  </div>
+                </div>
+              `;
+            });
+
+            html += `
+              <div class="lesson-card">
+                <span class="lesson-tag">${sec.tag}</span>
+                <div class="lesson-h4">${sec.heading}</div>
+                <div class="lesson-desc">${sec.desc}</div>
+                ${photosHtml}
+              </div>
+            `;
+          });
+        } else if (lesson.tips) {
+          lesson.tips.forEach(t => {
+            html += `
+              <div class="lesson-card">
+                <div class="lesson-h4">${t.title}</div>
+                <div class="lesson-desc">${t.text}</div>
+              </div>
+            `;
+          });
+        }
+
+        html += `
+          <button class="lesson-cta-btn" onclick="app.switchSubTab('quiz')">
+            🎯 觀念學會了！立刻前往【課後挑戰闖關】拿星星 ›
+          </button>
+        `;
+
+        container.innerHTML = html;
+      }
+
       openSubjectQuiz(subId) {
         this.currentSub = subId;
         this.openDrawer();
@@ -1864,7 +2169,12 @@
           this.controls.target.set(l.x, 3, l.z);
         }
 
+        // 預設切換為教學模式（先看教學，再考試！）
+        this.renderLesson(subId);
+        this.switchSubTab('lesson');
+
         const qList = QUESTIONS.filter(q => q.sub === subId);
+        document.getElementById('quizTabCount').innerText = qList.length;
         this.renderQuiz(qList);
 
         document.getElementById('panelIndexBody').style.display = 'none';
