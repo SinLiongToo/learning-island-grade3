@@ -1045,125 +1045,398 @@
      * ========================================================
      */
     const LESSON_CONTENT = {
-      nature: {
-        title: "🌿 植物的身體・根莖葉秘密圖鑑",
-        subtitle: "蛋蛋老師帶你看真實照片，認識植物各器官的構造與神奇功能！",
-        sections: [
-          {
-            tag: "第一課・葉脈的秘密",
-            heading: "網狀脈 vs 平行脈（真實植物照片對照）",
-            desc: "葉子是植物製造養分的廚房。葉脈就像葉片裡的輸送水管與公路網！",
-            photos: [
-              {
-                title: "【真實照片】雙子葉植物・網狀脈特寫",
-                src: "https://upload.wikimedia.org/wikipedia/commons/8/80/Salix_reticulata_%285027764096%29.jpg",
-                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
-                tip: "👀 觀察重點：看清楚了嗎？粗大的主脈穿過中間，兩旁分出細小的側脈，交織成密密麻麻的「漁網狀」。雙子葉植物（如榕樹、鳳仙花、菩提樹）都是這種葉脈！"
-              },
-              {
-                title: "【真實照片】單子葉植物・平行脈特寫",
-                src: "https://upload.wikimedia.org/wikipedia/commons/3/35/Corymbium_glabrum_var._glabrum_1DS-II_1-C4370.jpg",
-                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
-                tip: "👀 觀察重點：葉脈像一條條鐵軌一樣從葉基筆直通到葉尖！撕開時會順著葉脈裂成整齊的長條。水稻、玉米、蔥、竹葉都是平行脈！"
-              }
-            ]
-          },
-          {
-            tag: "第二課・抓緊大地的根",
-            heading: "軸根系 vs 鬚根系（真實根部對照）",
-            desc: "根生長在泥土中，負責把植物牢牢固定在土裡，並吸收水分和礦物質。",
-            photos: [
-              {
-                title: "【真實照片】軸根系（新鮮紅蘿蔔實拍）",
-                src: "https://upload.wikimedia.org/wikipedia/commons/f/ff/CarrotRoots.jpg",
-                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
-                tip: "👀 觀察重點：正中央有一根又粗又大直直往下鑽的「主根」，周圍長出較細小的「側根」。抓地力非常穩固！"
-              },
-              {
-                title: "【真實照片】鬚根系（雜草與蔥蒜實拍）",
-                src: "https://upload.wikimedia.org/wikipedia/commons/3/39/Fibrous_root.jpg",
-                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
-                tip: "👀 觀察重點：仔細看！沒有任何一條特別粗的主根，全部都是由莖底部分散長出的細毛根，像老爺爺的鬍鬚一樣密密麻麻！"
-              }
-            ]
-          },
-          {
-            tag: "第三課・生活大解密",
-            heading: "餐桌上的蔬菜：我們吃的是根還是莖？",
-            desc: "考試最常考的易混淆大魔王！蛋蛋老師教你用真實構造一秒分辨：",
-            photos: [
-              {
-                title: "【真實照片】馬鈴薯發芽（證明它是地下塊莖！）",
-                src: "https://upload.wikimedia.org/wikipedia/commons/0/0f/Potato_sprouting.jpg",
-                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
-                tip: "👀 觀察重點：看到馬鈴薯表皮凹陷處冒出綠綠的小芽了嗎？這些凹陷處叫做「芽眼」！只有「莖」才會長芽長節，根不會長芽！所以馬鈴薯是地下塊莖，不是根喔！"
-              },
-              {
-                title: "【真實照片】洋蔥切開剖面（證明它是肉質鱗葉！）",
-                src: "https://upload.wikimedia.org/wikipedia/commons/6/6a/White_onion_cross_section.jpg",
-                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
-                tip: "👀 觀察重點：切開洋蔥看到一層層白白厚厚包在一起的，其實是變形儲存水分與養分的「肉質鱗葉」！洋蔥我們吃的是葉子！"
-              }
-            ]
-          },
-          {
-            tag: "第四課・葉子在莖上的隊形",
-            heading: "輪生葉（黑板樹真實照片）",
-            desc: "葉子在莖上的排列方式稱為「葉序」，主要有互生、對生、輪生、叢生四種。",
-            photos: [
-              {
-                title: "【真實照片】校園常見黑板樹・輪生葉特寫",
-                src: "https://upload.wikimedia.org/wikipedia/commons/4/41/Alstonia_scholaris_leaves.jpg",
-                credit: "維基共享資源 Wikimedia Commons (CC-BY-SA)",
-                tip: "👀 觀察重點：抬頭看校園的黑板樹！在同一個節點上，4～7 片葉子圍成一圈向外展開，就像撐開的一把小雨傘，這就是「輪生」！"
-              }
-            ]
-          }
+    "nature": {
+        "title": "🌿 自然探險島・完整圖文教學館",
+        "subtitle": "蛋蛋老師帶你看真實照片！學會觀察植物根莖葉、磁鐵指北針、水與空氣、動物特徵。",
+        "sections": [
+            {
+                "tag": "植物篇・第一課",
+                "heading": "葉脈的秘密：網狀脈 vs 平行脈",
+                "desc": "葉子是植物製造養分的綠色廚房。葉脈就像葉片裡的輸送水管與公路網，支撐葉片並運送水分！",
+                "photos": [
+                    {
+                        "title": "【實拍照】雙子葉植物・網狀脈微距特寫 (Salix reticulata)",
+                        "src": "https://upload.wikimedia.org/wikipedia/commons/8/80/Salix_reticulata_%285027764096%29.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 2.0)",
+                        "tip": "👀 觀察重點：看清楚了嗎？中央有一條粗大的主脈，兩旁分出細小的側脈，最後交織成密密麻麻的「漁網狀」。雙子葉植物（如榕樹、鳳仙花、菩提樹、咸豐草）都是網狀脈！"
+                    },
+                    {
+                        "title": "【實拍照】單子葉植物・平行脈特寫 (Corymbium glabrum)",
+                        "src": "https://upload.wikimedia.org/wikipedia/commons/3/35/Corymbium_glabrum_var._glabrum_1DS-II_1-C4370.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 4.0)",
+                        "tip": "👀 觀察重點：葉脈像一條條鐵軌一樣從葉基筆直通到葉尖！撕開時會順著脈絡裂成整齊的長條。水稻、玉米、蔥、竹葉、百合都是平行脈！"
+                    }
+                ]
+            },
+            {
+                "tag": "植物篇・第二課",
+                "heading": "抓緊大地的根：軸根系 vs 鬚根系",
+                "desc": "根生長在泥土中，負責把植物牢牢固定在土壤中避免倒伏，並吸取水分與礦物質。",
+                "photos": [
+                    {
+                        "title": "【實拍照】軸根系（剛出土的新鮮紅蘿蔔實拍）",
+                        "src": "https://upload.wikimedia.org/wikipedia/commons/f/ff/CarrotRoots.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 3.0)",
+                        "tip": "👀 觀察重點：正中央有一根又粗又大直直往下鑽的「主根」，周圍長出較細小的「側根」。雙子葉植物（如紅蘿蔔、白蘿蔔、鳳仙花）抓地力特別深！"
+                    },
+                    {
+                        "title": "【實拍照】鬚根系（草本雜草細根實拍）",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/e/e4/The_ecological_relations_of_roots_%281919%29_%2814586833128%29.jpg/960px-The_ecological_relations_of_roots_%281919%29_%2814586833128%29.jpg",
+                        "credit": "Wikimedia Commons (No restrictions / Public Domain)",
+                        "tip": "👀 觀察重點：仔細看！沒有任何一條特別粗的主根，全部都是由莖底部分散長出的細毛根，像老爺爺的鬍鬚一樣密密麻麻！單子葉植物（如水稻、玉米、青蔥）都是鬚根系。"
+                    }
+                ]
+            },
+            {
+                "tag": "植物篇・第三課",
+                "heading": "生活大解密：餐桌上的蔬菜到底是吃根？還是吃莖？",
+                "desc": "考試最常考的易混淆大魔王！蛋蛋老師教你用「發芽構造」一秒辨別真假：",
+                "photos": [
+                    {
+                        "title": "【實拍照】馬鈴薯發芽（證明它是地下「塊莖」！）",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/47/Russet_potato_cultivar_with_sprouts.jpg/960px-Russet_potato_cultivar_with_sprouts.jpg",
+                        "credit": "Wikimedia Commons (Public Domain)",
+                        "tip": "👀 觀察重點：看到馬鈴薯表皮凹陷處冒出綠綠的小芽了嗎？這些凹陷處叫做「芽眼」！【只有莖才會長芽長節，根絕對不會長芽！】所以馬鈴薯是地下塊莖，不是根喔！"
+                    },
+                    {
+                        "title": "【實拍照】紅洋蔥橫切剖面（證明它是「肉質鱗葉」！）",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/d0/Red_onion_cross_section_03.jpg/960px-Red_onion_cross_section_03.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 3.0)",
+                        "tip": "👀 觀察重點：切開洋蔥看到一層層白色多汁肥厚包覆的部位，其實是變形儲存養分與水分的「肉質鱗葉」！最底下硬硬薄薄的一小盤才是它的莖。洋蔥我們吃的是葉子！"
+                    }
+                ]
+            },
+            {
+                "tag": "植物篇・第四課",
+                "heading": "葉子在莖上的隊形：黑板樹輪生葉與牽牛花攀緣莖",
+                "desc": "植物為了爭取陽光，葉子和莖各自演化出巧妙的生長姿態！",
+                "photos": [
+                    {
+                        "title": "【實拍照】黑板樹・輪生葉特寫 (Alstonia scholaris)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f1/Alstonia_scholaris_-_leaves_02.JPG/960px-Alstonia_scholaris_-_leaves_02.JPG",
+                        "credit": "Wikimedia Commons (CC0 Public Domain)",
+                        "tip": "👀 觀察重點：抬頭看校園的黑板樹！在同一個莖節上，4～7 片葉子圍成一圈向外展開，就像撐開的一把小雨傘，這就是「輪生」！"
+                    },
+                    {
+                        "title": "【實拍照】牽牛花・攀緣纏繞莖特寫",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/5d/Three-lobe_Morning_Glory_%281427141260%29.jpg/960px-Three-lobe_Morning_Glory_%281427141260%29.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 2.0)",
+                        "tip": "👀 觀察重點：草本莖柔軟無法自己站直，靠著細長的莖部螺旋纏繞在竹竿或籬笆上往上爬，爭取高處的陽光！"
+                    }
+                ]
+            },
+            {
+                "tag": "物理篇・第五課",
+                "heading": "神奇磁鐵與指北針：同極相斥、異極相吸",
+                "desc": "磁鐵有兩個磁極：N 極（北極）與 S 極（南極）。磁鐵兩端磁力最強！",
+                "photos": [
+                    {
+                        "title": "【實拍照】兩根條形磁鐵・同極相斥鐵粉分佈實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0e/Bar-magnets-repelling-iron-filings-max.jpg/960px-Bar-magnets-repelling-iron-filings-max.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 4.0)",
+                        "tip": "👀 觀察重點：當兩根磁鐵相同磁極（N與N、或S與S）靠近時，鐵粉磁力線向兩旁散開互不相交，這就是真實的「同極相斥」現象！"
+                    },
+                    {
+                        "title": "【實拍照】指北針與磁針指向實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/2/23/Radiator_key_and_compass.agr.jpg/960px-Radiator_key_and_compass.agr.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 4.0)",
+                        "tip": "👀 觀察重點：指北針的指針本身就是小磁鐵，受到地球磁場的吸引，指針的 N 極永遠指向北方！在野外是重要的導航工具。"
+                    }
+                ]
+            },
+            {
+                "tag": "自然篇・第六課",
+                "heading": "水與空氣的魔術、動物划水蹼與風向計",
+                "desc": "毛細現象能讓水往上爬；青蛙靠腳蹼游得敏捷；風向計箭頭指著風的來源！",
+                "photos": [
+                    {
+                        "title": "【實拍照】水之毛細現象實驗實拍",
+                        "src": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Capillary_Action.jpg/960px-Capillary_Action.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 3.0)",
+                        "tip": "👀 觀察重點：把吸水紙放入水中，水會順著紙張纖維微小的孔隙自動向上爬升！植物吸收水分送到高處也是靠毛細現象。"
+                    },
+                    {
+                        "title": "【實拍照】青蛙腳蹼特寫實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b0/The_flying_frog_of_India_the_Malabar_Gliding_Frog_04.jpg/960px-The_flying_frog_of_India_the_Malabar_Gliding_Frog_04.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 4.0)",
+                        "tip": "👀 觀察重點：青蛙腳趾之間連著一層薄薄的皮膚叫「蹼」，划水時張開像船槳一樣推動水流，產生強大的前進動力。"
+                    },
+                    {
+                        "title": "【實拍照】戶外風向計實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c5/Weather_vane_Trinitatis_kirke_Copenhagen_Denmark.jpg/960px-Weather_vane_Trinitatis_kirke_Copenhagen_Denmark.jpg",
+                        "credit": "Wikimedia Commons (CC0 Public Domain)",
+                        "tip": "👀 觀察重點：風向計箭頭【指向風吹來的方向】！如果箭頭指向東方，代表風是從東方吹來的「東風」，此時旗子會往西方飄揚。"
+                    }
+                ]
+            }
         ]
-      },
-      math: {
-        title: "🧮 數學奇幻島・觀念加油站",
-        subtitle: "四則運算、有餘數除法與分數小數小撇步！",
-        tips: [
-          { title: "💡 乘法直式小撇步", text: "三位數乘以一位數時，個位、十位、百位分別相乘，滿十要記得進位！例如 125 × 4：個位 5×4=20 記0進2，十位 2×4+2=10 記0進1，百位 1×4+1=5，答案是 500！" },
-          { title: "💡 除法與餘數鐵律", text: "餘數一定要小於除數！如果除數是 5，餘數只能是 0, 1, 2, 3, 4。如果剩下 5 顆以上，代表還可以再分一袋！" },
-          { title: "💡 分數是什麼？", text: "把一個完整的物品「平分成幾份」，分母就是總份數，分子就是吃了或拿了幾份！例如切成 8 等份吃 3 塊，就是吃了 3/8 個！" }
+    },
+    "math": {
+        "title": "🧮 數學奇幻島・完整圖文教學館",
+        "subtitle": "蛋蛋老師帶你看真實生活實例！萬以內數、乘除直式運算、披薩真分數、時間指針大解密。",
+        "sections": [
+            {
+                "tag": "數與量・第一課",
+                "heading": "萬以內的數與位值（生活中的錢幣）",
+                "desc": "四位數包含千位、百位、十位與個位。生活中的錢幣就是最好的位值積木！",
+                "photos": [
+                    {
+                        "title": "【實拍照】新台幣硬幣與千元鈔票實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/dc/Taiwan_Red_Lucky_Coins_of_Taiwan_May-2013_One_Dollar_Money.JPG/960px-Taiwan_Red_Lucky_Coins_of_Taiwan_May-2013_One_Dollar_Money.JPG",
+                        "credit": "Wikimedia Commons (CC BY-SA 3.0)",
+                        "tip": "👀 觀察重點：5張一千元是5000、8個一百元是800、0個十元是0、3個一元是3，合起來是 5803 元，讀作「五千八百零三」。十位沒有要記 0！"
+                    }
+                ]
+            },
+            {
+                "tag": "運算・第二課",
+                "heading": "乘法進位與除法餘數的生活情境",
+                "desc": "乘法是連加的簡便運算；除法是平分物品，剩下的就是餘數！",
+                "photos": [
+                    {
+                        "title": "【計算秘笈】三位數乘一位數直式步驟",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/07/San_Francisco_%28CA%2C_USA%29%2C_Alcatraz%2C_Main_Prison_--_2022_--_3149.jpg/960px-San_Francisco_%28CA%2C_USA%29%2C_Alcatraz%2C_Main_Prison_--_2022_--_3149.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 4.0)",
+                        "tip": "👀 運算重點：125 × 4：個位 5×4=20 寫0進2；十位 2×4=8 加上進位的2等於10 寫0進1；百位 1×4=4 加上進位的1等於5，答案是 500！"
+                    }
+                ],
+                "tips": [
+                    "💡 【餘數鐵律】38 顆糖果平分給 5 個人，每人分 7 顆（5×7=35），還剩下 3 顆（38-35=3）。餘數 3 一定要小於除數 5！如果剩下 5 顆以上，代表還可以再分一人一顆！"
+                ]
+            },
+            {
+                "tag": "幾何與分數・第三課",
+                "heading": "認識真分數：切成八塊的美味披薩",
+                "desc": "把 1 個完整的東西「平分成幾等份」，每等份就是幾分之一！",
+                "photos": [
+                    {
+                        "title": "【實拍照】平分成 8 塊的真實圓形大披薩實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/3/33/Whole_cheese_pizza_sliced_into_eight_pieces_inside_a_cardboard_delivery_box.jpg/960px-Whole_cheese_pizza_sliced_into_eight_pieces_inside_a_cardboard_delivery_box.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 4.0)",
+                        "tip": "👀 觀察重點：一整個大披薩平分成 8 塊，每一塊是 1/8 個。如果小英吃了其中的 3 塊，小英就吃了 3/8（八分之三）個披薩！分母是總塊數 8，分子是吃掉的 3。"
+                    }
+                ]
+            },
+            {
+                "tag": "度量衡與時間・第四課",
+                "heading": "時鐘看時間與經過時間計算",
+                "desc": "時針走一大格是 1 小時，分針走一小格是 1 分鐘，一圈有 60 分鐘！",
+                "photos": [
+                    {
+                        "title": "【實拍照】指針式時鐘面盤特寫實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c8/Clock_analog_clock.jpg/960px-Clock_analog_clock.jpg",
+                        "credit": "Wikimedia Commons (Public Domain)",
+                        "tip": "👀 觀察重點：下午 2 時 15 分開始活動，經過 45 分鐘：15 + 45 = 60 分鐘。滿 60 分鐘要進位 1 小時，所以活動結束在下午 3 時 00 分整！"
+                    }
+                ]
+            }
         ]
-      },
-      mandarin: {
-        title: "📖 國語智慧島・寫作與字詞秘笈",
-        subtitle: "修辭手法、成語應用與段落大意快速掌握！",
-        tips: [
-          { title: "💡 譬喻法 vs 擬人法", text: "看到句子裡有「好像、宛如、像...一樣」是在打比方，這就是【譬喻法】；把風、小鳥、大樹當成人會說話、會撫摸、會害羞，這就是【擬人法】！" },
-          { title: "💡 記敘文六何法 (5W1H)", text: "寫作好文章要掌握：人物(Who)、時間(When)、地點(Where)、事情(What)、原因(Why)、如何進行(How)！寫校外教學時多描寫現場空間景物，文章會更生動！" }
+    },
+    "mandarin": {
+        "title": "📖 國語智慧島・完整圖文教學館",
+        "subtitle": "蛋蛋老師帶你深入認識部首查字典、生動修辭手法、成語典故與台灣黑熊生態閱讀！",
+        "sections": [
+            {
+                "tag": "識字基礎・第一課",
+                "heading": "部首查字典三步驟（檢字表秘笈）",
+                "desc": "部首是漢字的分類標籤，掌握部首查字典快速又精準！",
+                "photos": [
+                    {
+                        "title": "【實拍照】中文部首檢字表歷史文獻實拍",
+                        "src": "https://upload.wikimedia.org/wikipedia/commons/7/77/Chinese_Radicals_%28modern_1_to_227%29.png",
+                        "credit": "Wikimedia Commons (Public Domain)",
+                        "tip": "👀 查字三步驟：例如查「夢」字：1. 確定部首是「夕」部（3畫）；2. 算出除部首外的剩餘筆畫（總共14畫 - 3畫 = 11畫）；3. 在字典檢字表夕部11畫找到該字！"
+                    }
+                ]
+            },
+            {
+                "tag": "修辭與成語・第二課",
+                "heading": "修辭魔法：譬喻法 vs 擬人法、豁然開朗成語",
+                "desc": "好的修辭讓文章充滿畫面感，像畫畫一樣生動！",
+                "photos": [
+                    {
+                        "title": "【實拍照】文房四寶毛筆與書法墨跡實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/d/df/Four_treasures_of_the_study_%28chinese_calligraphy_set_to_the_uninitiated%29%2C_Gurgaon%2C_near_Delhi.jpg/960px-Four_treasures_of_the_study_%28chinese_calligraphy_set_to_the_uninitiated%29%2C_Gurgaon%2C_near_Delhi.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 3.0)",
+                        "tip": "👀 修辭筆記：【譬喻法】用熟悉事物打比方（關鍵詞：像、好像、宛如）；【擬人法】把大自然或物品當成人會笑、會撫摸、會說話。【豁然開朗】形容心裡突然領悟明白！"
+                    }
+                ]
+            },
+            {
+                "tag": "閱讀理解・第三課",
+                "heading": "台灣珍貴國寶：台灣黑熊生態閱讀",
+                "desc": "長文閱讀要學會抓取關鍵句子與事實資訊！",
+                "photos": [
+                    {
+                        "title": "【實拍照】台灣黑熊特有種野生實拍 (Ursus thibetanus formosanus)",
+                        "src": "https://upload.wikimedia.org/wikipedia/commons/7/7a/Formosan_Black_Bear01.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 3.0)",
+                        "tip": "👀 觀察重點：胸前有清晰醒目的白色「V」字形斑紋！台灣黑熊是雜食性動物，以植物果實、嫩葉為主食，身手矯健非常擅長爬樹與游泳！"
+                    }
+                ]
+            }
         ]
-      },
-      english: {
-        title: "🔤 英語歡樂小鎮・Phonics與日常會話",
-        subtitle: "自然發音短母音規則與日常生活情境問答！",
-        tips: [
-          { title: "💡 Phonics 短母音 a", text: "短母音 a 發音像嘴巴張大發出的 /æ/，例如 apple (蘋果)、cat (貓咪)、bag (書包)、hat (帽子)！長母音 a-e 則發 /eɪ/，如 bake, lake, face。" },
-          { title: "💡 Can you...? 句型問答", text: "別人問你 Can you swim? (你會游泳嗎？)，肯定回答請說 \"Yes, I can.\"；不會的話說 \"No, I can't.\"" }
+    },
+    "english": {
+        "title": "🔤 英語歡樂小鎮・完整圖文教學館",
+        "subtitle": "蛋蛋老師帶你看自然發音短母音、教室文具用品、日常問候與數量對話！",
+        "sections": [
+            {
+                "tag": "Phonics・第一課",
+                "heading": "自然發音短母音 a 的發音規則 (/æ/)",
+                "desc": "學會字母拼讀规则，看到單字就能自然念出來！",
+                "photos": [
+                    {
+                        "title": "【實拍照】新鮮紅蘋果實拍 (Red Apple)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/15/Red_Apple.jpg/960px-Red_Apple.jpg",
+                        "credit": "Wikimedia Commons (CC BY 2.0)",
+                        "tip": "👀 發音技巧：apple 的首音 a 發短母音 /æ/（下巴放鬆嘴巴張大），同類的短母音 a 單字還有 cat (貓咪)、bag (書包)、hat (帽子)！長母音 a-e 則發 /eɪ/，如 bake, lake, face。"
+                    }
+                ]
+            },
+            {
+                "tag": "Vocabulary・第二課",
+                "heading": "教室常用文具單字 (Stationery)",
+                "desc": "學校生活每天都會用到的英文文具單字：",
+                "photos": [
+                    {
+                        "title": "【實拍照】鉛筆與橡皮擦實拍 (Pencils and Eraser)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/6/69/Kumon-pencils-eraser.JPG/960px-Kumon-pencils-eraser.JPG",
+                        "credit": "Wikimedia Commons (CC BY-SA 3.0)",
+                        "tip": "👀 單字應用：eraser（橡皮擦）、pencil（鉛筆）、ruler（尺）、notebook（筆記本）。寫錯字要擦掉錯誤時說：\"May I borrow your eraser?\"（我可以借你的橡皮擦嗎？）"
+                    }
+                ]
+            },
+            {
+                "tag": "Dialogue・第三課",
+                "heading": "生活日常問答：Can you...? 與 How many...?",
+                "desc": "在日常生活中開口說自信英文！",
+                "photos": [
+                    {
+                        "title": "【實拍照】小朋友在人行道上騎腳踏車實拍 (Riding a Bicycle)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/01/Mother_and_Child_Riding_Bicycle_on_Sidewalk_of_Songshan_Road_20141004.jpg/960px-Mother_and_Child_Riding_Bicycle_on_Sidewalk_of_Songshan_Road_20141004.jpg",
+                        "credit": "Wikimedia Commons (CC0 Public Domain)",
+                        "tip": "👀 句型問答：\"Can you ride a bicycle?\"（你會騎腳踏車嗎？），肯定回答說 \"Yes, I can.\"；不會的話回答 \"No, I can't.\""
+                    },
+                    {
+                        "title": "【實拍照】河邊散步的一群鴨子實拍 (A group of ducks)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/75/A_group_of_ducks_walking_by_a_river%2C_Germany.jpg/960px-A_group_of_ducks_walking_by_a_river%2C_Germany.jpg",
+                        "credit": "Wikimedia Commons (CC BY 4.0)",
+                        "tip": "👀 數量問答：\"How many ducks can you see?\"（你看見幾隻鴨子？）。數一數共有 7 隻，回答：\"There are seven ducks.\"（兩隻以上是複數，duck 後面要加 s）！"
+                    }
+                ]
+            }
         ]
-      },
-      social: {
-        title: "🏘️ 社會生活聚落・生活好公民指南",
-        subtitle: "看懂生活地圖方位、公共設施與節慶民俗！",
-        tips: [
-          { title: "💡 東西南北方位口訣", text: "早上太陽從【東方】升起，面向東方時：背後是【西方】，右手邊是【南方】，左手邊是【北方】！" },
-          { title: "💡 緊急電話記牢牢", text: "火警火災、救護車緊急送醫打【119】找消防局；車禍、竊盜報警打【110】找警察局；查電話號碼打 104！" }
+    },
+    "social": {
+        "title": "🏘️ 社會生活聚落・完整圖文教學館",
+        "subtitle": "蛋蛋老師帶你認識地圖方位、公共緊急設施119、家鄉陶瓷工藝與端午節慶文化！",
+        "sections": [
+            {
+                "tag": "地圖空間・第一課",
+                "heading": "看懂方位與地圖上的指南標（東西南北）",
+                "desc": "生活空間方位的判別口訣，走到哪裡都不會迷路！",
+                "photos": [
+                    {
+                        "title": "【實拍照】航海古地圖中的方位羅盤玫瑰實拍 (Compass Rose)",
+                        "src": "https://upload.wikimedia.org/wikipedia/commons/d/d2/Compass_rose_from_Catalan_Atlas_%281375%29.jpg",
+                        "credit": "Wikimedia Commons (Public Domain)",
+                        "tip": "👀 方位口訣：清晨太陽從【東方】升起，當你面向正東方時，你的背後就是【西方】，右手邊是【南方】，左手邊是【北方】！地圖上方通常代表北方。"
+                    }
+                ]
+            },
+            {
+                "tag": "社區安全・第二課",
+                "heading": "認識社區公共設施：消防局與 119 求助",
+                "desc": "身為社區小公民，遇到緊急意外要懂得冷靜求助！",
+                "photos": [
+                    {
+                        "title": "【實拍照】台灣消防隊真實消防車實拍 (Taiwan Fire Engine)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/c/c0/Bin_Lang_Taiwan_ISUZU-fire-appliance-01.jpg/960px-Bin_Lang_Taiwan_ISUZU-fire-appliance-01.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 3.0)",
+                        "tip": "👀 求助電話：遇到火警火災、或有鄰居急性重病需要救護車時，撥打【119】聯絡消防局！遇到小偷、車禍報案則撥打【110】找警察局。"
+                    }
+                ]
+            },
+            {
+                "tag": "家鄉與節慶・第三課",
+                "heading": "家鄉傳統工藝（鶯歌陶瓷）與端午節划龍舟",
+                "desc": "台灣各地擁有豐富的地理產業與溫暖的傳統節慶民俗！",
+                "photos": [
+                    {
+                        "title": "【實拍照】新北鶯歌陶瓷博物館陶瓷藝術實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/0d/Yingge_Ceramics_Museum_%2820250129131743%29.jpg/960px-Yingge_Ceramics_Museum_%2820250129131743%29.jpg",
+                        "credit": "Wikimedia Commons (CC BY 4.0)",
+                        "tip": "👀 家鄉特色：新北市鶯歌區擁有優質的陶土原料，發展出享譽全台的陶瓷產業，被譽為台灣陶瓷之鄉！"
+                    },
+                    {
+                        "title": "【實拍照】端午節龍舟競渡選手登上龍舟實拍",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/5/50/Dragon_Boat_Race_Team_Rowers_aboarding_Boat_before_Race_20170530fb.jpg/960px-Dragon_Boat_Race_Team_Rowers_aboarding_Boat_before_Race_20170530fb.jpg",
+                        "credit": "Wikimedia Commons (CC0 Public Domain)",
+                        "tip": "👀 節慶民俗：農曆五月初五是端午節，家家戶戶包粽子、門口插菖蒲艾草避邪，水面上還會舉行熱鬧刺激的划龍舟體育競技活動！"
+                    },
+                    {
+                        "title": "【實拍照】端午傳統粽子美食實拍 (Traditional Zongzi)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/1/1c/Two_Zongzi_styles.jpg/960px-Two_Zongzi_styles.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 4.0)",
+                        "tip": "👀 美食文化：用粽葉包裹糯米、香菇、豬肉等美味食材蒸煮，是端午節必吃的傳統美食！"
+                    }
+                ]
+            }
         ]
-      },
-      taigi: {
-        title: "🗣️ 歡喜講台語・生活常用台語圖鑑",
-        subtitle: "教育部標準台灣台語，學會日常問候與台灣好味道！",
-        tips: [
-          { title: "💡 早晨問候：𠢕早 (gâu-tsá)", text: "「𠢕」是有本領、厲害的意思，「𠢕早」誇獎別人起得真早，就是早安的意思！多謝是謝謝，歹勢是不好意思。" },
-          { title: "💡 動物趣味稱呼：水雞 (tsuí-ke)", text: "台語稱青蛙為「水雞」，因為牠住在水邊，早年農村覺得青蛙肉質鮮美如雞肉，所以叫水雞！" },
-          { title: "💡 甜美水果：芎蕉 (kin-tsio)", text: "香蕉一整串像弓一樣彎彎的，所以台語叫「芎蕉（kin-tsio）」！鳳梨叫「王梨（ông-lâi）」，象徵旺旺來！" }
+    },
+    "taigi": {
+        "title": "🗣️ 歡喜講台語・完整圖文教學館",
+        "subtitle": "蛋蛋老師帶你用耳朵聽、看真實照片學生活台語！早起問候、在地水果、水雞與雨天出門常識。",
+        "sections": [
+            {
+                "tag": "日常禮貌・第一課",
+                "heading": "早起打招呼：𠢕早 (gâu-tsá)",
+                "desc": "台語問候充滿人情味，一聲問候拉近彼此距離！",
+                "photos": [
+                    {
+                        "title": "【實拍照】美麗日出破曉實拍 (Sunrise)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/0/09/Sunrise_over_the_Black_Sea.jpg/960px-Sunrise_over_the_Black_Sea.jpg",
+                        "credit": "Wikimedia Commons (CC BY 2.0)",
+                        "tip": "👀 台語小撇步：早起（tsá-khí）到學校遇到老師同學，說一聲「𠢕早（gâu-tsá）」！「𠢕」是誇獎對方起得早、有精神！多謝（to-siā）是謝謝，歹勢（pháinn-sè）是不好意思。"
+                    }
+                ]
+            },
+            {
+                "tag": "在地好滋味・第二課",
+                "heading": "台灣在地水果：芎蕉 (kin-tsio) 與王梨 (ông-lâi)",
+                "desc": "台灣是水果王國，每一種水果的台語由來都很有趣！",
+                "photos": [
+                    {
+                        "title": "【實拍照】香蕉園裡結實纍纍的一整串香蕉實拍 (Banana bunch)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/4/45/Banana_bunch_in_a_banana_farm_at_Chinawal.jpg/960px-Banana_bunch_in_a_banana_farm_at_Chinawal.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 3.0)",
+                        "tip": "👀 語言趣味：香蕉一整串彎彎的像弓箭一樣，所以台語叫做「芎蕉（kin-tsio）」！鳳梨台語叫「王梨（ông-lâi）」，有旺旺來的好兆頭！"
+                    }
+                ]
+            },
+            {
+                "tag": "可愛動物與生活・第三課",
+                "heading": "生動動物名詞「水雞」與落雨天「雨傘」",
+                "desc": "早期農村生活與大自然緊密相連，稱呼生動又親切！",
+                "photos": [
+                    {
+                        "title": "【實拍照】大自然裡的綠色青蛙特寫實拍 (Green Frog)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/8/8e/Green_frog_%28Pelophylax_esculentus_complex%29_Danube_delta.jpg/960px-Green_frog_%28Pelophylax_esculentus_complex%29_Danube_delta.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 4.0)",
+                        "tip": "👀 生態台語：台語把「青蛙」叫做「水雞（tsuí-ke）」，因為青蛙生活在水邊、叫聲嘹亮，而且肉質鮮嫩如雞肉，農村長輩都親切稱呼牠為水雞！"
+                    },
+                    {
+                        "title": "【實拍照】雨天街頭撐開的美麗雨傘實拍 (Umbrella in the rain)",
+                        "src": "https://thumb.wikimedia.org/wikipedia/commons/thumb/b/b3/Umbrella_in_Wellington.jpg/960px-Umbrella_in_Wellington.jpg",
+                        "credit": "Wikimedia Commons (CC BY-SA 4.0)",
+                        "tip": "👀 天氣生活：下雨天台語叫做「落雨（lo̍h-hōo）」，出門一定要記得帶「雨傘（hōo-suànn）」或穿「雨衣（hōo-i）」以免感冒喔！"
+                    }
+                ]
+            }
         ]
-      }
-    };
+    }
+};
 
     const QUESTIONS = [
       // 01 自然 (6 題)
@@ -2103,7 +2376,7 @@
         const container = document.getElementById('lessonContainer');
         const lesson = LESSON_CONTENT[subId];
         if (!lesson) {
-          container.innerHTML = '<p style="padding:20px;color:var(--muted);">此科目教學內容準備中...</p>';
+          container.innerHTML = '<p style="padding:20px;color:var(--muted);">該領域教學內容準備中...</p>';
           return;
         }
 
@@ -2117,34 +2390,36 @@
         if (lesson.sections) {
           lesson.sections.forEach(sec => {
             let photosHtml = '';
-            sec.photos.forEach(p => {
-              photosHtml += `
-                <div class="photo-box">
-                  <img src="${p.src}" alt="${p.title}" class="photo-img" loading="lazy" />
-                  <div class="photo-caption">
-                    <div style="font-weight:800;color:#0f172a;margin-bottom:4px;">${p.title}</div>
-                    <div>${p.tip}</div>
-                    <div class="photo-credit">來源：${p.credit}</div>
+            if (sec.photos) {
+              sec.photos.forEach(p => {
+                photosHtml += `
+                  <div class="photo-box">
+                    <img src="${p.src}" alt="${p.title}" class="photo-img" loading="lazy" onerror="this.onerror=null;this.alt='[真實照片載入中]';" />
+                    <div class="photo-caption">
+                      <div style="font-weight:800;color:#0f172a;margin-bottom:4px;">${p.title}</div>
+                      <div style="line-height:1.6;color:#334155;">${p.tip}</div>
+                      <div class="photo-credit">來源標註：${p.credit}</div>
+                    </div>
                   </div>
-                </div>
-              `;
-            });
+                `;
+              });
+            }
+
+            let tipsHtml = '';
+            if (sec.tips) {
+              sec.tips.forEach(t => {
+                tipsHtml += `<div style="background:#fef3c7;border-left:4px solid #f59e0b;padding:10px 14px;border-radius:8px;font-size:13px;color:#92400e;margin-top:10px;line-height:1.6;">${t}</div>`;
+              });
+            }
 
             html += `
               <div class="lesson-card">
                 <span class="lesson-tag">${sec.tag}</span>
                 <div class="lesson-h4">${sec.heading}</div>
                 <div class="lesson-desc">${sec.desc}</div>
+                <button class="speak-btn" onclick="app.speakText('${sec.heading}。${sec.desc.replace(/'/g, "\'")}')">🔊 聽蛋蛋老師朗讀本課重點</button>
                 ${photosHtml}
-              </div>
-            `;
-          });
-        } else if (lesson.tips) {
-          lesson.tips.forEach(t => {
-            html += `
-              <div class="lesson-card">
-                <div class="lesson-h4">${t.title}</div>
-                <div class="lesson-desc">${t.text}</div>
+                ${tipsHtml}
               </div>
             `;
           });
@@ -2152,7 +2427,7 @@
 
         html += `
           <button class="lesson-cta-btn" onclick="app.switchSubTab('quiz')">
-            🎯 觀念學會了！立刻前往【課後挑戰闖關】拿星星 ›
+            🎯 觀念全部學會了！立刻前往【課後挑戰闖關】拿 6 顆星星 ›
           </button>
         `;
 
