@@ -1,8 +1,17 @@
 /* 數學奇幻島：每課有固定題，加上 gen() 自動出題（每回合題目都不同） */
+/* 直式顯示：G3Vert('3A7', '+', '25B', '624')，字母會畫成空格方框 */
+window.G3Vert = function (a, op, b, c) {
+  const w = Math.max(a.length, b.length, c.length);
+  const cell = ch => /[A-Z]/.test(ch) ? `<td><span class="bx">${ch}</span></td>` : `<td>${ch}</td>`;
+  const row = (s, lead, cls) => `<tr${cls ? ` class="${cls}"` : ''}><td>${lead}</td>${'<td></td>'.repeat(w - s.length)}${s.split('').map(cell).join('')}</tr>`;
+  const sym = op === '-' ? '−' : op === '+' ? '+' : '×';
+  return `<table class="vert" role="img" aria-label="直式算式">${row(a, '')}${row(b, sym)}${row(c, '', 'sum')}</table>`;
+};
+
 window.SUBJECTS = window.SUBJECTS || [];
 window.SUBJECTS.push({
   id: 'math', name: '數學奇幻島', icon: '🧮', color: '#ea580c', land: '#fdba74',
-  blurb: '一萬以內的數、加減、乘除、分數、小數、時間、長度換算（公尺公分毫米）、容量重量',
+  blurb: '一萬以內的數、加減、乘除、分數、小數、時間、長度換算（公尺公分毫米）、容量重量、直式與空格推理',
   intro: '數學題目由電腦自動出題，每次練習都不一樣，可以一直練到熟練為止。',
   units: [
     /* ---------- 1. 一萬以內的數 ---------- */
@@ -380,6 +389,116 @@ window.SUBJECTS.push({
         if (big === '公升') { const a = rnd(1, 3), cup = pick([200, 250, 500]); return { q: `一瓶 ${a} 公升的水，倒成每杯 ${cup} 毫公升，可以倒滿幾杯？`, input: true, ans: String(a * 1000 / cup), unit: '杯', exp: `${a} 公升 ＝ ${a * 1000} 毫公升，${a * 1000} ÷ ${cup} ＝ ${a * 1000 / cup}。` }; }
         const n = rnd(2, 6), w = pick([150, 200, 250, 300, 400]);
         return { q: `一顆蘋果約 ${w} 公克，${n} 顆蘋果約重幾公克？`, input: true, ans: String(n * w), unit: '公克', exp: `${w} × ${n} ＝ ${n * w} 公克${n * w >= 1000 ? `，也就是 ${Math.floor(n * w / 1000)} 公斤 ${n * w % 1000} 公克` : ''}。` };
+      }
+    },
+
+    /* ---------- 10. 直式與空格推理 ---------- */
+    {
+      id: 'm10', icon: '🧩', title: '直式與空格推理',
+      summary: '直式加減乘裡的空格是多少？□ ＋ 345 ＝ 812；相同圖形代表相同數字',
+      lesson: [
+        { t: 'h', v: '直式怎麼寫？', p: ['數字<b>靠右對齊</b>（個位對個位），運算符號寫在第二行左邊，下面畫一條橫線，答案寫在橫線下。', '下面這個直式裡，<b>A</b> 和 <b>B</b> 是被遮住的數字，要用推理找出來。'] },
+        { t: 'svg', v: window.G3Vert('3A7', '+', '25B', '624'), cap: '3A7 ＋ 25B ＝ 624，A 和 B 是多少？' },
+        { t: 'ex', q: '3A7 ＋ 25B ＝ 624', steps: ['<b>從個位開始</b>：7 ＋ B 的個位是 4。7 ＋ 7 ＝ 14，所以 <b>B ＝ 7</b>，要進位 1', '十位：A ＋ 5 ＋ 1（進位）的個位是 2。A ＋ 6 ＝ 12，所以 <b>A ＝ 6</b>，再進位 1', '百位檢查：3 ＋ 2 ＋ 1 ＝ 6 ✔', '驗算：367 ＋ 257 ＝ 624 ✔'], a: 'A ＝ 6，B ＝ 7' },
+        { t: 'svg', v: window.G3Vert('8A2', '-', '35B', '457'), cap: '8A2 － 35B ＝ 457' },
+        { t: 'ex', q: '8A2 － 35B ＝ 457', steps: ['個位：2 不夠減 B，要向十位借 1：12 － B ＝ 7，所以 <b>B ＝ 5</b>', '十位：A 被借走 1，變成 A－1。答案十位是 5：(A－1) － 5 ＝ 5 不可能（A 最大是 9），所以還要向百位借：(A－1＋10) － 5 ＝ 5，<b>A ＝ 1</b>', '百位：8 被借走 1 變 7，7 － 3 ＝ 4 ✔', '驗算：812 － 355 ＝ 457 ✔'], a: 'A ＝ 1，B ＝ 5' },
+        { t: 'svg', v: window.G3Vert('1A6', '×', '4', '544'), cap: '1A6 × 4 ＝ 544' },
+        { t: 'ex', q: '1A6 × 4 ＝ 544', steps: ['個位：6 × 4 ＝ 24，寫 4 進 2 ✔', '十位：A × 4 ＋ 2 的個位要是 4，所以 A × 4 的個位是 2 → A 可能是 3 或 8', '百位：1 × 4 ＋ 十位的進位 ＝ 5，所以十位只能進位 1', 'A ＝ 3：3 × 4 ＋ 2 ＝ 14，進 1 ✔；A ＝ 8：8 × 4 ＋ 2 ＝ 34，進 3 ✗', '驗算：136 × 4 ＝ 544 ✔'], a: 'A ＝ 3' },
+        { t: 'h', v: '用「逆運算」找空格', cards: [
+          { e: '➕', h: '□ ＋ 345 ＝ 812', p: '□ ＝ 812 － 345 ＝ 467（加法用減法找）' },
+          { e: '➖', h: '900 － □ ＝ 256', p: '□ ＝ 900 － 256 ＝ 644（被減數－差）' },
+          { e: '✖️', h: '□ × 7 ＝ 56', p: '□ ＝ 56 ÷ 7 ＝ 8（乘法用除法找）' },
+          { e: '➗', h: '□ ÷ 6 ＝ 9', p: '□ ＝ 9 × 6 ＝ 54（除法用乘法找）' } ] },
+        { t: 'h', v: '相同的圖形代表相同的數', p: ['△ ＋ △ ＋ △ ＝ 27 → △ ＝ 9', '△ ＋ □ ＝ 15，△ ＝ 9 → □ ＝ 6', '先找出「只有一種圖形」的式子，算出它，再代進其他式子。'] },
+        { t: 'key', v: ['直式從個位開始推，記得進位、退位', '減法空格可以改成加法來想', '用逆運算：加↔減、乘↔除', '找到答案後一定要驗算'] },
+        { t: 'tip', v: '推理題卡住時，就從 0 到 9 一個一個試，再用其他位數檢查，總會找到答案！' }
+      ],
+      quiz: [
+        { q: '□ ＋ 345 ＝ 812，□ 是多少？', input: true, ans: '467', exp: '□ ＝ 812 － 345 ＝ 467。' },
+        { q: '□ × 8 ＝ 72，□ 是多少？', input: true, ans: '9', exp: '□ ＝ 72 ÷ 8 ＝ 9。' },
+        { q: '△ ＋ △ ＋ △ ＝ 24，△ 是多少？', input: true, ans: '8', exp: '3 個 △ 是 24，24 ÷ 3 ＝ 8。' },
+        { q: '用 3、0、7、5 四張數字卡，每張用一次，排出最小的四位數是多少？', input: true, ans: '3057', exp: '千位不能是 0，所以千位放最小的 3，其他由小到大：3057。' }
+      ],
+      gen() {
+        const { rnd, pick, shuffle, mc } = window.G3;
+        const t = pick(['col', 'col', 'col', 'col', 'inv', 'inv', 'shape', 'cards']);
+        if (t === 'col') {
+          const op = pick(['+', '+', '-', '-', '×']);
+          let a, b;
+          if (op === '+') { a = rnd(100, 8999); b = rnd(100, 9999 - a); }
+          else if (op === '-') { a = rnd(300, 9999); b = rnd(100, a - 100); }
+          else { a = rnd(12, 999); b = rnd(2, 9); }
+          const c = op === '+' ? a + b : op === '-' ? a - b : a * b;
+          const rows = [String(a), String(b), String(c)];
+          const slots = [];
+          rows.forEach((r, ri) => r.split('').forEach((_, ci) => slots.push([ri, ci])));
+          const calc = (x, y) => op === '+' ? x + y : op === '-' ? x - y : x * y;
+          for (let tries = 0; tries < 40; tries++) {
+            const nb = pick([1, 2, 2]);
+            const chosen = shuffle(slots.slice()).slice(0, nb).sort((p, q) => p[0] - q[0] || p[1] - q[1]);
+            // 檢查答案是否唯一
+            let count = 0;
+            const total = Math.pow(10, nb);
+            for (let v = 0; v < total && count < 2; v++) {
+              const ds = String(v).padStart(nb, '0').split('');
+              const rr = rows.map(r => r.split(''));
+              let ok = true;
+              chosen.forEach(([ri, ci], k) => { rr[ri][ci] = ds[k]; if (ci === 0 && rr[ri].length > 1 && ds[k] === '0') ok = false; });
+              if (ok && calc(+rr[0].join(''), +rr[1].join('')) === +rr[2].join('')) count++;
+            }
+            if (count !== 1) continue;
+            const L = ['A', 'B'];
+            const masked = rows.map(r => r.split(''));
+            chosen.forEach(([ri, ci], k) => { masked[ri][ci] = L[k]; });
+            const svg = window.G3Vert(masked[0].join(''), op, masked[1].join(''), masked[2].join(''));
+            const vals = chosen.map(([ri, ci]) => rows[ri][ci]);
+            const full = `${a} ${op === '-' ? '－' : op === '+' ? '＋' : '×'} ${b} ＝ ${c}`;
+            const tip = op === '-' ? '減法可以用「差 ＋ 減數 ＝ 被減數」來想。' : '從個位開始推，注意進位。';
+            if (nb === 1) return { q: '直式中，<b>A</b> 是多少？', svg, input: true, ans: vals[0], exp: `${tip}完整算式：${full}。` };
+            const ans = `A＝${vals[0]}，B＝${vals[1]}`;
+            const d = s => String((+s + 10) % 10);
+            const wr = [`A＝${vals[1]}，B＝${vals[0]}`, `A＝${d(+vals[0] + 1)}，B＝${vals[1]}`, `A＝${vals[0]}，B＝${d(+vals[1] + 9)}`, `A＝${d(+vals[0] + 9)}，B＝${d(+vals[1] + 1)}`];
+            return mc('直式中，<b>A</b> 和 <b>B</b> 各是多少？', ans, wr, `${tip}完整算式：${full}。`, { svg });
+          }
+          return { q: `${a} ${op === '-' ? '－' : op === '+' ? '＋' : '×'} ${b} ＝ ？`, input: true, ans: String(c), exp: '從個位開始算。' };
+        }
+        if (t === 'inv') {
+          const k = pick(['add', 'sub1', 'sub2', 'mul', 'div1', 'div2']);
+          if (k === 'add') { const x = rnd(100, 899), b = rnd(100, 999); return { q: `□ ＋ ${b} ＝ ${x + b}，□ 是多少？`, input: true, ans: String(x), exp: `□ ＝ ${x + b} － ${b} ＝ ${x}。` }; }
+          if (k === 'sub1') { const a = rnd(500, 1000), x = rnd(100, a - 50); return { q: `${a} － □ ＝ ${a - x}，□ 是多少？`, input: true, ans: String(x), exp: `□ ＝ ${a} － ${a - x} ＝ ${x}（被減數 － 差）。` }; }
+          if (k === 'sub2') { const x = rnd(300, 999), b = rnd(50, x - 50); return { q: `□ － ${b} ＝ ${x - b}，□ 是多少？`, input: true, ans: String(x), exp: `□ ＝ ${x - b} ＋ ${b} ＝ ${x}（差 ＋ 減數）。` }; }
+          if (k === 'mul') { const x = rnd(2, 12), b = rnd(2, 9); return { q: `□ × ${b} ＝ ${x * b}，□ 是多少？`, input: true, ans: String(x), exp: `□ ＝ ${x * b} ÷ ${b} ＝ ${x}。` }; }
+          if (k === 'div1') { const q = rnd(2, 12), b = rnd(2, 9); return { q: `□ ÷ ${b} ＝ ${q}，□ 是多少？`, input: true, ans: String(q * b), exp: `□ ＝ ${q} × ${b} ＝ ${q * b}。` }; }
+          const q = rnd(2, 9), b = rnd(2, 9), r = rnd(1, b - 1 || 1);
+          return b > 1 && r < b ? { q: `□ ÷ ${b} ＝ ${q} … ${r}，□ 是多少？`, input: true, ans: String(q * b + r), exp: `□ ＝ ${b} × ${q} ＋ ${r} ＝ ${q * b + r}（除數 × 商 ＋ 餘數）。` }
+            : { q: `□ ÷ ${b} ＝ ${q}，□ 是多少？`, input: true, ans: String(q * b), exp: `□ ＝ ${q} × ${b}。` };
+        }
+        if (t === 'shape') {
+          const x = rnd(2, 15), y = rnd(1, 12);
+          const k = pick(['three', 'pair', 'mul']);
+          if (k === 'three') return { q: `△ ＋ △ ＋ △ ＝ ${3 * x}，△ 是多少？`, input: true, ans: String(x), exp: `3 個 △ 是 ${3 * x}，${3 * x} ÷ 3 ＝ ${x}。` };
+          if (k === 'pair') return { q: `△ ＋ △ ＝ ${2 * x}，△ ＋ □ ＝ ${x + y}，□ 是多少？`, input: true, ans: String(y), exp: `先算 △ ＝ ${2 * x} ÷ 2 ＝ ${x}，再算 □ ＝ ${x + y} － ${x} ＝ ${y}。` };
+          const m = rnd(2, 9), n = rnd(2, 9);
+          return { q: `○ ＋ ○ ＝ ${2 * m}，○ × ☆ ＝ ${m * n}，☆ 是多少？`, input: true, ans: String(n), exp: `○ ＝ ${m}，☆ ＝ ${m * n} ÷ ${m} ＝ ${n}。` };
+        }
+        let ds;
+        do { ds = shuffle([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]).slice(0, 4); } while (!ds.some(d => d !== 0));
+        const k = pick(['max', 'min', 'min', 'maxEven']);
+        const desc = ds.slice().sort((p, q) => q - p), asc = ds.slice().sort((p, q) => p - q);
+        let ans, how;
+        if (k === 'max') { ans = desc.join(''); how = '由大到小排。'; }
+        else if (k === 'min') {
+          const first = asc.find(d => d !== 0), rest = asc.slice(); rest.splice(rest.indexOf(first), 1);
+          ans = first + rest.join(''); how = asc[0] === 0 ? '千位不能放 0，放最小的非 0 數字，其他由小到大。' : '由小到大排。';
+        } else {
+          const evens = ds.filter(d => d % 2 === 0);
+          if (!evens.length) { ans = desc.join(''); how = '沒有偶數，所以排最大的四位數。'; return { q: `用 ${ds.join('、')} 四張數字卡（各用一次），排出最大的四位數是多少？`, input: true, ans, exp: how }; }
+          const last = Math.min(...evens), rest = desc.slice(); rest.splice(rest.indexOf(last), 1);
+          if (rest[0] === 0) return { q: `用 ${ds.join('、')} 四張數字卡（各用一次），排出最大的四位數是多少？`, input: true, ans: desc.join(''), exp: '由大到小排。' };
+          ans = rest.join('') + last; how = `個位要放偶數；把最小的偶數 ${last} 放個位，其他由大到小。`;
+        }
+        const label = { max: '最大的四位數', min: '最小的四位數', maxEven: '最大的四位數「偶數」' }[k];
+        return { q: `用 ${ds.join('、')} 四張數字卡（各用一次），排出${label}是多少？`, input: true, ans, exp: how };
       }
     }
   ]

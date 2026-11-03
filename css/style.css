@@ -165,9 +165,20 @@ main { max-width: 980px; margin: 0 auto; padding: 18px 16px 40px; outline: none;
 }
 .word .e { font-size: 32px; line-height: 1.2; }
 .word .w { font-size: 20px; font-weight: 800; }
-.word .r { font-size: 15px; color: #0f766e; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
+.word .r { font-size: 17px; line-height: 1.6; color: #0f766e; font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; }
 .word .m { font-size: 14px; color: var(--muted); }
 .word.playing { border-color: var(--c); background: color-mix(in srgb, var(--c) 8%, white); }
+.word .r.kk { font-family: "Lucida Sans Unicode", "Segoe UI", "Arial Unicode MS", sans-serif; color: #475569; }
+.sents { display: grid; gap: 8px; margin-top: 6px; }
+.sent { display: flex; align-items: center; gap: 12px; text-align: left; padding: 10px 14px; }
+.sent .se { font-size: 28px; }
+.sent .sb { flex: 1; min-width: 0; }
+.sent .w { font-size: 19px; }
+.sent .r { font-size: 17px; }
+.vert { margin: 6px auto 10px; border-collapse: collapse; font: 700 30px/1.35 Consolas, "Courier New", monospace; }
+.vert td { width: 1.05em; text-align: center; padding: 0; }
+.vert tr.sum td { border-top: 3px solid var(--ink); }
+.vert .bx { display: inline-block; min-width: .95em; border: 3px solid var(--c); border-radius: 8px; color: var(--c); font-size: .72em; line-height: 1.25; }
 .say {
   border: 0; background: color-mix(in srgb, var(--c) 14%, white); border-radius: 999px;
   padding: 4px 12px; font-size: 14px; font-weight: 700; margin-top: 6px; min-height: 34px;

@@ -2,7 +2,7 @@
 window.SUBJECTS = window.SUBJECTS || [];
 window.SUBJECTS.push({
   id: 'english', name: '英語歡樂小鎮', icon: '🔤', color: '#dc2626', land: '#fca5a5',
-  blurb: '發音、雙母音、數字、顏色、文具、動物、家人、身體、對話、天氣、食物、動作、衣服、我的家、時間、月份、職業、交通運動、相反詞、文法、人稱與單複數、句子重組、閱讀',
+  blurb: '發音、雙母音、數字、顏色、文具、動物、家人、身體、對話、天氣、食物、動作、衣服、我的家、時間、月份、職業、交通運動、相反詞、水果蔬菜、家裡用品、家事、早餐店購物、看醫生、校園、文法、人稱與單複數、句子重組、閱讀',
   intro: '每張單字卡都可以按 🔊 聽發音，也可以按「全部唸一遍」跟著唸。大聲說出來，才學得最快！',
   units: [
     /* ---------- 1. 自然發音：短母音 ---------- */
@@ -350,6 +350,159 @@ window.SUBJECTS.push({
         { q: '「我們去公園吧！」英文是？', opts: ['Let\'s go to the park!', 'Let\'s go to park the!', 'Let go the park!', 'We park go!'], ans: 0, exp: 'Let\'s go to the ___!', say: 'Let\'s go to the park!' },
         { q: '「hospital」是哪裡？', opts: ['醫院', '旅館', '學校', '超市'], ans: 0, exp: 'hospital 醫院。', say: 'hospital' },
         { q: '看鬼故事看到很害怕，英文說？', opts: ['I\'m scared.', 'I\'m excited.', 'I\'m happy.', 'I\'m thirsty.'], ans: 0, exp: 'scared 害怕的。', say: 'I am scared.' }
+      ]
+    },
+
+    /* ---------- 生活：水果和蔬菜 ---------- */
+    {
+      id: 'e26', vocab: true, icon: '🍉', title: 'Fruits & Vegetables 水果和蔬菜',
+      summary: 'banana、mango、watermelon；carrot、tomato、corn……',
+      lesson: [
+        { t: 'words', lang: 'en', title: '水果 Fruits', v: [{ e: '🍎', w: 'apple', m: '蘋果' }, { e: '🍌', w: 'banana', m: '香蕉' }, { e: '🍇', w: 'grape', m: '葡萄' }, { e: '🍊', w: 'orange', m: '柳丁、橘子' }, { e: '🍉', w: 'watermelon', m: '西瓜' }, { e: '🍍', w: 'pineapple', m: '鳳梨' }, { e: '🥭', w: 'mango', m: '芒果' }, { e: '🍓', w: 'strawberry', m: '草莓' }, { e: '🍑', w: 'peach', m: '桃子' }, { e: '🍋', w: 'lemon', m: '檸檬' }, { e: '🍐', w: 'guava', m: '芭樂' }, { e: '🍈', w: 'papaya', m: '木瓜' }] },
+        { t: 'words', lang: 'en', title: '蔬菜 Vegetables', v: [{ e: '🥕', w: 'carrot', m: '紅蘿蔔' }, { e: '🍅', w: 'tomato', m: '番茄' }, { e: '🥔', w: 'potato', m: '馬鈴薯' }, { e: '🌽', w: 'corn', m: '玉米' }, { e: '🧅', w: 'onion', m: '洋蔥' }, { e: '🥬', w: 'cabbage', m: '高麗菜' }, { e: '🥒', w: 'cucumber', m: '小黃瓜' }, { e: '🎃', w: 'pumpkin', m: '南瓜' }, { e: '🫑', w: 'pepper', m: '青椒' }, { e: '🥦', w: 'broccoli', m: '花椰菜' }] },
+        { t: 'table', title: '常用句子', head: ['英文', '中文'], rows: [['What fruit do you like?', '你喜歡什麼水果？'], ['I like mangoes. They\'re sweet.', '我喜歡芒果，很甜。'], ['Lemons are sour.', '檸檬是酸的。'], ['Eat more vegetables!', '多吃蔬菜！']] },
+        { t: 'h', v: '酸甜苦辣', p: '<b>sweet</b> 甜的、<b>sour</b> 酸的、<b>bitter</b> 苦的、<b>spicy</b> 辣的、<b>salty</b> 鹹的。' },
+        { t: 'key', v: ['說「喜歡某種水果」用複數：I like bananas.', 'tomato → tomatoes、potato → potatoes、mango → mangoes（加 es）', 'strawberry → strawberries'] },
+        { t: 'tip', v: '去超市或市場時，用英文說出看到的蔬果，看看能說出幾種！' }
+      ],
+      extraWords: [{ w: 'sweet', m: '甜的' }, { w: 'sour', m: '酸的' }, { w: 'bitter', m: '苦的' }, { w: 'spicy', m: '辣的' }, { w: 'salty', m: '鹹的' }],
+      quiz: [
+        { q: '黃色、彎彎的、猴子最愛吃的水果是？', opts: ['banana', 'lemon', 'mango', 'peach'], ans: 0, exp: 'banana 香蕉。', say: 'banana' },
+        { q: '檸檬吃起來是什麼味道？', opts: ['sour', 'sweet', 'salty', 'spicy'], ans: 0, exp: 'Lemons are sour. 檸檬是酸的。', say: 'Lemons are sour.' },
+        { q: '「tomato」的複數是？', opts: ['tomatoes', 'tomatos', 'tomatoies', 'tomato'], ans: 0, exp: 'tomato、potato 加 es。', say: 'tomatoes' },
+        { q: '夏天常吃、外面綠綠的、裡面紅紅的大水果是？', opts: ['watermelon', 'pineapple', 'grape', 'papaya'], ans: 0, exp: 'watermelon 西瓜。', say: 'watermelon' },
+        { q: '「corn」是哪一種蔬菜？', opts: ['玉米', '紅蘿蔔', '洋蔥', '南瓜'], ans: 0, exp: 'corn 玉米。', say: 'corn' },
+        { q: '萬聖節常拿來刻成燈籠的是？', opts: ['pumpkin', 'cabbage', 'cucumber', 'onion'], ans: 0, exp: 'pumpkin 南瓜。', say: 'pumpkin' },
+        { q: '"What fruit do you like?" 最適合的回答是？', opts: ['I like grapes.', 'I like carrots.', 'I like red.', 'I like Monday.'], ans: 0, exp: '問水果，grape 葡萄是水果；carrot 是蔬菜。', say: 'What fruit do you like?' },
+        { q: '辣椒吃起來是什麼味道？', opts: ['spicy', 'sweet', 'sour', 'bitter'], ans: 0, exp: 'spicy 辣的。', say: 'spicy' }
+      ]
+    },
+
+    /* ---------- 生活：家裡的用品 ---------- */
+    {
+      id: 'e27', vocab: true, icon: '🪥', title: 'Things at Home 家裡的用品',
+      summary: 'toothbrush、towel、bowl、chopsticks、key、fan……',
+      lesson: [
+        { t: 'words', lang: 'en', title: '浴室 Bathroom', v: [{ e: '🪥', w: 'toothbrush', m: '牙刷' }, { e: '🦷', w: 'toothpaste', m: '牙膏' }, { e: '🧻', w: 'towel', m: '毛巾' }, { e: '🧼', w: 'soap', m: '肥皂' }, { e: '🪮', w: 'comb', m: '梳子' }, { e: '🚽', w: 'toilet', m: '馬桶' }] },
+        { t: 'words', lang: 'en', title: '廚房 Kitchen', v: [{ e: '🥣', w: 'bowl', m: '碗' }, { e: '🍽️', w: 'plate', m: '盤子' }, { e: '🥢', w: 'chopsticks', m: '筷子' }, { e: '🍴', w: 'fork', m: '叉子' }, { e: '🔪', w: 'knife', m: '刀子' }, { e: '🥄', w: 'spoon', m: '湯匙' }, { e: '☕', w: 'cup', m: '杯子' }, { e: '🍳', w: 'pan', m: '平底鍋' }] },
+        { t: 'words', lang: 'en', title: '其他用品', v: [{ e: '🔑', w: 'key', m: '鑰匙' }, { e: '☂️', w: 'umbrella', m: '雨傘' }, { e: '🕰️', w: 'clock', m: '時鐘' }, { e: '📱', w: 'phone', m: '手機、電話' }, { e: '💻', w: 'computer', m: '電腦' }, { e: '💡', w: 'light', m: '燈' }, { e: '🪭', w: 'fan', m: '電風扇' }, { e: '🛏️', w: 'pillow', m: '枕頭' }, { e: '🗑️', w: 'trash can', m: '垃圾桶' }, { e: '🧺', w: 'basket', m: '籃子' }] },
+        { t: 'table', title: '常用句子', head: ['英文', '中文'], rows: [['Turn on the light, please.', '請開燈。'], ['Turn off the fan.', '關掉電風扇。'], ['Where is my key?', '我的鑰匙在哪裡？'], ['Can I use your phone?', '我可以用你的手機嗎？'], ['Pass me the chopsticks, please.', '請把筷子遞給我。']] },
+        { t: 'key', v: ['turn on 打開（電器）；turn off 關掉', 'chopsticks（筷子）是一雙，用複數', 'knife 的 k 不發音：唸 /naɪf/'] },
+        { t: 'tip', v: '吃飯時練習：Pass me the bowl, please. 說完別忘了 Thank you!' }
+      ],
+      quiz: [
+        { q: '刷牙要用什麼？', opts: ['toothbrush', 'comb', 'towel', 'fork'], ans: 0, exp: 'toothbrush 牙刷。', say: 'toothbrush' },
+        { q: '洗完臉用來擦乾的是？', opts: ['towel', 'soap', 'pillow', 'key'], ans: 0, exp: 'towel 毛巾。', say: 'towel' },
+        { q: '台灣人吃飯最常用的是？', opts: ['chopsticks', 'knife', 'pan', 'comb'], ans: 0, exp: 'chopsticks 筷子。', say: 'chopsticks' },
+        { q: '房間太暗了，要說？', opts: ['Turn on the light, please.', 'Turn off the light, please.', 'Open the light.', 'Close the light.'], ans: 0, exp: '開燈用 turn on。', say: 'Turn on the light, please.' },
+        { q: '「knife」的哪一個字母不發音？', opts: ['k', 'n', 'f', 'i'], ans: 0, exp: 'knife 唸 /naɪf/，k 不發音；e 也不發音。', say: 'knife' },
+        { q: '出門前找不到開門用的東西，要問 "Where is my ___?"', opts: ['key', 'cup', 'fan', 'bowl'], ans: 0, exp: 'key 鑰匙。', say: 'Where is my key?' },
+        { q: '「垃圾桶」的英文是？', opts: ['trash can', 'basket', 'bowl', 'toilet'], ans: 0, exp: 'trash can 垃圾桶。', say: 'trash can' },
+        { q: '睡覺時枕在頭下面的是？', opts: ['pillow', 'plate', 'towel', 'clock'], ans: 0, exp: 'pillow 枕頭。', say: 'pillow' }
+      ]
+    },
+
+    /* ---------- 生活：家事 ---------- */
+    {
+      id: 'e28', vocab: true, icon: '🧹', title: 'Chores 做家事',
+      summary: 'sweep the floor、wash the dishes、make the bed……I help my mom.',
+      lesson: [
+        { t: 'words', lang: 'en', title: '家事 Chores', v: [{ e: '🧹', w: 'sweep the floor', m: '掃地' }, { e: '🧽', w: 'wash the dishes', m: '洗碗' }, { e: '🛏️', w: 'make the bed', m: '整理床鋪' }, { e: '🗑️', w: 'take out the trash', m: '倒垃圾' }, { e: '👕', w: 'fold the clothes', m: '摺衣服' }, { e: '🪴', w: 'water the plants', m: '澆花' }, { e: '🐕', w: 'feed the dog', m: '餵狗' }, { e: '🧸', w: 'clean my room', m: '打掃房間' }, { e: '🍽️', w: 'set the table', m: '擺碗筷' }, { e: '🧺', w: 'do the laundry', m: '洗衣服' }] },
+        { t: 'table', title: '常用句子', head: ['英文', '中文'], rows: [['I help my mom at home.', '我在家幫媽媽。'], ['What do you do at home?', '你在家做什麼？'], ['I wash the dishes after dinner.', '我晚餐後洗碗。'], ['Can you help me, please?', '可以請你幫我嗎？'], ['Sure! / No problem!', '當然！／沒問題！']] },
+        { t: 'h', v: '多久做一次？', p: '<b>every day</b> 每天、<b>on Sundays</b> 每個星期天、<b>after dinner</b> 晚餐後、<b>before school</b> 上學前。<br>例：I make my bed <b>every day</b>.' },
+        { t: 'key', v: ['家事的說法：動作 ＋ the ＋ 東西', 'make the bed 不是「做床」，是整理床鋪', '時間放句尾：I water the plants every day.'] },
+        { t: 'tip', v: '今天做了什麼家事？用英文寫在聯絡簿旁邊：I took out the trash!（took 是 take 的過去式）' }
+      ],
+      quiz: [
+        { q: '「make the bed」是什麼意思？', opts: ['整理床鋪', '做一張床', '買床', '在床上睡覺'], ans: 0, exp: 'make the bed 是把棉被摺好、床鋪整理好。', say: 'make the bed' },
+        { q: '吃完晚餐幫忙「洗碗」，英文是？', opts: ['wash the dishes', 'set the table', 'sweep the floor', 'feed the dog'], ans: 0, exp: 'dishes 碗盤。', say: 'wash the dishes' },
+        { q: '垃圾車來了，要去「倒垃圾」：', opts: ['take out the trash', 'water the plants', 'fold the clothes', 'clean my room'], ans: 0, exp: 'take out the trash 倒垃圾。', say: 'take out the trash' },
+        { q: '"Can you help me, please?" 你願意幫忙，可以回答？', opts: ['Sure!', 'Goodbye!', 'I\'m sorry.', 'Good night!'], ans: 0, exp: 'Sure! 當然好！', say: 'Can you help me, please?' },
+        { q: '「water the plants」的 water 在這裡是什麼意思？', opts: ['澆水', '水', '喝水', '游泳'], ans: 0, exp: 'water 當動作是「澆水」。', say: 'water the plants' },
+        { q: '吃飯前「擺碗筷」，英文是？', opts: ['set the table', 'wash the dishes', 'make the bed', 'do the laundry'], ans: 0, exp: 'set the table 擺好餐具。', say: 'set the table' },
+        { q: '下列哪一句時間放的位置正確？', opts: ['I feed the dog every day.', 'I every day feed the dog.', 'Every I day feed the dog.', 'I feed every day the dog.'], ans: 0, exp: '時間通常放句尾。', say: 'I feed the dog every day.' },
+        { q: '「fold the clothes」是什麼意思？', opts: ['摺衣服', '洗衣服', '買衣服', '穿衣服'], ans: 0, exp: 'fold 摺。', say: 'fold the clothes' }
+      ]
+    },
+
+    /* ---------- 生活：早餐店與購物 ---------- */
+    {
+      id: 'e29', vocab: true, icon: '🛒', title: 'Shopping & Breakfast 早餐店與購物',
+      summary: 'sandwich、soy milk、rice ball；How much is it? It\'s fifty dollars.',
+      lesson: [
+        { t: 'words', lang: 'en', title: '早餐店 Breakfast Shop', v: [{ e: '🥪', w: 'sandwich', m: '三明治' }, { e: '🍞', w: 'toast', m: '吐司' }, { e: '🍙', w: 'rice ball', m: '飯糰' }, { e: '🥚', w: 'egg pancake', m: '蛋餅' }, { e: '🥟', w: 'dumplings', m: '餃子' }, { e: '🫓', w: 'bun', m: '包子、小圓麵包' }, { e: '🥛', w: 'soy milk', m: '豆漿' }, { e: '🧋', w: 'milk tea', m: '奶茶' }, { e: '🍟', w: 'French fries', m: '薯條' }] },
+        { t: 'words', lang: 'en', title: '買東西 Shopping', v: [{ e: '💰', w: 'money', m: '錢' }, { e: '💵', w: 'dollar', m: '元' }, { e: '🏷️', w: 'price', m: '價錢' }, { e: '💸', w: 'cheap', m: '便宜的' }, { e: '💎', w: 'expensive', m: '貴的' }, { e: '🛍️', w: 'buy', m: '買' }, { e: '🧾', w: 'receipt', m: '收據、發票' }] },
+        { t: 'table', title: '在店裡怎麼說', head: ['英文', '中文'], rows: [['Can I help you?', '需要什麼嗎？（店員）'], ['I want a sandwich and soy milk, please.', '我要一個三明治和豆漿。'], ['How much is it?', '多少錢？'], ['It\'s forty-five dollars.', '四十五元。'], ['Here you are. / Here\'s your change.', '給你。／這是找你的錢。'], ['It\'s too expensive!', '太貴了！']] },
+        { t: 'table', title: '大數字怎麼說', head: ['數字', '英文'], rows: [['30 / 40 / 50', 'thirty / forty / fifty'], ['60 / 70 / 80 / 90', 'sixty / seventy / eighty / ninety'], ['45', 'forty-five（中間有 -）'], ['100', 'one hundred']], note: '小心：forty 沒有 u（不是 fourty）。' },
+        { t: 'key', v: ['How much is it? → It\'s ___ dollars.', 'forty 沒有 u；fifteen（15）和 fifty（50）別搞混', 'cheap 便宜 ↔ expensive 貴'] },
+        { t: 'tip', v: '下次去早餐店，在心裡用英文點一次餐：I want an egg pancake and milk tea, please.' }
+      ],
+      quiz: [
+        { q: '想問價錢，英文怎麼說？', opts: ['How much is it?', 'How many is it?', 'How old is it?', 'What color is it?'], ans: 0, exp: '問價錢用 How much。', say: 'How much is it?' },
+        { q: '「豆漿」的英文是？', opts: ['soy milk', 'milk tea', 'juice', 'soda'], ans: 0, exp: 'soy 黃豆，soy milk 豆漿。', say: 'soy milk' },
+        { q: '40 的英文拼法哪一個正確？', opts: ['forty', 'fourty', 'fourteen', 'fortty'], ans: 0, exp: 'forty 沒有 u。', say: 'forty' },
+        { q: '店員說 "It\'s fifty dollars."，要付多少錢？', opts: ['50 元', '15 元', '500 元', '5 元'], ans: 0, exp: 'fifty 50；fifteen 15。', say: 'It\'s fifty dollars.' },
+        { q: '一雙鞋子 3000 元，你覺得太貴了，要說？', opts: ['It\'s too expensive!', 'It\'s too cheap!', 'It\'s delicious!', 'It\'s Monday!'], ans: 0, exp: 'expensive 貴的。', say: 'It\'s too expensive!' },
+        { q: '店員把找的錢給你，說 "Here\'s your ___."', opts: ['change', 'money bag', 'price', 'dollar'], ans: 0, exp: 'change 找的零錢。', say: 'Here is your change.' },
+        { q: '「飯糰」的英文是？', opts: ['rice ball', 'bun', 'sandwich', 'toast'], ans: 0, exp: 'rice ball 飯糰。', say: 'rice ball' },
+        { q: '店員問 "Can I help you?"，最適合的回答是？', opts: ['I want a sandwich, please.', 'I\'m nine.', 'It\'s Monday.', 'Goodbye.'], ans: 0, exp: '店員問需要什麼，就說要買的東西。', say: 'Can I help you?' }
+      ],
+      gen() {
+        const { rnd, pick, mc } = window.G3;
+        const ONES = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+        const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+        const say = n => n < 20 ? ONES[n] : TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10] : '');
+        const n = pick([rnd(13, 19), rnd(20, 99), rnd(20, 99), pick([15, 50, 14, 40, 16, 60, 13, 30, 18, 80])]);
+        const near = [n < 20 && n > 12 ? (n - 10) * 10 : n % 10 === 0 && n >= 30 && n <= 90 ? n / 10 + 10 : n + 10, n + 1, n - 1, n % 10 && n > 20 ? (n % 10) * 10 + Math.floor(n / 10) : n + 20].filter(x => x > 0 && x < 100 && x !== n);
+        const item = pick(['sandwich', 'rice ball', 'milk tea', 'egg pancake', 'notebook', 'ball', 'cap']);
+        if (Math.random() < .5) return mc(`"How much is the ${item}?" "It's ${say(n)} dollars." 要付多少錢？`, `${n} 元`, near.map(x => `${x} 元`), `${say(n)} ＝ ${n}。`, { say: `It's ${say(n)} dollars.` });
+        return mc(`${n} 元的英文怎麼說？`, `${say(n)} dollars`, near.map(x => `${say(x)} dollars`), `${n} ＝ ${say(n)}。${n > 20 && n % 10 ? '十位和個位中間要加 -。' : ''}`, { say: `${say(n)} dollars` });
+      }
+    },
+
+    /* ---------- 生活：看醫生 ---------- */
+    {
+      id: 'e30', vocab: true, icon: '🤒', title: 'At the Doctor\'s 身體不舒服',
+      summary: 'headache、stomachache、fever、cough……What\'s wrong? I have a cold.',
+      lesson: [
+        { t: 'words', lang: 'en', title: '哪裡不舒服？', v: [{ e: '🤕', w: 'headache', m: '頭痛' }, { e: '🤢', w: 'stomachache', m: '肚子痛' }, { e: '🦷', w: 'toothache', m: '牙痛' }, { e: '🌡️', w: 'fever', m: '發燒' }, { e: '🤧', w: 'cold', m: '感冒' }, { e: '😷', w: 'cough', m: '咳嗽' }, { e: '👃', w: 'runny nose', m: '流鼻水' }, { e: '🩹', w: 'cut', m: '割傷' }] },
+        { t: 'words', lang: 'en', title: '看醫生', v: [{ e: '🏥', w: 'hospital', m: '醫院' }, { e: '👨‍⚕️', w: 'doctor', m: '醫生' }, { e: '💊', w: 'medicine', m: '藥' }, { e: '🛌', w: 'rest', m: '休息' }, { e: '💧', w: 'water', m: '水' }] },
+        { t: 'table', title: '常用問答', head: ['英文', '中文'], rows: [['What\'s wrong?', '怎麼了？'], ['I have a headache.', '我頭痛。'], ['I have a fever.', '我發燒了。'], ['Take this medicine.', '吃這個藥。'], ['Drink more water and get some rest.', '多喝水、多休息。'], ['I hope you feel better!', '希望你早日康復！']] },
+        { t: 'key', v: ['I have a/an ___.（我有…的症狀）', '-ache 是「痛」：head＋ache 頭痛、tooth＋ache 牙痛', '吃藥英文用 take medicine'] },
+        { t: 'tip', v: 'ache 的 ch 唸 /k/：headache 唸起來像「黑ㄉ欸ㄎ」。' }
+      ],
+      quiz: [
+        { q: '"What\'s wrong?" 你頭很痛，要怎麼回答？', opts: ['I have a headache.', 'I have a toothache.', 'I\'m happy.', 'I have a book.'], ans: 0, exp: 'headache 頭痛。', say: 'What\'s wrong?' },
+        { q: '吃太多冰，肚子好痛，英文是？', opts: ['I have a stomachache.', 'I have a headache.', 'I have a fever.', 'I have a cut.'], ans: 0, exp: 'stomachache 肚子痛。', say: 'I have a stomachache.' },
+        { q: '「fever」是什麼？', opts: ['發燒', '咳嗽', '流鼻水', '牙痛'], ans: 0, exp: 'fever 發燒。', say: 'fever' },
+        { q: '醫生說 "Take this medicine."，意思是？', opts: ['吃這個藥。', '拿這本書。', '去休息。', '多喝水。'], ans: 0, exp: 'take medicine 吃藥。', say: 'Take this medicine.' },
+        { q: '同學生病請假，你想祝他早日康復，可以說？', opts: ['I hope you feel better!', 'Happy birthday!', 'Good job!', 'See you never!'], ans: 0, exp: '希望你好一點。', say: 'I hope you feel better!' },
+        { q: '「-ache」這個字尾是什麼意思？', opts: ['痛', '藥', '醫生', '發燒'], ans: 0, exp: 'headache、toothache、stomachache 都有 ache。', say: 'ache' },
+        { q: '一直「咳咳咳」，英文是？', opts: ['cough', 'cold', 'cut', 'cook'], ans: 0, exp: 'cough 咳嗽。', say: 'cough' },
+        { q: '醫生建議：多喝水、多休息，英文是？', opts: ['Drink more water and get some rest.', 'Eat more candy.', 'Go to bed late.', 'Run in the rain.'], ans: 0, exp: 'rest 休息。', say: 'Drink more water and get some rest.' }
+      ]
+    },
+
+    /* ---------- 生活：校園 ---------- */
+    {
+      id: 'e31', vocab: true, icon: '🏫', title: 'Around School 校園',
+      summary: 'classroom、playground、nurse\'s office、gym、principal……',
+      lesson: [
+        { t: 'words', lang: 'en', title: '學校的地方', v: [{ e: '🧑‍🏫', w: 'classroom', m: '教室' }, { e: '🛝', w: 'playground', m: '遊樂場、操場' }, { e: '📚', w: 'library', m: '圖書館' }, { e: '🏀', w: 'gym', m: '體育館' }, { e: '🩺', w: 'nurse\'s office', m: '健康中心' }, { e: '🚻', w: 'restroom', m: '廁所' }, { e: '🎵', w: 'music room', m: '音樂教室' }, { e: '🎨', w: 'art room', m: '美勞教室' }, { e: '🔬', w: 'science lab', m: '自然教室' }, { e: '🍱', w: 'lunch box', m: '便當' }] },
+        { t: 'words', lang: 'en', title: '學校的人與科目', v: [{ e: '🧑‍💼', w: 'principal', m: '校長' }, { e: '🧑‍🎓', w: 'student', m: '學生' }, { e: '👫', w: 'classmate', m: '同學' }, { e: '🔢', w: 'math', m: '數學' }, { e: '🔤', w: 'English', m: '英語' }, { e: '🔬', w: 'science', m: '自然' }, { e: '🏃', w: 'PE', m: '體育' }, { e: '🎶', w: 'music', m: '音樂' }, { e: '🖍️', w: 'art', m: '美勞' }] },
+        { t: 'table', title: '教室用語', head: ['英文', '中文'], rows: [['Stand up. / Sit down.', '起立。／坐下。'], ['Open your book. / Close your book.', '打開書。／闔上書。'], ['Be quiet, please.', '請安靜。'], ['May I go to the restroom?', '我可以去廁所嗎？'], ['I don\'t know.', '我不知道。'], ['Can you say that again?', '可以再說一次嗎？'], ['What\'s your favorite subject? — I like PE.', '你最喜歡哪一科？——我喜歡體育。']] },
+        { t: 'key', v: ['受傷去 nurse\'s office', '上課想上廁所：May I go to the restroom?', 'favorite 最喜歡的；subject 科目'] },
+        { t: 'tip', v: '聽不懂老師說什麼時，勇敢舉手說：Can you say that again, please?' }
+      ],
+      quiz: [
+        { q: '上課時想去廁所，應該怎麼問老師？', opts: ['May I go to the restroom?', 'Where is the gym?', 'I don\'t know.', 'Stand up.'], ans: 0, exp: 'May I…? 是有禮貌地請求。', say: 'May I go to the restroom?' },
+        { q: '跌倒受傷了，要去哪裡？', opts: ['nurse\'s office', 'library', 'music room', 'art room'], ans: 0, exp: 'nurse\'s office 健康中心。', say: 'nurse\'s office' },
+        { q: '聽不清楚老師的話，可以說？', opts: ['Can you say that again?', 'Be quiet, please.', 'Sit down.', 'Good night.'], ans: 0, exp: '請對方再說一次。', say: 'Can you say that again?' },
+        { q: '「principal」是誰？', opts: ['校長', '學生', '護理師', '同學'], ans: 0, exp: 'principal 校長。', say: 'principal' },
+        { q: '"What\'s your favorite subject?" 是在問什麼？', opts: ['最喜歡哪一科', '最喜歡的顏色', '最喜歡的食物', '最好的朋友'], ans: 0, exp: 'subject 科目。', say: 'What\'s your favorite subject?' },
+        { q: '「PE」是哪一科？', opts: ['體育', '音樂', '美勞', '數學'], ans: 0, exp: 'PE 體育課。', say: 'P E' },
+        { q: '老師說 "Open your book."，你要做什麼？', opts: ['打開書', '闔上書', '站起來', '去圖書館'], ans: 0, exp: 'open 打開。', say: 'Open your book.' },
+        { q: '借書、看書的地方是？', opts: ['library', 'gym', 'playground', 'restroom'], ans: 0, exp: 'library 圖書館。', say: 'library' }
       ]
     },
 
@@ -778,3 +931,11 @@ window.SUBJECTS.push({
     }
   ]
 });
+
+/* 英語單元排列：基礎 → 生活 → 進階 */
+(function () {
+  const S = window.SUBJECTS.find(s => s.id === 'english');
+  const order = ['e1', 'e25', 'e2', 'e3', 'e4', 'e5', 'e6', 'e7', 'e8', 'e9', 'e10', 'e11', 'e12', 'e15', 'e16', 'e17', 'e18', 'e19', 'e20', 'e21',
+    'e26', 'e27', 'e28', 'e29', 'e30', 'e31', 'e13', 'e24', 'e22', 'e14', 'e23'];
+  S.units.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
+})();

@@ -52,14 +52,18 @@
     const bare = s => plain(s).replace(/（.*?）|\(.*?\)/g, '');
     if (lang === 'taigi') {
       const same = bare(x.m) === bare(x.w);
-      const t = pick(same ? ['reverse', 'rom'] : ['meaning', 'meaning', 'reverse', 'rom']);
+      const t = same ? 'rom' : pick(['meaning', 'meaning', 'reverse', 'rom']);
       const exp = `${x.w}（${x.r}）＝「${x.m}」。`;
       if (t === 'meaning') return mc(`台語「${x.w}」（${x.r}）是什麼意思？`, x.m, others.map(o => o.m), exp);
       if (t === 'reverse') return mc(`「${x.m}」的台語怎麼說？`, `${x.w}（${x.r}）`, others.map(o => `${o.w}（${o.r}）`), exp);
       return mc(`「${x.w}」${same ? '' : `（${x.m}）`}的臺羅拼音是哪一個？`, x.r, others.map(o => o.r), exp);
     }
     const single = /^[a-z]+$/i.test(x.w) && x.w.length <= 11;
-    const t = pick(single ? ['meaning', 'reverse', 'listen', 'spell', 'spell'] : ['meaning', 'reverse', 'listen']);
+    const kk = kkOf(x.w), kkOthers = others.map(o => kkOf(o.w)).filter(Boolean);
+    const modes = single ? ['meaning', 'reverse', 'listen', 'spell', 'spell'] : ['meaning', 'reverse', 'listen'];
+    if (kk && kkOthers.length >= 2) modes.push('kk');
+    const t = pick(modes);
+    if (t === 'kk') return mc(`「${x.w}」（${x.m}）的 KK 音標是哪一個？`, kk, kkOthers, `${x.w} 唸 ${kk}。`, { say: x.s || x.w });
     const exp = `${x.w}＝${x.m}。`;
     if (t === 'meaning') return mc(`「${x.w}」是什麼意思？`, x.m, others.map(o => o.m), exp, { say: x.s || x.w });
     if (t === 'reverse') return mc(`「${x.m}」的英文是哪一個？`, x.w, others.map(o => o.w), exp);
@@ -67,13 +71,16 @@
     return { q: `拼拼看：「${x.m}」的英文怎麼拼？（${x.w[0]} 開頭，共 ${x.w.length} 個字母）`, input: true, text: true, ans: x.w, exp: `${x.w}：${x.w.split('').join('-')}` };
   }
 
+  /** KK 音標（js/data/kk.js 由 CMU 發音辭典轉換產生） */
+  function kkOf(w) { const K = window.KK || {}; const k = String(w).toLowerCase().replace(/[!?.,]/g, '').trim(); return K[k] ? `[${K[k]}]` : ''; }
+
   // 給資料檔的出題函式使用
   window.G3 = { rnd, pick, shuffle, readNum, mc, vocabQ };
 
   // vocab: true 的單元，從教學中的單字卡自動出題（若已有 gen，兩種各半）
   SUBJECTS.forEach(s => s.units.forEach(u => {
     if (!u.vocab) return;
-    const words = u.lesson.filter(b => b.t === 'words').flatMap(b => b.v).concat(u.extraWords || []);
+    const words = u.lesson.filter(b => b.t === 'words' || b.t === 'sents').flatMap(b => b.v).concat(u.extraWords || []);
     const lang = s.id === 'taigi' ? 'taigi' : 'en';
     const own = u.gen;
     u.gen = own ? () => (Math.random() < .5 ? vocabQ(words, lang) : own()) : () => vocabQ(words, lang);
@@ -301,6 +308,7 @@
       case 'svg': return `<section class="blk figure">${b.title ? `<h2 style="text-align:left">${b.title}</h2>` : ''}${b.v}${b.cap ? `<p class="cap">${b.cap}</p>` : ''}</section>`;
       case 'widget': return `<section class="blk widget">${b.title ? `<h2 style="text-align:left">${b.title}</h2>` : ''}${b.p ? `<p style="text-align:left">${b.p}</p>` : ''}<div data-widget="${b.v}"></div></section>`;
       case 'words': return wordsHtml(b);
+      case 'sents': return sentsHtml(b);
       default: return '';
     }
   }
@@ -312,16 +320,28 @@
       <div class="word" data-say="${canSay ? esc(w.s || w.w) : ''}" data-lang="${lang}">
         ${w.e ? `<div class="e">${w.e}</div>` : ''}
         <div class="w">${w.w}</div>
-        ${w.r ? `<div class="r">${w.r}</div>` : ''}
+        ${w.r ? `<div class="r">${w.r}</div>` : (lang === 'en' && kkOf(w.w) ? `<div class="r kk">${kkOf(w.w)}</div>` : '')}
         ${w.m ? `<div class="m">${w.m}</div>` : ''}
         ${canSay ? `<button class="say" type="button" data-act="say">🔊 聽</button>` : ''}
       </div>`).join('');
-    const note = lang === 'taigi'
+    const note = lang === 'en' && b.v.some(w => kkOf(w.w)) ? `<p class="qsub">[ ] 裡是 KK 音標（美式發音），按 🔊 可以聽真正的聲音。</p>` : lang === 'taigi'
       ? `<p class="qsub">🗣️ 瀏覽器沒有台語語音，請跟著老師、家人一起唸。想聽真人發音，可以到<a href="https://sutian.moe.edu.tw/" target="_blank" rel="noopener">教育部臺灣台語常用詞辭典</a>查詢。</p>`
       : '';
     return `<section class="blk">${b.title ? `<h2>${b.title}</h2>` : ''}${b.p ? `<p>${b.p}</p>` : ''}
       ${canSay ? `<button class="btn ghost" type="button" data-act="playall">▶ 全部唸一遍</button>` : ''}
       <div class="words">${cards}</div>${note}</section>`;
+  }
+  function sentsHtml(b) {
+    const lang = b.lang || 'taigi', canSay = lang === 'en';
+    return `<section class="blk">${b.title ? `<h2>${b.title}</h2>` : ''}${b.p ? `<p>${b.p}</p>` : ''}
+      ${canSay ? `<button class="btn ghost" type="button" data-act="playall">▶ 全部唸一遍</button>` : ''}
+      <div class="sents">${b.v.map(x => `
+        <div class="sent word" data-say="${canSay ? esc(x.w) : ''}" data-lang="${lang}">
+          ${x.e ? `<span class="se">${x.e}</span>` : ''}
+          <div class="sb"><div class="w">${x.w}</div>${x.r ? `<div class="r">${x.r}</div>` : ''}<div class="m">${x.m}</div></div>
+          ${canSay ? `<button class="say" type="button" data-act="say">🔊</button>` : ''}
+        </div>`).join('')}</div>
+      ${lang === 'taigi' ? `<p class="qsub">🗣️ 句子的拼音是本調（沒有標變調）。請家人或老師示範，跟著唸最準。</p>` : ''}</section>`;
   }
   function mountLesson(root) {
     root.querySelectorAll('[data-act="say"]').forEach(btn => {
