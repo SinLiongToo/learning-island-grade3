@@ -2,7 +2,7 @@
 window.SUBJECTS = window.SUBJECTS || [];
 window.SUBJECTS.push({
   id: 'english', name: '英語歡樂小鎮', icon: '🔤', color: '#dc2626', land: '#fca5a5',
-  blurb: '發音、數字、顏色、文具、動物、家人、身體、對話、天氣、食物、動作、衣服、我的家、時間、月份、職業、交通運動、相反詞、文法、人稱與單複數、句子重組、閱讀',
+  blurb: '發音、雙母音、數字、顏色、文具、動物、家人、身體、對話、天氣、食物、動作、衣服、我的家、時間、月份、職業、交通運動、相反詞、文法、人稱與單複數、句子重組、閱讀',
   intro: '每張單字卡都可以按 🔊 聽發音，也可以按「全部唸一遍」跟著唸。大聲說出來，才學得最快！',
   units: [
     /* ---------- 1. 自然發音：短母音 ---------- */
@@ -31,6 +31,65 @@ window.SUBJECTS.push({
         { q: '「bed」的第一個字母是？', opts: ['b', 'd', 'p', 'q'], ans: 0, exp: 'b-e-d。小心 b 和 d 不要寫反。', say: 'bed' },
         { q: '聽聽看，哪一個單字的意思是「鴨子」？', opts: ['duck', 'dog', 'fish', 'frog'], ans: 0, exp: 'duck 鴨子。', say: 'duck' }
       ]
+    },
+
+    /* ---------- Phonics 雙母音 ---------- */
+    {
+      id: 'e25', vocab: true, fixedN: 4, icon: '🔡', title: 'Phonics 雙母音（ee、ea、ai、ay、oa、ow、ou、oo、oi、oy）',
+      summary: '兩個字母一起發一個音：tree、rain、boat、house、moon、coin……',
+      lesson: [
+        { t: 'h', v: '什麼是雙母音？', p: ['兩個字母放在一起，合起來發<b>一個音</b>，叫做「母音組合」，課本常叫<b>雙母音</b>。', '口訣：「<b>兩個母音一起走，第一個說自己的名字</b>」——ee、ea、ai、oa 都是這樣：r<b>ai</b>n 的 ai 唸成字母 A 的名字。'] },
+        { t: 'words', lang: 'en', title: 'ee ／ ea：長音 /iː/（像字母 E）', v: [{ e: '🐝', w: 'bee', m: '蜜蜂' }, { e: '🌳', w: 'tree', m: '樹' }, { e: '🦶', w: 'feet', m: '腳（複數）' }, { e: '🐑', w: 'sheep', m: '綿羊' }, { e: '🟢', w: 'green', m: '綠色' }, { e: '🍽️', w: 'eat', m: '吃' }, { e: '🍵', w: 'tea', m: '茶' }, { e: '🌊', w: 'sea', m: '海' }, { e: '🍃', w: 'leaf', m: '葉子' }, { e: '🏖️', w: 'beach', m: '海灘' }] },
+        { t: 'words', lang: 'en', title: 'ai ／ ay：長音 /eɪ/（像字母 A）', v: [{ e: '🌧️', w: 'rain', m: '雨' }, { e: '🚆', w: 'train', m: '火車' }, { e: '🐌', w: 'snail', m: '蝸牛' }, { e: '🐕', w: 'tail', m: '尾巴' }, { e: '🖌️', w: 'paint', m: '油漆、畫' }, { e: '📅', w: 'day', m: '天、日子' }, { e: '🎮', w: 'play', m: '玩' }, { e: '🌷', w: 'May', m: '五月' }, { e: '🩶', w: 'gray', m: '灰色' }, { e: '🍽️', w: 'tray', m: '托盤' }] },
+        { t: 'words', lang: 'en', title: 'oa ／ ow：長音 /oʊ/（像字母 O）', v: [{ e: '⛵', w: 'boat', m: '小船' }, { e: '🧥', w: 'coat', m: '外套' }, { e: '🐐', w: 'goat', m: '山羊' }, { e: '🛣️', w: 'road', m: '馬路' }, { e: '🧼', w: 'soap', m: '肥皂' }, { e: '❄️', w: 'snow', m: '雪' }, { e: '🐢', w: 'slow', m: '慢的' }, { e: '🪟', w: 'window', m: '窗戶' }, { e: '🟡', w: 'yellow', m: '黃色' }, { e: '🌱', w: 'grow', m: '生長' }] },
+        { t: 'words', lang: 'en', title: 'ou ／ ow：/aʊ/（像被捏到喊「ㄠ」）', v: [{ e: '🏠', w: 'house', m: '房子' }, { e: '🐭', w: 'mouse', m: '老鼠' }, { e: '☁️', w: 'cloud', m: '雲' }, { e: '👄', w: 'mouth', m: '嘴巴' }, { e: '🚪', w: 'out', m: '外面' }, { e: '🐄', w: 'cow', m: '母牛' }, { e: '🤡', w: 'clown', m: '小丑' }, { e: '⬇️', w: 'down', m: '往下' }, { e: '🟤', w: 'brown', m: '咖啡色' }, { e: '❓', w: 'how', m: '如何' }] },
+        { t: 'words', lang: 'en', title: 'oo：長的 /uː/（moon）和短的 /ʊ/（book）', v: [{ e: '🌙', w: 'moon', m: '月亮' }, { e: '🥄', w: 'spoon', m: '湯匙' }, { e: '🦁', w: 'zoo', m: '動物園' }, { e: '🍱', w: 'food', m: '食物' }, { e: '🏊', w: 'pool', m: '游泳池' }, { e: '📖', w: 'book', m: '書' }, { e: '👀', w: 'look', m: '看' }, { e: '🍳', w: 'cook', m: '煮' }, { e: '🦶', w: 'foot', m: '腳' }, { e: '👍', w: 'good', m: '好的' }] },
+        { t: 'words', lang: 'en', title: 'oi ／ oy：/ɔɪ/', v: [{ e: '🪙', w: 'coin', m: '硬幣' }, { e: '🛢️', w: 'oil', m: '油' }, { e: '♨️', w: 'boil', m: '煮沸' }, { e: '👉', w: 'point', m: '指' }, { e: '🔊', w: 'noise', m: '噪音' }, { e: '👦', w: 'boy', m: '男孩' }, { e: '🧸', w: 'toy', m: '玩具' }, { e: '😊', w: 'enjoy', m: '享受' }] },
+        { t: 'table', title: '位置的規則：在中間還是在結尾？', head: ['同一個音', '在字的中間', '在字的結尾'], rows: [['/eɪ/', '<b>ai</b>：rain、train、tail', '<b>ay</b>：day、play、May'], ['/ɔɪ/', '<b>oi</b>：coin、oil、point', '<b>oy</b>：boy、toy、enjoy'], ['/oʊ/', '<b>oa</b>：boat、coat、road', '<b>ow</b>：snow、slow、yellow']] },
+        { t: 'key', title: '要特別小心的', v: ['<b>ow 有兩種唸法</b>：snow、slow（像 O）；cow、down（像「ㄠ」）', '<b>oo 有兩種唸法</b>：moon、food（長）；book、look、good（短）', '<b>ea 也有例外</b>：bread、head 的 ea 唸短的 /ɛ/', 'ee 和 ea 同音、ai 和 ay 同音、oi 和 oy 同音，拼字要多記'] },
+        { t: 'tip', v: '按「▶ 全部唸一遍」聽每一組，同一組的字聲音都很像。看到新單字時，先找有沒有雙母音，就能猜出怎麼唸！' }
+      ],
+      quiz: [
+        { q: '下列哪一個字的母音和 rain 一樣？', opts: ['play', 'ran', 'read', 'road'], ans: 0, exp: 'rain 的 ai 和 play 的 ay 都唸 /eɪ/。ran 是短母音。', say: 'rain, play' },
+        { q: '下列哪一個字的母音和 boat 一樣？', opts: ['snow', 'cow', 'book', 'bat'], ans: 0, exp: 'oa 和 snow 的 ow 都唸 /oʊ/。cow 的 ow 唸 /aʊ/。', say: 'boat, snow' },
+        { q: '下列哪一個字的 oo 唸「短的 oo」（像 book）？', opts: ['look', 'moon', 'food', 'zoo'], ans: 0, exp: 'book、look、cook、good 是短 oo。', say: 'book, look' },
+        { q: '「玩具」toy 為什麼用 oy 不用 oi？', opts: ['因為這個音在字的結尾', '因為 toy 是複數', '因為 oi 不能發音', '沒有原因'], ans: 0, exp: '/ɔɪ/ 在中間用 oi（coin），在結尾用 oy（toy）。' },
+        { q: '下列哪一個字的 ow 唸法和其他三個「不一樣」？', opts: ['snow', 'cow', 'down', 'brown'], ans: 0, exp: 'snow 的 ow 唸 /oʊ/；cow、down、brown 唸 /aʊ/。', say: 'snow, cow, down, brown' },
+        { q: '「bread」的 ea 怎麼唸？', opts: ['短的 /ɛ/，像 bed', '長的 /iː/，像 eat', '不發音', '像 rain'], ans: 0, exp: 'bread、head 是 ea 的例外，唸短的 /ɛ/。', say: 'bread, bed' },
+        { q: '下列哪一個字有雙母音？', opts: ['sheep', 'ship', 'shop', 'shut'], ans: 0, exp: 'sheep 有 ee；其他是短母音。', say: 'sheep, ship' },
+        { q: '「m__se」老鼠，空格要填？', opts: ['ou', 'ow', 'oo', 'oa'], ans: 0, exp: 'mouse 老鼠，ou 唸 /aʊ/。', say: 'mouse' }
+      ],
+      gen() {
+        const { pick, shuffle, mc } = window.G3;
+        const G = {
+          'iː（ee／ea）': [['bee', 'ee', '蜜蜂'], ['tree', 'ee', '樹'], ['sheep', 'ee', '綿羊'], ['green', 'ee', '綠色'], ['feet', 'ee', '腳'], ['eat', 'ea', '吃'], ['tea', 'ea', '茶'], ['sea', 'ea', '海'], ['leaf', 'ea', '葉子'], ['beach', 'ea', '海灘']],
+          'eɪ（ai／ay）': [['rain', 'ai', '雨'], ['train', 'ai', '火車'], ['snail', 'ai', '蝸牛'], ['tail', 'ai', '尾巴'], ['paint', 'ai', '油漆'], ['day', 'ay', '天'], ['play', 'ay', '玩'], ['gray', 'ay', '灰色'], ['tray', 'ay', '托盤']],
+          'oʊ（oa／ow）': [['boat', 'oa', '小船'], ['coat', 'oa', '外套'], ['goat', 'oa', '山羊'], ['road', 'oa', '馬路'], ['soap', 'oa', '肥皂'], ['snow', 'ow', '雪'], ['slow', 'ow', '慢的'], ['grow', 'ow', '生長']],
+          'aʊ（ou／ow）': [['house', 'ou', '房子'], ['mouse', 'ou', '老鼠'], ['cloud', 'ou', '雲'], ['mouth', 'ou', '嘴巴'], ['cow', 'ow', '母牛'], ['clown', 'ow', '小丑'], ['down', 'ow', '往下'], ['brown', 'ow', '咖啡色']],
+          'uː（長 oo）': [['moon', 'oo', '月亮'], ['spoon', 'oo', '湯匙'], ['zoo', 'oo', '動物園'], ['food', 'oo', '食物'], ['pool', 'oo', '游泳池']],
+          'ʊ': [['book', 'oo', '書'], ['look', 'oo', '看'], ['cook', 'oo', '煮'], ['foot', 'oo', '腳'], ['good', 'oo', '好的']],
+          'ɔɪ（oi／oy）': [['coin', 'oi', '硬幣'], ['oil', 'oi', '油'], ['boil', 'oi', '煮沸'], ['point', 'oi', '指'], ['boy', 'oy', '男孩'], ['toy', 'oy', '玩具'], ['enjoy', 'oy', '享受']]
+        };
+        const keys = Object.keys(G);
+        const k = pick(keys), [a, b] = shuffle(G[k].slice()).slice(0, 2);
+        const otherKeys = keys.filter(x => x !== k);
+        const fromOthers = n => shuffle(otherKeys).slice(0, n).map(x => pick(G[x]));
+        const t = pick(['same', 'same', 'blank', 'blank', 'odd', 'pos']);
+        if (t === 'same') return mc(`下列哪一個字的母音和「${a[0]}」一樣？`, b[0], fromOthers(3).map(w => w[0]), `${a[0]} 和 ${b[0]} 都唸 /${k.split('（')[0]}/。`, { say: `${a[0]}, ${b[0]}` });
+        if (t === 'blank') {
+          const blank = a[0].replace(a[1], '__');
+          const all = ['ee', 'ea', 'ai', 'ay', 'oa', 'ow', 'ou', 'oo', 'oi', 'oy'];
+          const bad = shuffle(all.filter(x => x !== a[1] && !G[k].some(w => w[0] === a[0].replace(a[1], x)) && ![].concat(...Object.values(G)).some(w => w[0] === a[0].replace(a[1], x)))).slice(0, 3);
+          return mc(`「${blank}」（${a[2]}），空格要填哪兩個字母？`, a[1], bad, `${a[0]}（${a[2]}）：${a[1]} 唸 /${k.split('（')[0]}/。`, { say: a[0] });
+        }
+        if (t === 'odd') {
+          const same = shuffle(G[k].slice()).slice(0, 3), odd = fromOthers(1)[0];
+          return mc(`下列哪一個字的母音和其他三個「不一樣」？（${same.concat([odd]).map(w => w[0]).sort(() => Math.random() - .5).join('、')}）`, odd[0], same.map(w => w[0]), `${same.map(w => w[0]).join('、')} 都唸 /${k.split('（')[0]}/；${odd[0]} 不一樣。`, { say: shuffle(same.concat([odd]).map(w => w[0])).join(', ') });
+        }
+        const [word, ok, wrong, zh] = pick([['day', 'ay', 'ai', '天'], ['play', 'ay', 'ai', '玩'], ['rain', 'ai', 'ay', '雨'], ['train', 'ai', 'ay', '火車'], ['boy', 'oy', 'oi', '男孩'], ['toy', 'oy', 'oi', '玩具'], ['coin', 'oi', 'oy', '硬幣'], ['point', 'oi', 'oy', '指'], ['gray', 'ay', 'ai', '灰色'], ['tail', 'ai', 'ay', '尾巴']]);
+        const where = word.endsWith(ok) ? '結尾' : '中間';
+        return mc(`「${word.replace(ok, '__')}」（${zh}），空格要填 ${ok} 還是 ${wrong}？`, ok, [wrong], `這個音在字的${where}，所以用 ${ok}（ai／oi 在中間，ay／oy 在結尾）。`, { keep: true, say: word });
+      }
     },
 
     /* ---------- 2. 數字 ---------- */
