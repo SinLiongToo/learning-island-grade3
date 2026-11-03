@@ -2,7 +2,7 @@
 window.SUBJECTS = window.SUBJECTS || [];
 window.SUBJECTS.push({
   id: 'english', name: '英語歡樂小鎮', icon: '🔤', color: '#dc2626', land: '#fca5a5',
-  blurb: '發音、數字、顏色、文具、動物、家人、身體、對話、天氣、食物、動作、衣服、我的家、時間、月份、職業、交通運動、相反詞、文法、句子重組、閱讀',
+  blurb: '發音、數字、顏色、文具、動物、家人、身體、對話、天氣、食物、動作、衣服、我的家、時間、月份、職業、交通運動、相反詞、文法、人稱與單複數、句子重組、閱讀',
   intro: '每張單字卡都可以按 🔊 聽發音，也可以按「全部唸一遍」跟著唸。大聲說出來，才學得最快！',
   units: [
     /* ---------- 1. 自然發音：短母音 ---------- */
@@ -345,6 +345,85 @@ window.SUBJECTS.push({
         }
         const [zh, w, be, noun] = pick([['這一枝', 'This', 'is', 'pencil'], ['那一枝', 'That', 'is', 'pencil'], ['這些', 'These', 'are', 'pencils'], ['那些', 'Those', 'are', 'pencils'], ['這一本', 'This', 'is', 'book'], ['那些', 'Those', 'are', 'books'], ['這些', 'These', 'are', 'books'], ['那一本', 'That', 'is', 'book']]);
         return mc(`「${zh}是我的${noun.startsWith('pencil') ? '鉛筆' : '書'}」：___ ${be} my ${noun}.`, w, ['This', 'That', 'These', 'Those'].filter(x => x !== w), '近 this／these，遠 that／those；一個 this／that，很多個 these／those。', { keep: true, say: `${w} ${be} my ${noun}.` });
+      }
+    },
+
+    /* ---------- 人稱與單複數 ---------- */
+    {
+      id: 'e24', icon: '👥', title: '人稱與單複數（專項練習）',
+      summary: 'I / you / he / she / it / we / they；my / his / her；am / is / are；likes / like；cat → cats',
+      lesson: [
+        { t: 'table', title: '① 人稱代名詞（當主詞）', head: ['人稱', '單數（一個）', '複數（兩個以上）'], rows: [
+          ['第一人稱（說話的人）', 'I 我', 'we 我們'],
+          ['第二人稱（聽話的人）', 'you 你', 'you 你們'],
+          ['第三人稱（別人、動物、東西）', 'he 他（男）／she 她（女）／it 它、牠', 'they 他們、它們'] ] },
+        { t: 'h', v: '把名字換成代名詞', p: ['Tom → <b>he</b>　　Amy → <b>she</b>　　my cat → <b>it</b>　　the books → <b>they</b>', 'Tom and Ben → <b>they</b>　　<b>Amy and I</b> → <b>we</b>（有「我」就是 we）　　you and Ben → <b>you</b>（有「你」就是 you）'] },
+        { t: 'table', title: '② 所有格（誰的）', head: ['主詞', '所有格', '例子'], rows: [['I', 'my 我的', 'my bag'], ['you', 'your 你的、你們的', 'your pencil'], ['he', 'his 他的', 'his cap'], ['she', 'her 她的', 'her dress'], ['it', 'its 牠的', 'its tail'], ['we', 'our 我們的', 'our classroom'], ['they', 'their 他們的', 'their house']], note: '名字的所有格加 \'s：Amy\'s bag（Amy 的書包）＝ her bag。' },
+        { t: 'table', title: '③（挑戰）受格：放在動詞或介係詞後面', head: ['主詞', '受格', '例子'], rows: [['I', 'me', 'Help me!'], ['he', 'him', 'I like him.'], ['she', 'her', 'Look at her.'], ['we', 'us', 'Come with us.'], ['they', 'them', 'I see them.']], note: 'you 和 it 的受格不變：I love you. I like it.' },
+        { t: 'table', title: '④ be 動詞跟著主詞變', head: ['主詞', 'be 動詞', '縮寫'], rows: [['I', 'am', 'I\'m'], ['he / she / it / 一個人或東西', 'is', 'he\'s、she\'s、it\'s'], ['you / we / they / 兩個以上', 'are', 'you\'re、we\'re、they\'re']] },
+        { t: 'h', v: '⑤ 第三人稱單數，動詞要加 s', p: ['主詞是 <b>he、she、it 或「一個人／一樣東西」</b>時，一般動詞要加 <b>s</b>：He <b>likes</b> apples. My dog <b>runs</b> fast.', '主詞是 I、you、we、they、兩個以上時<b>不加</b>：I <b>like</b> apples. They <b>run</b> fast.', '特別的：have → <b>has</b>（He has a cat.）；go → <b>goes</b>；watch → <b>watches</b>。'] },
+        { t: 'table', title: '⑥ 名詞的單數和複數', head: ['規則', '例子'], rows: [['一般加 s', 'cat → cats、toy → toys'], ['s、x、sh、ch 結尾加 es', 'bus → buses、box → boxes、dish → dishes、peach → peaches'], ['子音 ＋ y 結尾：去 y 加 ies', 'baby → babies、strawberry → strawberries、butterfly → butterflies'], ['f 結尾常改 ves', 'leaf → leaves、wolf → wolves'], ['不規則', 'man → men、woman → women、child → children、foot → feet、tooth → teeth、mouse → mice'], ['單複數同形', 'fish → fish、sheep → sheep、deer → deer']], note: 'toy、boy、day 是「母音＋y」，直接加 s：toys、boys、days。' },
+        { t: 'h', v: '⑦ 整句變複數', p: ['單數：<b>This is a cat.</b>　→　複數：<b>These are cats.</b>', '單數：<b>It is a box.</b>　→　複數：<b>They are boxes.</b>', '單數：<b>There is a bird.</b>　→　複數：<b>There are three birds.</b>', '變複數時，<b>this→these、that→those、it→they、is→are</b>，<b>a／an 拿掉</b>，名詞變複數。'] },
+        { t: 'key', v: ['有「我」→ we；有「你」→ you；其他人或東西 → they', 'he 他的是 his；she 她的是 her', 'I am／he is／they are', 'he、she、it、一個人 → 動詞加 s；have → has', 'baby → babies；toy → toys；child → children', 'This is a cat. → These are cats.'] },
+        { t: 'tip', v: '這一課大部分題目由電腦自動出題，可以一直練。最常錯的是「he 後面的動詞忘了加 s」和「Amy and I 要用 we」，做題時特別注意！' }
+      ],
+      quiz: [
+        { q: 'Tom and I are classmates. → ___ are classmates.', opts: ['We', 'They', 'He', 'I'], ans: 0, exp: '有「I」的一群人用 we。', say: 'We are classmates.' },
+        { q: 'You and Amy are good friends. → ___ are good friends.', opts: ['You', 'They', 'We', 'She'], ans: 0, exp: '有「you」的一群人，還是用 you（你們）。', say: 'You are good friends.' },
+        { q: 'This is Ben\'s bike. → This is ___ bike.', opts: ['his', 'he', 'her', 'him'], ans: 0, exp: 'Ben 是男生，他的 ＝ his。', say: 'This is his bike.' },
+        { q: 'My sister ___ a cat.', opts: ['has', 'have', 'is have', 'haves'], ans: 0, exp: '一個人（第三人稱單數）用 has。', say: 'My sister has a cat.' },
+        { q: 'My parents ___ coffee every morning.', opts: ['drink', 'drinks', 'drinking', 'is drink'], ans: 0, exp: 'parents 是複數，動詞不加 s。', say: 'My parents drink coffee every morning.' },
+        { q: '「baby」的複數是？', opts: ['babies', 'babys', 'babyes', 'baby'], ans: 0, exp: '子音＋y：去 y 加 ies。', say: 'babies' },
+        { q: '「toy」的複數是？', opts: ['toys', 'toies', 'toyes', 'toy'], ans: 0, exp: 'o 是母音，母音＋y 直接加 s。', say: 'toys' },
+        { q: '把「This is an apple.」改成複數：', opts: ['These are apples.', 'These is apples.', 'This are apples.', 'These are an apples.'], ans: 0, exp: 'this→these、is→are、拿掉 an、apple→apples。', say: 'These are apples.' },
+        { q: '（挑戰）I can\'t find my glasses. Can you help ___?', opts: ['me', 'I', 'my', 'mine'], ans: 0, exp: '放在動詞 help 後面，要用受格 me。', say: 'Can you help me?' },
+        { q: '（挑戰）Look at the birds! I like ___.', opts: ['them', 'they', 'their', 'it'], ans: 0, exp: 'the birds 是複數，在 like 後面用受格 them。', say: 'I like them.' },
+        { q: 'The dog is wagging ___ tail.', opts: ['its', 'it\'s', 'his', 'their'], ans: 0, exp: '動物的「牠的」用 its；it\'s 是 it is 的縮寫。', say: 'The dog is wagging its tail.' },
+        { q: '下列哪一句「完全正確」？', opts: ['She watches TV after dinner.', 'She watch TV after dinner.', 'She watchs TV after dinner.', 'She are watching TV after dinner.'], ans: 0, exp: 'she 第三人稱單數，watch 要加 es：watches。', say: 'She watches TV after dinner.' }
+      ],
+      gen() {
+        const { pick, shuffle, mc } = window.G3;
+        const t = pick(['subj', 'subj', 'poss', 'poss', 'obj', 'be', 'be', 'verb', 'verb', 'verb', 'plural', 'plural', 'whole', 'whole']);
+        const PRO = ['I', 'You', 'He', 'She', 'It', 'We', 'They'];
+        if (t === 'subj') {
+          const [noun, pro, rest] = pick([['Tom', 'He', 'is tall'], ['My grandma', 'She', 'is seventy'], ['Mr. Chen', 'He', 'is a doctor'], ['Amy', 'She', 'likes music'], ['The cat', 'It', 'is sleeping'], ['My bike', 'It', 'is new'], ['Tom and Ben', 'They', 'are brothers'], ['The books', 'They', 'are on the desk'], ['My sister and I', 'We', 'are twins'], ['Amy and I', 'We', 'like pizza'], ['You and Tim', 'You', 'are late'], ['The children', 'They', 'are in the park'], ['Ms. Lin', 'She', 'is our teacher'], ['The apples', 'They', 'are red']]);
+          return mc(`${noun} ${rest}. → ___ ${rest}.`, pro, shuffle(PRO.filter(x => x !== pro && x !== 'I')), `${noun} → ${pro}。（有 I 用 we；有 you 用 you；男 he、女 she、物 it、很多 they）`, { say: `${pro} ${rest}.` });
+        }
+        if (t === 'poss') {
+          const [owner, poss, thing] = pick([['Tom\'s', 'his', 'bag'], ['Amy\'s', 'her', 'dress'], ['my dad\'s', 'his', 'car'], ['my mom\'s', 'her', 'phone'], ['Ben and Tim\'s', 'their', 'ball'], ['the dog\'s', 'its', 'bone'], ['the cat\'s', 'its', 'bed'], ['the students\'', 'their', 'classroom'], ['my grandpa\'s', 'his', 'glasses'], ['Lily\'s', 'her', 'kite']]);
+          return mc(`This is ${owner} ${thing}. → This is ___ ${thing}.`, poss, shuffle(['his', 'her', 'its', 'their', 'our', 'he', 'she', 'it\'s'].filter(x => x !== poss)), `${owner.replace(/'s?$/, '')} 的 → ${poss}。`, { say: `This is ${poss} ${thing}.` });
+        }
+        if (t === 'obj') {
+          const [pre, obj, sub, why] = pick([['I like Amy. I like', 'her', 'she', 'Amy 是女生'], ['Do you know Mr. Wang? I know', 'him', 'he', 'Mr. Wang 是男生'], ['Where are my shoes? I can\'t find', 'them', 'they', 'shoes 是複數'], ['Come and play with', 'us', 'we', '我們'], ['Please help', 'me', 'I', '我'], ['This cake is yummy. I love', 'it', 'it', '一樣東西'], ['The ducks are cute. Look at', 'them', 'they', 'ducks 是複數']]);
+          return mc(`（挑戰）${pre} ___.`, obj, shuffle(['me', 'him', 'her', 'us', 'them', 'it', sub, sub === 'it' ? 'its' : sub].filter(x => x !== obj)), `${why}，放在動詞或介係詞後面用受格 ${obj}。`, { say: `${pre} ${obj}.` });
+        }
+        if (t === 'be') {
+          const [sub, be] = pick([['I', 'am'], ['He', 'is'], ['She', 'is'], ['It', 'is'], ['We', 'are'], ['You', 'are'], ['They', 'are'], ['My brother', 'is'], ['My brothers', 'are'], ['The child', 'is'], ['The children', 'are'], ['This box', 'is'], ['These boxes', 'are'], ['Amy and Ben', 'are'], ['Mr. Lee', 'is'], ['My feet', 'are'], ['The fish', 'is']]);
+          const tail = pick(['happy', 'in the classroom', 'very big', 'at home', 'hungry']);
+          return mc(`${sub} ___ ${tail}.`, be, ['am', 'is', 'are'].filter(x => x !== be), `${sub} → ${be}。（I → am；一個 → is；兩個以上、you → are）`, { keep: true, say: `${sub} ${be} ${tail}.` });
+        }
+        if (t === 'verb') {
+          const [base, s3] = pick([['like', 'likes'], ['play', 'plays'], ['eat', 'eats'], ['read', 'reads'], ['run', 'runs'], ['have', 'has'], ['go', 'goes'], ['watch', 'watches'], ['wash', 'washes'], ['swim', 'swims'], ['sing', 'sings'], ['drink', 'drinks']]);
+          const obj = { like: 'apples', play: 'basketball', eat: 'breakfast', read: 'books', run: 'fast', have: 'a dog', go: 'to school', watch: 'TV', wash: 'the dishes', swim: 'every day', sing: 'well', drink: 'milk' }[base];
+          const [sub, third] = pick([['He', true], ['She', true], ['My dad', true], ['Amy', true], ['The cat', true], ['I', false], ['We', false], ['They', false], ['You', false], ['My friends', false], ['Tom and I', false]]);
+          const right = third ? s3 : base;
+          return mc(`${sub} ___ ${obj}.`, right, [third ? base : s3, { like: 'liking', play: 'playing', eat: 'eating', read: 'reading', run: 'running', have: 'having', go: 'going', watch: 'watching', wash: 'washing', swim: 'swimming', sing: 'singing', drink: 'drinking' }[base], `is ${base}`], third ? `${sub} 是第三人稱單數，動詞要變成 ${s3}。` : `${sub} 不是第三人稱單數，動詞用原形 ${base}。`, { say: `${sub} ${right} ${obj}.` });
+        }
+        if (t === 'plural') {
+          const [s, p, rule] = pick([['cat', 'cats', '加 s'], ['bus', 'buses', 's 結尾加 es'], ['box', 'boxes', 'x 結尾加 es'], ['dish', 'dishes', 'sh 結尾加 es'], ['peach', 'peaches', 'ch 結尾加 es'], ['baby', 'babies', '子音＋y，去 y 加 ies'], ['strawberry', 'strawberries', '子音＋y，去 y 加 ies'], ['butterfly', 'butterflies', '子音＋y，去 y 加 ies'], ['toy', 'toys', '母音＋y，直接加 s'], ['boy', 'boys', '母音＋y，直接加 s'], ['day', 'days', '母音＋y，直接加 s'], ['leaf', 'leaves', 'f 改 ves'], ['wolf', 'wolves', 'f 改 ves'], ['man', 'men', '不規則'], ['woman', 'women', '不規則'], ['child', 'children', '不規則'], ['foot', 'feet', '不規則'], ['tooth', 'teeth', '不規則'], ['mouse', 'mice', '不規則'], ['sheep', 'sheep', '單複數同形'], ['fish', 'fish', '單複數同形']]);
+          const wrong = [s + 's', s + 'es', s.replace(/y$/, 'ies'), p + 's', s].filter(w => w !== p);
+          return Math.random() < .5
+            ? mc(`「${s}」的複數是？`, p, shuffle(wrong), `${s} → ${p}（${rule}）。`, { say: p })
+            : mc(`I see two ___.（${s}）`, p, shuffle(wrong), `two 後面要用複數：${p}（${rule}）。`, { say: `I see two ${p}.` });
+        }
+        const [sg, pl] = pick([['This is a cat.', 'These are cats.'], ['That is a bird.', 'Those are birds.'], ['It is a box.', 'They are boxes.'], ['This is an egg.', 'These are eggs.'], ['That is a bus.', 'Those are buses.'], ['It is a baby.', 'They are babies.'], ['This is a child.', 'These are children.'], ['He is a student.', 'They are students.'], ['She is a nurse.', 'They are nurses.'], ['There is a mouse.', 'There are three mice.'], ['There is a peach.', 'There are four peaches.'], ['I am a boy.', 'We are boys.']]);
+        const w = pl.split(' ');
+        const fakes = [
+          w.map((x, i) => i === 1 ? (x === 'are' ? 'is' : x) : x).join(' '),
+          sg.replace('.', '').split(' ').map((x, i) => i === sg.split(' ').length - 1 ? pl.split(' ').pop().replace('.', '') : x).join(' ') + '.',
+          pl.replace(/\w+\.$/, sg.split(' ').pop())
+        ];
+        return mc(`把「${sg}」改成複數：`, pl, fakes, `變複數：this→these、that→those、it/he/she→they、I→we、is/am→are、a/an 拿掉、名詞變複數。`, { say: pl });
       }
     },
 
