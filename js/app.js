@@ -44,8 +44,41 @@
     return Object.assign({ q, opts, ans: 0, exp }, extra || {});
   }
 
+  /** 單字題：從單字表隨機出「意思／說法／拼音／聽力／拼字」題（lang：'taigi' 或 'en'） */
+  function vocabQ(words, lang) {
+    const pool = words.filter(w => w.m);
+    const x = pick(pool);
+    const others = shuffle(pool.filter(y => y !== x && y.m !== x.m && y.w !== x.w)).slice(0, 3);
+    const bare = s => plain(s).replace(/（.*?）|\(.*?\)/g, '');
+    if (lang === 'taigi') {
+      const same = bare(x.m) === bare(x.w);
+      const t = pick(same ? ['reverse', 'rom'] : ['meaning', 'meaning', 'reverse', 'rom']);
+      const exp = `${x.w}（${x.r}）＝「${x.m}」。`;
+      if (t === 'meaning') return mc(`台語「${x.w}」（${x.r}）是什麼意思？`, x.m, others.map(o => o.m), exp);
+      if (t === 'reverse') return mc(`「${x.m}」的台語怎麼說？`, `${x.w}（${x.r}）`, others.map(o => `${o.w}（${o.r}）`), exp);
+      return mc(`「${x.w}」${same ? '' : `（${x.m}）`}的臺羅拼音是哪一個？`, x.r, others.map(o => o.r), exp);
+    }
+    const single = /^[a-z]+$/i.test(x.w) && x.w.length <= 11;
+    const t = pick(single ? ['meaning', 'reverse', 'listen', 'spell', 'spell'] : ['meaning', 'reverse', 'listen']);
+    const exp = `${x.w}＝${x.m}。`;
+    if (t === 'meaning') return mc(`「${x.w}」是什麼意思？`, x.m, others.map(o => o.m), exp, { say: x.s || x.w });
+    if (t === 'reverse') return mc(`「${x.m}」的英文是哪一個？`, x.w, others.map(o => o.w), exp);
+    if (t === 'listen') return mc('按「🔊 聽英文」，你聽到的是哪一個？', x.w, others.map(o => o.w), exp, { say: x.s || x.w, noread: true });
+    return { q: `拼拼看：「${x.m}」的英文怎麼拼？（${x.w[0]} 開頭，共 ${x.w.length} 個字母）`, input: true, text: true, ans: x.w, exp: `${x.w}：${x.w.split('').join('-')}` };
+  }
+
   // 給資料檔的出題函式使用
-  window.G3 = { rnd, pick, shuffle, readNum, mc };
+  window.G3 = { rnd, pick, shuffle, readNum, mc, vocabQ };
+
+  // vocab: true 的單元，從教學中的單字卡自動出題（若已有 gen，兩種各半）
+  SUBJECTS.forEach(s => s.units.forEach(u => {
+    if (!u.vocab) return;
+    const words = u.lesson.filter(b => b.t === 'words').flatMap(b => b.v).concat(u.extraWords || []);
+    const lang = s.id === 'taigi' ? 'taigi' : 'en';
+    const own = u.gen;
+    u.gen = own ? () => (Math.random() < .5 ? vocabQ(words, lang) : own()) : () => vocabQ(words, lang);
+    u.fixedN = u.fixedN || 5;
+  }));
 
   /* ---------------- 學習紀錄 ---------------- */
   const KEY = 'g3isle_v2';
@@ -433,16 +466,17 @@
   }
   function genOne(u) {
     const g = u.gen();
-    return norm(g, u.id, `${u.id}-g-${hash(plain(g.q) + (g.passage || ''))}`);
+    const sig = plain(g.q) + (g.passage || '') + (g.say || '') + (g.opts ? g.opts[g.ans] : [].concat(g.ans)[0]);
+    return norm(g, u.id, `${u.id}-g-${hash(sig)}`);
   }
   function buildUnitRound(u) {
     const fixed = shuffle(u.quiz.map((q, i) => norm(q, u.id, `${u.id}-${i}`)));
     if (!u.gen) return fixed.slice(0, ROUND);
-    const list = fixed.slice(0, FIXED_IN_GEN);
-    const seen = new Set(list.map(q => q.q));
+    const list = fixed.slice(0, u.fixedN || FIXED_IN_GEN);
+    const seen = new Set(list.map(q => q.key));
     for (let guard = 0; list.length < ROUND && guard < 300; guard++) {
       const q = genOne(u);
-      if (!seen.has(q.q)) { seen.add(q.q); list.push(q); }
+      if (!seen.has(q.key)) { seen.add(q.key); list.push(q); }
     }
     return shuffle(list);
   }
@@ -478,7 +512,7 @@
     const subj = u ? u.subject : null;
     if (S.kind !== 'unit' && subj) document.body.style.setProperty('--c', subj.color);
     const pct = Math.round(S.i / S.list.length * 100);
-    const canRead = !(subj && subj.id === 'taigi');
+    const canRead = !(subj && subj.id === 'taigi') && !q.noread;
     $('#view').innerHTML = `
       <div class="crumb"><a href="${S.back}">‹ 離開練習</a>　${S.title}${S.kind !== 'unit' && u ? `・${subj.name}／${u.title}` : ''}</div>
       <div class="quiz-top"><div class="prog bar"><i style="width:${pct}%"></i></div><span class="count">第 ${S.i + 1} / ${S.list.length} 題</span></div>
