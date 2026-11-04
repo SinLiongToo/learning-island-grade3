@@ -1,5 +1,5 @@
-/* 學習島（三、四年級）— 主程式
- * 資料在 js/data/*.js（三年級）與 js/data/g4/*.js（四年級），每個檔案把一個科目 push 進 window.SUBJECTS。
+/* 學習島（三～六年級）— 主程式
+ * 資料在 js/data/*.js（三年級）與 js/data/g4、g5、g6/*.js（四～六年級），每個檔案把一個科目 push 進 window.SUBJECTS。
  * 科目的 grade 欄位決定年級（沒寫就是 3）；首頁可切換年級。
  * 路由：#/ 首頁、#/s/科目、#/u/單元、#/p/單元（練習）、#/mix 綜合挑戰、#/review 錯題本
  */
@@ -10,7 +10,7 @@
   const UNITS = {};
   SUBJECTS.forEach(s => { s.grade = s.grade || 3; s.units.forEach((u, i) => { u.subject = s; u.no = i + 1; UNITS[u.id] = u; }); });
   const GRADES = [...new Set(SUBJECTS.map(s => s.grade))].sort();
-  const GNAME = { 3: '三年級', 4: '四年級' };
+  const GNAME = { 3: '三年級', 4: '四年級', 5: '五年級', 6: '六年級' };
 
   const ROUND = 10;          // 每回合題數
   const FIXED_IN_GEN = 4;    // 有自動出題的單元，每回合放幾題固定題
