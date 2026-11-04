@@ -206,7 +206,11 @@
   const MAP_TALL9 = { w: 400, h: 980, k: .86, pos: [[105, 105], [295, 115], [105, 300], [295, 310], [105, 495], [295, 505], [105, 690], [295, 700], [200, 885]] };
   const MAP_WIDE10 = { w: 900, h: 470, k: .72, pos: [[90, 130], [270, 110], [450, 130], [630, 110], [810, 130], [90, 345], [270, 325], [450, 345], [630, 325], [810, 345]] };
   const MAP_TALL10 = { w: 400, h: 980, k: .86, pos: [[105, 105], [295, 115], [105, 300], [295, 310], [105, 495], [295, 505], [105, 690], [295, 700], [105, 885], [295, 895]] };
-  const MAPS = { 6: [MAP_WIDE6, MAP_TALL6], 7: [MAP_WIDE7, MAP_TALL7], 8: [MAP_WIDE8, MAP_TALL8], 9: [MAP_WIDE9, MAP_TALL9], 10: [MAP_WIDE10, MAP_TALL10] };
+  const MAP_WIDE11 = { w: 900, h: 640, k: .8, pos: [[115, 120], [340, 100], [565, 120], [790, 100], [115, 320], [340, 300], [565, 320], [790, 300], [228, 520], [450, 500], [672, 520]] };
+  const MAP_TALL11 = { w: 400, h: 1175, k: .86, pos: [[105, 105], [295, 115], [105, 300], [295, 310], [105, 495], [295, 505], [105, 690], [295, 700], [105, 885], [295, 895], [200, 1080]] };
+  const MAP_WIDE12 = { w: 900, h: 640, k: .8, pos: [[115, 120], [340, 100], [565, 120], [790, 100], [115, 320], [340, 300], [565, 320], [790, 300], [115, 520], [340, 500], [565, 520], [790, 500]] };
+  const MAP_TALL12 = { w: 400, h: 1175, k: .86, pos: [[105, 105], [295, 115], [105, 300], [295, 310], [105, 495], [295, 505], [105, 690], [295, 700], [105, 885], [295, 895], [105, 1080], [295, 1090]] };
+  const MAPS = { 6: [MAP_WIDE6, MAP_TALL6], 7: [MAP_WIDE7, MAP_TALL7], 8: [MAP_WIDE8, MAP_TALL8], 9: [MAP_WIDE9, MAP_TALL9], 10: [MAP_WIDE10, MAP_TALL10], 11: [MAP_WIDE11, MAP_TALL11], 12: [MAP_WIDE12, MAP_TALL12] };
   function islesSvg(map) {
     return gradeSubjects().map((s, i) => {
       const [x, y] = map.pos[i] || [100 + i * 120, 220];
@@ -253,7 +257,7 @@
         <h1>嗨！今天想去哪一座島？</h1>
         <p>${GNAME[grade]}：${subs.length} 個科目、${totalUnits} 個單元。每個單元先讀<b>蛋蛋老師的重點教學</b>，再做 10 題練習，答得越好星星越多（最多 3 顆）。</p>
       </section>
-      <div class="map-wrap">${(m => mapSvg(m[0], 'map-wide') + mapSvg(m[1], 'map-tall'))(MAPS[Math.min(10, Math.max(6, subs.length))])}</div>
+      <div class="map-wrap">${(m => mapSvg(m[0], 'map-wide') + mapSvg(m[1], 'map-tall'))(MAPS[Math.min(12, Math.max(6, subs.length))])}</div>
       <div class="quick-row">
         <a class="quick" href="#/mix"><b>🎲 綜合挑戰</b><span>${GNAME[grade]} ${subs.length} 科隨機各種題目，10 題一回合</span></a>
         <a class="quick alt" href="#/review"><b>📕 錯題本（${Object.keys(store.wrong).length} 題）</b><span>答錯的題目都在這裡，重做答對就會消失</span></a>
