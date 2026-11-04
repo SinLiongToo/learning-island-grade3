@@ -8,12 +8,30 @@
 
   const SUBJECTS = window.SUBJECTS || [];
   const UNITS = {};
+
+  /* 補充內容（js/data/more/*.js）：依單元 id 合併。
+   *   think: [[問題, [推理步驟…], 還可以問]] → 「想一想」區塊，放在重點整理前面
+   *   lesson: [教學區塊…] → 同樣放在重點整理前面
+   *   quiz: [[題目, [正解, 錯1, 錯2, 錯3], 解說, 推理?]] 或一般題目物件 → 接在原本題目後面（不改變舊題目的編號）
+   */
+  const MORE = window.MORE || {};
+  SUBJECTS.forEach(s => s.units.forEach(u => {
+    const m = MORE[u.id]; if (!m) return;
+    const add = (m.lesson || []).concat((m.think || []).map(t => Array.isArray(t) ? { t: 'think', q: t[0], steps: t[1], ask: t[2] } : Object.assign({ t: 'think' }, t)));
+    if (add.length) {
+      let at = u.lesson.findIndex(b => b.t === 'key');
+      if (at < 0) at = u.lesson.findIndex(b => b.t === 'tip');
+      if (at < 0) at = u.lesson.length;
+      u.lesson.splice(at, 0, ...add);
+    }
+    (m.quiz || []).forEach(q => u.quiz.push(Array.isArray(q) ? Object.assign({ q: q[0], opts: q[1], ans: 0, exp: q[2] }, q[3] ? { logic: true } : {}) : q));
+  }));
   SUBJECTS.forEach(s => { s.grade = s.grade || 3; s.units.forEach((u, i) => { u.subject = s; u.no = i + 1; UNITS[u.id] = u; }); });
   const GRADES = [...new Set(SUBJECTS.map(s => s.grade))].sort();
   const GNAME = { 3: '三年級', 4: '四年級', 5: '五年級', 6: '六年級' };
 
   const ROUND = 10;          // 每回合題數
-  const FIXED_IN_GEN = 4;    // 有自動出題的單元，每回合放幾題固定題
+  const FIXED_IN_GEN = 5;    // 有自動出題的單元，每回合放幾題固定題
 
   /* ---------------- 小工具 ---------------- */
   const $ = s => document.querySelector(s);
@@ -339,6 +357,7 @@
       case 'cards': return `<section class="blk">${b.title ? `<h2>${b.title}</h2>` : ''}${b.p ? `<p>${b.p}</p>` : ''}${cardsHtml(b.v)}</section>`;
       case 'svg': return `<section class="blk figure">${b.title ? `<h2 style="text-align:left">${b.title}</h2>` : ''}${b.v}${b.cap ? `<p class="cap">${b.cap}</p>` : ''}</section>`;
       case 'widget': return `<section class="blk widget">${b.title ? `<h2 style="text-align:left">${b.title}</h2>` : ''}${b.p ? `<p style="text-align:left">${b.p}</p>` : ''}<div data-widget="${b.v}"></div></section>`;
+      case 'think': return `<section class="blk think"><h3>🤔 想一想</h3><p class="think-q">${b.q}</p><details><summary>先自己想想看，再點我看推理 👀</summary><ol>${b.steps.map(x => `<li>${x}</li>`).join('')}</ol>${b.ask ? `<p class="think-ask">🙋 還可以再問：${b.ask}</p>` : ''}</details></section>`;
       case 'words': return wordsHtml(b);
       case 'sents': return sentsHtml(b);
       default: return '';
@@ -571,6 +590,7 @@
       <section class="qcard">
         ${q.passage ? `<div class="passage">${q.passage}</div>` : ''}
         ${q.svg ? `<div class="figure">${q.svg}</div>` : ''}
+        ${q.logic ? '<span class="logic-tag">🧠 推理題</span>' : ''}
         <div class="qtext">${q.q}</div>
         <div>
           ${canRead ? `<button class="say" type="button" id="readQ">🔊 唸題目</button>` : ''}
