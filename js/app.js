@@ -1,5 +1,6 @@
-/* 三年級學習島 — 主程式
- * 資料在 js/data/*.js，每個檔案把一個科目 push 進 window.SUBJECTS。
+/* 學習島（三、四年級）— 主程式
+ * 資料在 js/data/*.js（三年級）與 js/data/g4/*.js（四年級），每個檔案把一個科目 push 進 window.SUBJECTS。
+ * 科目的 grade 欄位決定年級（沒寫就是 3）；首頁可切換年級。
  * 路由：#/ 首頁、#/s/科目、#/u/單元、#/p/單元（練習）、#/mix 綜合挑戰、#/review 錯題本
  */
 (function () {
@@ -7,7 +8,9 @@
 
   const SUBJECTS = window.SUBJECTS || [];
   const UNITS = {};
-  SUBJECTS.forEach(s => s.units.forEach((u, i) => { u.subject = s; u.no = i + 1; UNITS[u.id] = u; }));
+  SUBJECTS.forEach(s => { s.grade = s.grade || 3; s.units.forEach((u, i) => { u.subject = s; u.no = i + 1; UNITS[u.id] = u; }); });
+  const GRADES = [...new Set(SUBJECTS.map(s => s.grade))].sort();
+  const GNAME = { 3: '三年級', 4: '四年級' };
 
   const ROUND = 10;          // 每回合題數
   const FIXED_IN_GEN = 4;    // 有自動出題的單元，每回合放幾題固定題
@@ -81,7 +84,7 @@
   SUBJECTS.forEach(s => s.units.forEach(u => {
     if (!u.vocab) return;
     const words = u.lesson.filter(b => b.t === 'words' || b.t === 'sents').flatMap(b => b.v).concat(u.extraWords || []);
-    const lang = s.id === 'taigi' ? 'taigi' : 'en';
+    const lang = s.id.startsWith('taigi') ? 'taigi' : 'en';
     const own = u.gen;
     u.gen = own ? () => (Math.random() < .5 ? vocabQ(words, lang) : own()) : () => vocabQ(words, lang);
     u.fixedN = u.fixedN || 5;
@@ -100,6 +103,17 @@
     try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { /* 無痕模式等 */ }
     updateTop();
   }
+  /* 目前年級：記在 localStorage；打開某科目或單元時自動切到它的年級 */
+  const GKEY = 'isle_grade';
+  let grade = (() => { try { return +localStorage.getItem(GKEY); } catch (e) { return 0; } })();
+  if (!GRADES.includes(grade)) grade = GRADES[0];
+  const gradeSubjects = () => SUBJECTS.filter(s => s.grade === grade);
+  function setGrade(g) {
+    if (g === grade || !GRADES.includes(g)) return;
+    grade = g;
+    try { localStorage.setItem(GKEY, g); } catch (e) { /* 無痕模式等 */ }
+    updateTop();
+  }
   const unitRec = id => store.units[id] || (store.units[id] = { best: 0, plays: 0, read: false });
   function starsOf(id) {
     const r = store.units[id];
@@ -109,7 +123,8 @@
   const starHtml = n => `<span class="stars" aria-label="${n} 顆星">${'★'.repeat(n)}<span class="off">${'★'.repeat(3 - n)}</span></span>`;
   function subjectStars(s) { return s.units.reduce((t, u) => t + starsOf(u.id), 0); }
   function updateTop() {
-    $('#starCount').textContent = SUBJECTS.reduce((t, s) => t + subjectStars(s), 0);
+    $('#starCount').textContent = gradeSubjects().reduce((t, s) => t + subjectStars(s), 0);
+    $('#brandName').textContent = `${GNAME[grade]}學習島`;
     $('#wrongCount').textContent = Object.keys(store.wrong).length;
   }
 
@@ -183,7 +198,7 @@
   const MAP_WIDE = { w: 900, h: 460, k: 1, pos: [[150, 130], [450, 95], [750, 135], [160, 335], [455, 330], [745, 340]] };
   const MAP_TALL = { w: 400, h: 600, k: .86, pos: [[105, 105], [295, 115], [105, 300], [295, 310], [105, 495], [295, 505]] };
   function islesSvg(map) {
-    return SUBJECTS.map((s, i) => {
+    return gradeSubjects().map((s, i) => {
       const [x, y] = map.pos[i] || [100 + i * 120, 220];
       const st = subjectStars(s), max = s.units.length * 3;
       return `
@@ -219,20 +234,22 @@
   }
   function renderHome() {
     document.body.style.setProperty('--c', '#0f766e');
-    const totalUnits = Object.keys(UNITS).length;
+    const subs = gradeSubjects();
+    const totalUnits = subs.reduce((t, s) => t + s.units.length, 0);
 
     $('#view').innerHTML = `
+      <div class="grade-tabs" role="tablist" aria-label="選擇年級">${GRADES.map(g => `<button type="button" role="tab" class="grade-tab${g === grade ? ' on' : ''}" aria-selected="${g === grade}" data-grade="${g}">${GNAME[g]}</button>`).join('')}</div>
       <section class="hero">
         <h1>嗨！今天想去哪一座島？</h1>
-        <p>6 個科目、${totalUnits} 個單元。每個單元先讀<b>蛋蛋老師的重點教學</b>，再做 10 題練習，答得越好星星越多（最多 3 顆）。</p>
+        <p>${GNAME[grade]}：${subs.length} 個科目、${totalUnits} 個單元。每個單元先讀<b>蛋蛋老師的重點教學</b>，再做 10 題練習，答得越好星星越多（最多 3 顆）。</p>
       </section>
       <div class="map-wrap">${mapSvg(MAP_WIDE, 'map-wide')}${mapSvg(MAP_TALL, 'map-tall')}</div>
       <div class="quick-row">
-        <a class="quick" href="#/mix"><b>🎲 綜合挑戰</b><span>六科隨機各種題目，10 題一回合</span></a>
+        <a class="quick" href="#/mix"><b>🎲 綜合挑戰</b><span>${GNAME[grade]}六科隨機各種題目，10 題一回合</span></a>
         <a class="quick alt" href="#/review"><b>📕 錯題本（${Object.keys(store.wrong).length} 題）</b><span>答錯的題目都在這裡，重做答對就會消失</span></a>
       </div>
       <div class="subject-grid">
-        ${SUBJECTS.map(s => {
+        ${subs.map(s => {
           const st = subjectStars(s), max = s.units.length * 3;
           return `<a class="subject-card" href="#/s/${s.id}" style="--c:${s.color}">
             <span class="ico">${s.icon}</span>
@@ -243,6 +260,7 @@
         }).join('')}
       </div>`;
 
+    document.querySelectorAll('.grade-tab').forEach(b => { b.onclick = () => { setGrade(+b.dataset.grade); renderHome(); }; });
     document.querySelectorAll('.isle').forEach(g => {
       const go = () => { location.hash = g.dataset.href; };
       g.addEventListener('click', go);
@@ -256,7 +274,7 @@
     if (!s) return renderHome();
     document.body.style.setProperty('--c', s.color);
     $('#view').innerHTML = `
-      <div class="crumb"><a href="#/">🏝️ 地圖</a> › ${s.name}</div>
+      <div class="crumb"><a href="#/">🏝️ 地圖</a> › ${GNAME[s.grade]} › ${s.name}</div>
       <section class="subject-head"><h1>${s.icon} ${s.name}</h1><p>${s.intro || s.blurb}</p></section>
       <div class="unit-list">
         ${s.units.map(u => {
@@ -282,7 +300,7 @@
     const next = s.units[idx + 1];
     const nq = u.gen ? '自動出題，每次都不一樣' : `題庫 ${u.quiz.length} 題，每次隨機抽 ${Math.min(ROUND, u.quiz.length)} 題`;
     $('#view').innerHTML = `
-      <div class="crumb"><a href="#/">🏝️ 地圖</a> › <a href="#/s/${s.id}">${s.name}</a> › 第 ${u.no} 課</div>
+      <div class="crumb"><a href="#/">🏝️ 地圖</a> › ${GNAME[s.grade]} › <a href="#/s/${s.id}">${s.name}</a> › 第 ${u.no} 課</div>
       <div class="unit-head">
         <h1>${u.icon || ''} ${u.title}</h1>
         <a class="btn" href="#/p/${u.id}">🎯 開始練習</a>
@@ -501,7 +519,7 @@
     return shuffle(list);
   }
   function buildMixRound() {
-    const units = shuffle(Object.values(UNITS)).slice(0, ROUND);
+    const units = shuffle(Object.values(UNITS).filter(u => u.subject.grade === grade)).slice(0, ROUND);
     return units.map(u => {
       if (u.gen && Math.random() < 0.6) return genOne(u);
       const i = rnd(0, u.quiz.length - 1);
@@ -517,7 +535,7 @@
       list = buildUnitRound(u); title = `${u.subject.icon} ${u.title}`; back = `#/u/${u.id}`;
     } else if (kind === 'mix') {
       document.body.style.setProperty('--c', '#0f766e');
-      list = buildMixRound(); title = '🎲 綜合挑戰'; back = '#/';
+      list = buildMixRound(); title = `🎲 ${GNAME[grade]}綜合挑戰`; back = '#/';
     } else {
       document.body.style.setProperty('--c', '#be123c');
       list = shuffle(Object.values(store.wrong).map(q => norm(q, q.uid, q.key))).slice(0, ROUND);
@@ -673,7 +691,7 @@
       <p>每次最多抽 ${ROUND} 題。重做答對的題目會從錯題本消失。</p>
       ${SUBJECTS.filter(s => groups[s.id]).map(s => `
         <section class="blk" style="--c:${s.color};margin-bottom:12px">
-          <h2>${s.icon} ${s.name}（${groups[s.id].length} 題）</h2>
+          <h2>${s.icon} ${GRADES.length > 1 ? GNAME[s.grade] + '・' : ''}${s.name}（${groups[s.id].length} 題）</h2>
           <div class="review-list" style="margin-top:6px">${groups[s.id].map(q => `
             <div class="review-item"><div class="q">${q.q}</div>
             <div class="x">單元：<a href="#/u/${q.uid}">${UNITS[q.uid].title}</a></div></div>`).join('')}</div>
@@ -685,6 +703,8 @@
     stopSpeech();
     const parts = (location.hash.replace(/^#\/?/, '') || '').split('/').filter(Boolean);
     const [a, b] = parts;
+    const own = a === 's' ? SUBJECTS.find(x => x.id === b) : (a === 'u' || a === 'p') && UNITS[b] ? UNITS[b].subject : null;
+    if (own) setGrade(own.grade);
     if (a === 's') renderSubject(b);
     else if (a === 'u') renderUnit(b);
     else if (a === 'p' && b === 'review') { if (Object.keys(store.wrong).length) startSession('review'); else renderReview(); }
