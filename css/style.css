@@ -209,6 +209,8 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 16px; margin-top:
 .figure { text-align: center; }
 .figure svg { max-width: 100%; height: auto; }
 .figure .cap { font-size: 14px; color: var(--muted); }
+.mapwrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 12px; }
+.mapwrap svg { display: block; margin: 0 auto; border-radius: 12px; }
 
 .lesson-end { text-align: center; padding: 22px 0 6px; }
 
