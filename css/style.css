@@ -64,6 +64,7 @@ main { max-width: 980px; margin: 0 auto; padding: 18px 16px 40px; outline: none;
 .grade-tab { font: inherit; font-size: 17px; font-weight: 800; padding: 8px 22px; border-radius: 999px; border: 2px solid var(--brand); background: #fff; color: var(--brand); cursor: pointer; min-height: 44px; }
 .grade-tab.on { background: var(--brand); color: #fff; }
 .grade-tabs { flex-wrap: wrap; }
+.tab-break { flex-basis: 100%; height: 0; }
 @media (max-width: 560px) { .grade-tab { font-size: 15px; padding: 6px 12px; } .grade-tabs { gap: 6px; } }
 .grade-tab:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
 .map-wrap {

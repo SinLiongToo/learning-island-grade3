@@ -1,5 +1,5 @@
-/* 學習島（三～六年級）— 主程式
- * 資料在 js/data/*.js（三年級）與 js/data/g4、g5、g6/*.js（四～六年級），每個檔案把一個科目 push 進 window.SUBJECTS。
+/* 學習島（國小三年級～國中九年級）— 主程式
+ * 資料在 js/data/*.js（三年級）、js/data/g4、g5、g6/*.js（四～六年級）與 js/data/jh/*.js（國中七～九年級），每個檔案把一個科目 push 進 window.SUBJECTS。
  * 科目的 grade 欄位決定年級（沒寫就是 3）；首頁可切換年級。
  * 路由：#/ 首頁、#/s/科目、#/u/單元、#/p/單元（練習）、#/mix 綜合挑戰、#/review 錯題本
  */
@@ -27,8 +27,8 @@
     (m.quiz || []).forEach(q => u.quiz.push(Array.isArray(q) ? Object.assign({ q: q[0], opts: q[1], ans: 0, exp: q[2] }, q[3] ? { logic: true } : {}) : q));
   }));
   SUBJECTS.forEach(s => { s.grade = s.grade || 3; s.units.forEach((u, i) => { u.subject = s; u.no = i + 1; UNITS[u.id] = u; }); });
-  const GRADES = [...new Set(SUBJECTS.map(s => s.grade))].sort();
-  const GNAME = { 3: '三年級', 4: '四年級', 5: '五年級', 6: '六年級' };
+  const GRADES = [...new Set(SUBJECTS.map(s => s.grade))].sort((a, b) => a - b);
+  const GNAME = { 3: '三年級', 4: '四年級', 5: '五年級', 6: '六年級', 7: '七年級', 8: '八年級', 9: '九年級' };
 
   const ROUND = 10;          // 每回合題數
   const FIXED_IN_GEN = 5;    // 有自動出題的單元，每回合放幾題固定題
@@ -272,7 +272,7 @@
     const totalUnits = subs.reduce((t, s) => t + s.units.length, 0);
 
     $('#view').innerHTML = `
-      <div class="grade-tabs" role="tablist" aria-label="選擇年級">${GRADES.map(g => `<button type="button" role="tab" class="grade-tab${g === grade ? ' on' : ''}" aria-selected="${g === grade}" data-grade="${g}">${GNAME[g]}</button>`).join('')}</div>
+      <div class="grade-tabs" role="tablist" aria-label="選擇年級">${GRADES.map(g => `${g === 7 && GRADES[0] < 7 ? '<span class="tab-break" aria-hidden="true"></span>' : ''}<button type="button" role="tab" class="grade-tab${g === grade ? ' on' : ''}" aria-selected="${g === grade}" data-grade="${g}">${GNAME[g]}</button>`).join('')}</div>
       <section class="hero">
         <h1>嗨！今天想去哪一座島？</h1>
         <p>${GNAME[grade]}：${subs.length} 個科目、${totalUnits} 個單元。每個單元先讀<b>蛋蛋老師的重點教學</b>，再做 10 題練習，答得越好星星越多（最多 3 顆）。</p>
