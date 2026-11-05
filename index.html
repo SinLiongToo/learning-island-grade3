@@ -8,6 +8,15 @@
   <meta name="theme-color" content="#0f766e">
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2338bdf8'/%3E%3Cellipse cx='32' cy='38' rx='20' ry='10' fill='%23fde68a'/%3E%3Cellipse cx='32' cy='34' rx='16' ry='8' fill='%2322c55e'/%3E%3C/svg%3E">
   <link rel="stylesheet" href="css/style.css">
+  <script>
+    /* 深色／淺色模式：先用使用者選過的，沒選過就跟著手機或電腦的設定 */
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('island-theme'); } catch (e) {}
+      if (t !== 'dark' && t !== 'light') t = window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', t);
+    })();
+  </script>
 </head>
 <body>
   <header class="topbar">
@@ -17,6 +26,7 @@
     </a>
     <nav class="top-nav">
       <a href="#/review" class="nav-btn" id="navReview">📕 錯題本 <span class="badge" id="wrongCount">0</span></a>
+      <button class="theme-btn" id="themeBtn" type="button" aria-label="切換深色模式" title="切換深色／淺色">🌙</button>
       <span class="nav-stars" title="已獲得的星星">⭐ <b id="starCount">0</b></span>
     </nav>
   </header>

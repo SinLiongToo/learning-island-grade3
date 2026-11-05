@@ -757,6 +757,24 @@
       store = { units: {}, wrong: {} }; save(); route();
     }
   };
+  /* 深色／淺色模式切換（初始值由 index.html 開頭的小程式設定） */
+  const themeBtn = $('#themeBtn');
+  const showTheme = () => {
+    const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+    themeBtn.textContent = dark ? '☀️' : '🌙';
+    themeBtn.setAttribute('aria-label', dark ? '切換成淺色模式' : '切換成深色模式');
+    themeBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', dark ? '#0b1220' : '#0f766e');
+  };
+  themeBtn.onclick = () => {
+    const t = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', t);
+    try { localStorage.setItem('island-theme', t); } catch (e) { /* 無痕模式等 */ }
+    showTheme();
+  };
+  showTheme();
+
   window.addEventListener('hashchange', route);
   updateTop();
   route();
