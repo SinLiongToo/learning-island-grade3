@@ -359,7 +359,7 @@
       case 'ex': return `<section class="blk ex"><span class="ex-label">例題</span><p class="ex-q">${b.q}</p><ol>${b.steps.map(x => `<li>${x}</li>`).join('')}</ol>${b.a ? `<p>答：<span class="ex-a">${b.a}</span></p>` : ''}</section>`;
       case 'table': return `<section class="blk">${b.title ? `<h2>${b.title}</h2>` : ''}<div class="tbl-wrap"><table class="tbl"><thead><tr>${b.head.map(h => `<th>${h}</th>`).join('')}</tr></thead><tbody>${b.rows.map(r => `<tr>${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${b.note ? `<p class="qsub">${b.note}</p>` : ''}</section>`;
       case 'cards': return `<section class="blk">${b.title ? `<h2>${b.title}</h2>` : ''}${b.p ? `<p>${b.p}</p>` : ''}${cardsHtml(b.v)}</section>`;
-      case 'svg': return `<section class="blk figure">${b.title ? `<h2 style="text-align:left">${b.title}</h2>` : ''}${b.v}${b.cap ? `<p class="cap">${b.cap}</p>` : ''}</section>`;
+      case 'svg': return `<section class="blk figure">${b.title ? `<h2 style="text-align:left">${b.title}</h2>` : ''}${b.v}${b.anim ? '<p><button class="anim-btn" type="button" aria-pressed="false">⏸ 暫停動畫</button></p>' : ''}${b.cap ? `<p class="cap">${b.cap}</p>` : ''}</section>`;
       case 'widget': return `<section class="blk widget">${b.title ? `<h2 style="text-align:left">${b.title}</h2>` : ''}${b.p ? `<p style="text-align:left">${b.p}</p>` : ''}<div data-widget="${b.v}"></div></section>`;
       case 'think': return `<section class="blk think"><h3>🤔 想一想</h3><p class="think-q">${b.q}</p><details><summary>先自己想想看，再點我看推理 👀</summary><ol>${b.steps.map(x => `<li>${x}</li>`).join('')}</ol>${b.ask ? `<p class="think-ask">🙋 還可以再問：${b.ask}</p>` : ''}</details></section>`;
       case 'words': return wordsHtml(b);
@@ -409,6 +409,15 @@
       };
     });
     root.querySelectorAll('[data-widget]').forEach(el => { const w = WIDGETS[el.dataset.widget]; if (w) w(el); });
+    /* 動畫圖：暫停／播放；系統設定「減少動態效果」時一開始就暫停 */
+    const still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    root.querySelectorAll('.anim-btn').forEach(btn => {
+      const svg = btn.closest('.figure').querySelector('svg');
+      if (!svg || !svg.pauseAnimations) { btn.hidden = true; return; }
+      const show = paused => { btn.textContent = paused ? '▶ 播放動畫' : '⏸ 暫停動畫'; btn.setAttribute('aria-pressed', paused ? 'true' : 'false'); };
+      if (still) { svg.pauseAnimations(); show(true); }
+      btn.onclick = () => { const p = !svg.animationsPaused(); p ? svg.pauseAnimations() : svg.unpauseAnimations(); show(p); };
+    });
   }
 
   /* ---------------- 互動小工具 ---------------- */
