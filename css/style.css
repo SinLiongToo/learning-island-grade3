@@ -111,6 +111,44 @@ main { max-width: 980px; margin: 0 auto; padding: 18px 16px 40px; outline: none;
 .foot { max-width: 980px; margin: 0 auto; padding: 0 16px 40px; color: var(--muted); font-size: 13px; }
 .link-btn { background: none; border: 0; padding: 0; text-decoration: underline; color: var(--muted); }
 
+/* ---------- 找課程（搜尋） ---------- */
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.find-btn {
+  border: 2px solid var(--line); background: var(--card); border-radius: 999px; text-decoration: none;
+  width: 40px; height: 40px; display: grid; place-items: center; font-size: 18px; flex: none;
+}
+.find-h { font-size: 24px; margin-bottom: 10px; }
+.nb-sr { display: none; }
+@media (max-width: 560px) { .nb-sr { display: inline; } }
+.find-form input, .home-find input {
+  width: 100%; font: inherit; font-size: 18px; padding: 10px 14px; border-radius: 14px;
+  border: 2px solid var(--line); background: var(--card); color: var(--ink); min-height: 48px;
+}
+.find-form input:focus, .home-find input:focus { outline: none; border-color: var(--brand); }
+.home-find { display: flex; gap: 8px; max-width: 560px; margin: 12px auto 0; }
+.home-find input { flex: 1; min-width: 0; font-size: 16px; }
+.home-find button { border: 0; border-radius: 14px; padding: 0 16px; background: var(--brand); color: #fff; font-weight: 800; min-height: 48px; flex: none; }
+:root[data-theme="dark"] .home-find button { color: #0b1220; }
+.find-scope { display: flex; gap: 8px; flex-wrap: wrap; margin: 10px 0 6px; }
+.find-scope button, .find-try button {
+  border: 2px solid var(--line); background: var(--card); color: var(--ink); border-radius: 999px; padding: 4px 14px; font-weight: 700; min-height: 38px;
+}
+.find-scope button[aria-pressed="true"] { border-color: var(--brand); background: var(--brand); color: #fff; }
+:root[data-theme="dark"] .find-scope button[aria-pressed="true"] { color: #0b1220; }
+.find-try { display: flex; gap: 8px; flex-wrap: wrap; }
+.find-list { display: grid; gap: 10px; }
+.find-item {
+  display: flex; gap: 12px; align-items: flex-start; text-decoration: none; background: var(--card);
+  border-radius: var(--radius); padding: 12px 14px; box-shadow: var(--shadow); border-left: 6px solid var(--c);
+}
+.find-ico { font-size: 26px; line-height: 1.2; }
+.find-body { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.find-body small { color: var(--muted); font-size: 13px; }
+.find-body b { font-size: 18px; }
+.find-body span { color: var(--sub); font-size: 14px; line-height: 1.55; overflow-wrap: anywhere; }
+mark { background: #fde047; color: #0f172a; border-radius: 3px; padding: 0 1px; }
+.find-btn:focus-visible, .find-scope button:focus-visible, .find-try button:focus-visible, .home-find button:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
 /* ---------- 首頁：島嶼地圖 ---------- */
 .hero { text-align: center; margin: 4px 0 14px; }
 .hero h1 { font-size: 26px; margin-bottom: 4px; }
@@ -355,7 +393,8 @@ table.tbl { width: 100%; border-collapse: collapse; font-size: 16px; margin-top:
   .brand-logo { font-size: 24px; }
   .brand-text b { font-size: 16px; }
   .top-nav { gap: 6px; }
-  .theme-btn { width: 34px; height: 34px; font-size: 16px; }
+  .theme-btn, .find-btn { width: 34px; height: 34px; font-size: 16px; }
+  .nb-t { display: none; }
   .nav-btn, .nav-stars { padding: 4px 9px; font-size: 14px; }
   .hero h1 { font-size: 22px; }
   .qtext { font-size: 18px; }

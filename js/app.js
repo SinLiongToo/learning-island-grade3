@@ -278,6 +278,7 @@
       <section class="hero">
         <h1>嗨！今天想去哪一座島？</h1>
         <p>${GNAME[grade]}：${subs.length} 個科目、${totalUnits} 個單元。每個單元先讀<b>蛋蛋老師的重點教學</b>，再做 10 題練習，答得越好星星越多（最多 3 顆）。</p>
+        <form class="home-find" role="search" id="homeFind"><label class="sr" for="homeQ">找課程</label><input id="homeQ" type="search" enterkeyhint="search" autocomplete="off" placeholder="🔍 找課程：例如 颱風、分數"><button type="submit">搜尋</button></form>
       </section>
       <div class="map-wrap">${(m => mapSvg(m[0], 'map-wide') + mapSvg(m[1], 'map-tall'))(MAPS[Math.min(14, Math.max(6, subs.length))])}</div>
       <div class="quick-row">
@@ -297,6 +298,7 @@
       </div>`;
 
     document.querySelectorAll('.grade-tab').forEach(b => { b.onclick = () => { setGrade(+b.dataset.grade); renderHome(); }; });
+    $('#homeFind').onsubmit = e => { e.preventDefault(); const v = $('#homeQ').value.trim(); location.hash = '#/find' + (v ? '/' + encodeURIComponent(v) : ''); };
     document.querySelectorAll('.isle').forEach(g => {
       const go = () => { location.hash = g.dataset.href; };
       g.addEventListener('click', go);
@@ -746,6 +748,109 @@
   }
 
   /* ---------------- 路由 ---------------- */
+
+  /* ---------------- 找課程（搜尋） ----------------
+   * 搜尋所有年級的單元：課名、摘要、教學內容、想一想、題目。
+   * 多個關鍵字用空白分開，每個都要出現；全形、半形和大小寫都當成一樣。 */
+  const fnorm = s => String(s).normalize('NFKC').toLowerCase();
+  let FINDX = null;
+  function findIndex() {
+    if (FINDX) return FINDX;
+    const txt = x => x == null ? '' : typeof x === 'string' || typeof x === 'number' ? String(x)
+      : Array.isArray(x) ? x.map(txt).join(' ') : typeof x === 'object' ? Object.keys(x).filter(k => k !== 't').map(k => txt(x[k])).join(' ') : '';
+    FINDX = SUBJECTS.flatMap(s => s.units.map(u => {
+      const body = plain(txt(u.lesson)), quiz = plain(u.quiz.map(q => [q.q, q.passage, q.opts, q.exp].map(txt).join(' ')).join(' '));
+      return { u, s, title: fnorm(u.title), sum: fnorm(plain(u.summary || '')), sub: fnorm(s.name + ' ' + GNAME[s.grade]), body, nbody: fnorm(body), nquiz: fnorm(quiz), quiz };
+    }));
+    return FINDX;
+  }
+  function findSearch(q, onlyGrade) {
+    const terms = fnorm(q).split(/\s+/).filter(Boolean);
+    if (!terms.length) return [];
+    const out = [];
+    for (const r of findIndex()) {
+      if (onlyGrade && r.s.grade !== grade) continue;
+      let score = 0, ok = true;
+      for (const t of terms) {
+        const sc = (r.title.includes(t) ? 20 : 0) + (r.sum.includes(t) ? 6 : 0) + (r.sub.includes(t) ? 5 : 0) + (r.nbody.includes(t) ? 3 : 0) + (r.nquiz.includes(t) ? 1 : 0);
+        if (!sc) { ok = false; break; }
+        score += sc;
+      }
+      if (ok) out.push({ r, score });
+    }
+    return out.sort((a, b) => b.score - a.score || a.r.s.grade - b.r.s.grade);
+  }
+  /** 把關鍵字標亮（文字先跳脫，再加上 <mark>） */
+  function findMark(s, terms) {
+    const ns = fnorm(s);
+    if (ns.length !== s.length) return esc(s);
+    const hit = new Array(s.length).fill(false);
+    terms.forEach(t => { let k = ns.indexOf(t); while (t && k >= 0) { for (let j = k; j < k + t.length; j++) hit[j] = true; k = ns.indexOf(t, k + t.length); } });
+    let out = '', on = false;
+    for (let j = 0; j < s.length; j++) {
+      if (hit[j] !== on) { out += hit[j] ? '<mark>' : '</mark>'; on = hit[j]; }
+      out += esc(s[j]);
+    }
+    return out + (on ? '</mark>' : '');
+  }
+  /** 找出含關鍵字的一小段文字 */
+  function findSnippet(r, terms) {
+    for (const src of [r.body, r.quiz]) {
+      const n = fnorm(src);
+      for (const t of terms) {
+        const i = n.indexOf(t);
+        if (i >= 0 && n.length === src.length) {
+          const a = Math.max(0, i - 24), b = Math.min(src.length, i + 46);
+          return (a ? '…' : '') + findMark(src.slice(a, b), terms) + (b < src.length ? '…' : '');
+        }
+      }
+    }
+    return esc(plain(r.u.summary || ''));
+  }
+  const FIND_TRY = ['光合作用', '颱風', '分數', '畢氏定理', 'pH', '月相', '台語 聲調', '詐騙'];
+  let findAll = true;
+  function renderFind(q) {
+    document.body.style.setProperty('--c', '#0f766e');
+    $('#view').innerHTML = `
+      <div class="crumb"><a href="#/">🏝️ 地圖</a> › 找課程</div>
+      <h1 class="find-h">🔍 找課程</h1>
+      <form class="find-form" role="search" id="findForm">
+        <label class="sr" for="findQ">搜尋關鍵字</label>
+        <input id="findQ" type="search" enterkeyhint="search" autocomplete="off" placeholder="輸入關鍵字，例如：颱風、分數" value="${esc(q)}">
+      </form>
+      <div class="find-scope" role="group" aria-label="搜尋範圍">
+        <button type="button" data-all="1" aria-pressed="${findAll}">全部年級</button>
+        <button type="button" data-all="0" aria-pressed="${!findAll}">只找${GNAME[grade]}</button>
+      </div>
+      <div id="findOut" aria-live="polite"></div>`;
+    const inp = $('#findQ'), out = $('#findOut');
+    const show = () => {
+      const v = inp.value.trim();
+      try { history.replaceState(null, '', '#/find' + (v ? '/' + encodeURIComponent(v) : '')); } catch (e) { /* 有些瀏覽器在 file:// 不允許 */ }
+      if (!v) {
+        out.innerHTML = `<p class="qsub">可以搜尋課名、教學內容和題目，多個關鍵字用空白分開。試試看：</p><div class="find-try">${FIND_TRY.map(t => `<button type="button" data-q="${esc(t)}">${esc(t)}</button>`).join('')}</div>`;
+        out.querySelectorAll('[data-q]').forEach(b => { b.onclick = () => { inp.value = b.dataset.q; show(); }; });
+        return;
+      }
+      const res = findSearch(v, !findAll), terms = fnorm(v).split(/\s+/).filter(Boolean);
+      out.innerHTML = res.length
+        ? `<p class="qsub">找到 ${res.length} 課${res.length > 60 ? '，先顯示最相關的 60 課' : ''}</p><div class="find-list">${res.slice(0, 60).map(({ r }) => `
+          <a class="find-item" href="#/u/${r.u.id}" style="--c:${r.s.color}">
+            <span class="find-ico" aria-hidden="true">${r.u.icon || r.s.icon}</span>
+            <span class="find-body"><small>${GNAME[r.s.grade]}・${esc(r.s.name)}・第 ${r.u.no} 課</small>
+              <b>${findMark(r.u.title, terms)}</b><span>${findSnippet(r, terms)}</span></span></a>`).join('')}</div>`
+        : `<div class="empty"><div class="e">🔎</div><p>找不到「${esc(v)}」。換個說法，或少打幾個字試試看。</p></div>`;
+    };
+    let tm = 0;
+    inp.addEventListener('input', () => { clearTimeout(tm); tm = setTimeout(show, 150); });
+    $('#findForm').onsubmit = e => { e.preventDefault(); clearTimeout(tm); show(); inp.blur(); };
+    document.querySelectorAll('.find-scope button').forEach(b => {
+      b.onclick = () => { findAll = b.dataset.all === '1'; document.querySelectorAll('.find-scope button').forEach(x => x.setAttribute('aria-pressed', String(x === b))); show(); };
+    });
+    show();
+    if (!q) setTimeout(() => inp.focus(), 0);
+  }
+
   function route() {
     stopSpeech();
     const parts = (location.hash.replace(/^#\/?/, '') || '').split('/').filter(Boolean);
@@ -758,6 +863,7 @@
     else if (a === 'p') startSession('unit', b);
     else if (a === 'mix') startSession('mix');
     else if (a === 'review') renderReview();
+    else if (a === 'find') { let q = parts.slice(1).join('/'); try { q = decodeURIComponent(q); } catch (e) { /* 保留原字串 */ } renderFind(q); }
     else renderHome();
     window.scrollTo(0, 0);
     $('#view').focus({ preventScroll: true });

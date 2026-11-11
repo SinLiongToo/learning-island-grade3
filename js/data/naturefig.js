@@ -1,4 +1,4 @@
-/* 自然科學島（三～九年級）的示意圖與動畫
+/* 自然科學島（三～九年級）與地球科學島（三～六年級）的示意圖與動畫
  *  每個沒有圖的自然單元加一張圖，插在 FIG[id].after 那個教學區塊後面。
  *  anim: true 的圖有 SMIL 動畫，app.js 會加上「暫停／播放」按鈕；
  *  使用者系統設定「減少動態效果」時，動畫一開始就是暫停的。
@@ -436,6 +436,141 @@ ${[60, 110, 190, 240].map(y => L(436, y, 396, y, '#f59e0b', { w: 3, m: 'j9n5a' }
 ${[0, 45, 90, 135, 180, 225, 270, 315].map(a => { const x = 190 + 90 * Math.cos(a * Math.PI / 180), y = 150 - 90 * Math.sin(a * Math.PI / 180); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="10" fill="#475569"/><path d="M${x.toFixed(1)} ${(y - 10).toFixed(1)} A10 10 0 0 1 ${x.toFixed(1)} ${(y + 10).toFixed(1)} Z" fill="#fde68a"/>`; }).join('')}
 ${[0, 45, 90, 135, 180, 225, 270, 315].map(a => phase(+(190 + 136 * Math.cos(a * Math.PI / 180)).toFixed(1), +(150 - 136 * Math.sin(a * Math.PI / 180)).toFixed(1), 12, a)).join('')}
 ${T(326, 180, '新月', { b: 1, fs: 13 })}${T(212, 20, '上弦月', { b: 1, fs: 13, a: 'start' })}${T(54, 180, '滿月', { b: 1, fs: 13 })}${T(212, 292, '下弦月', { b: 1, fs: 13, a: 'start' })}`)
+  };
+
+  /* ---------- 地球科學島（三～六年級） ---------- */
+  FIG.es3b = {
+    after: 0, anim: true, title: '動畫：土壤是怎麼來的？', cap: '雨水、冷熱變化讓岩石慢慢碎裂成小顆粒；落葉和生物遺骸被分解成黑色的腐植質；蚯蚓幫忙鬆土。（示意動畫）',
+    v: S(440, 250, '土壤的剖面：腐植質、表土、底土、岩石，岩石慢慢碎裂，蚯蚓在土裡鑽',
+      `<rect x="0" y="0" width="440" height="70" fill="#e0f2fe"/>
+${[60, 140, 220, 300, 380].map((x, i) => `<line x1="${x}" y1="0" x2="${x - 4}" y2="12" stroke="#0284c7" stroke-width="2.5" stroke-linecap="round"><animateTransform attributeName="transform" type="translate" values="0 0;-6 58" dur="1.1s" begin="${(i * 0.23).toFixed(2)}s" repeatCount="indefinite"/></line>`).join('')}
+<rect x="0" y="70" width="440" height="25" fill="#3f2a1d"/><rect x="0" y="95" width="440" height="45" fill="#7c4a2d"/><rect x="0" y="140" width="440" height="50" fill="#b07d4f"/><rect x="0" y="190" width="440" height="60" fill="#94a3b8"/>
+${[[30, 160, 7], [90, 172, 5], [150, 156, 6], [230, 176, 8], [300, 162, 5]].map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="#a8a29e"/>`).join('')}
+${[[40, 192, 70, 230], [150, 190, 130, 236], [260, 190, 290, 240], [340, 190, 330, 222]].map(([a, b, c, d]) => L(a, b, c, d, '#475569', { w: 2 })).join('')}
+${[[70, 0], [140, 1.5], [280, 3]].map(([x, b]) => `<circle cx="${x}" cy="196" r="3.5" fill="#cbd5e1"><animate attributeName="cy" values="196;178" dur="4.5s" begin="${b}s" repeatCount="indefinite"/></circle>`).join('')}
+${[20, 50, 110, 170, 250, 330, 400].map(x => `<path d="M${x} 70 l-4 -12 M${x + 4} 70 l0 -15 M${x + 8} 70 l4 -11" stroke="#16a34a" stroke-width="2" fill="none"/>`).join('')}
+<path d="M0 0 c6 -4 12 4 18 0 c6 -4 12 4 18 0" stroke="#f472b6" stroke-width="5" stroke-linecap="round" fill="none"><animateMotion dur="9s" repeatCount="indefinite" path="M40 118 C110 108 170 128 240 116 C300 106 330 124 360 118"/></path>
+${T(432, 87, '腐植質（落葉分解）', { a: 'end', fs: 12, c: '#fff', b: 1 })}${T(432, 122, '表土', { a: 'end', fs: 13, c: '#fff', b: 1 })}${T(432, 170, '底土', { a: 'end', fs: 13, b: 1 })}${T(432, 222, '岩石（慢慢碎裂）', { a: 'end', fs: 13, b: 1 })}`)
+  };
+
+  FIG.es3c = {
+    after: 1, anim: true, title: '動畫：水的旅行', cap: '太陽晒熱海面，水蒸發成水蒸氣；植物的葉子也會把水散發出去（蒸散）；水蒸氣在高空凝結成雲，再下雨落到地面，沿河流回大海。（示意動畫）',
+    v: S(440, 255, '水循環：蒸發、蒸散、凝結成雲、降雨、流回大海',
+      `<circle cx="45" cy="42" r="20" fill="#fbbf24"/>${[0, 60, 120, 180, 240, 300].map(a => L(45 + 26 * Math.cos(a * Math.PI / 180), 42 + 26 * Math.sin(a * Math.PI / 180), 45 + 33 * Math.cos(a * Math.PI / 180), 42 + 33 * Math.sin(a * Math.PI / 180), '#f59e0b', { w: 3 })).join('')}
+<path d="M245 200 L330 96 L380 150 L440 150 L440 255 L245 255 Z" fill="#86efac" stroke="#15803d" stroke-width="2"/><rect x="0" y="200" width="247" height="55" fill="#38bdf8"/>
+<path d="M326 112 C305 145 280 172 252 196" stroke="#0ea5e9" stroke-width="5" fill="none" stroke-dasharray="10 6"><animate attributeName="stroke-dashoffset" values="32;0" dur="1s" repeatCount="indefinite"/></path>
+<rect x="405" y="122" width="8" height="28" fill="#92400e"/><circle cx="409" cy="112" r="18" fill="#22c55e" stroke="#15803d" stroke-width="2"/>
+${[0, 0.8, 1.6].map((b, i) => `<circle cx="${400 + i * 9}" cy="94" r="3.5" fill="#7dd3fc" opacity="0"><animate attributeName="cy" values="94;58" dur="2.4s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="${b}s" repeatCount="indefinite"/></circle>`).join('')}
+${[70, 110, 150, 190].map((x, i) => `<circle cx="${x}" cy="195" r="4" fill="#0ea5e9" opacity="0"><animate attributeName="cy" values="195;90" dur="2.5s" begin="${i * 0.6}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="2.5s" begin="${i * 0.6}s" repeatCount="indefinite"/></circle>`).join('')}
+<g fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"><circle cx="262" cy="56" r="17"/><circle cx="285" cy="45" r="23"/><circle cx="309" cy="56" r="17"/></g><rect x="248" y="52" width="74" height="21" fill="#e2e8f0"/>
+${[264, 280, 296, 312].map((x, i) => `<line x1="${x}" y1="78" x2="${x - 3}" y2="88" stroke="#0369a1" stroke-width="2.5" stroke-linecap="round"><animateTransform attributeName="transform" type="translate" values="0 0;-5 32" dur="1s" begin="${i * 0.25}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1s" begin="${i * 0.25}s" repeatCount="indefinite"/></line>`).join('')}
+${T(130, 150, '蒸發', { b: 1, c: '#0369a1' })}${T(285, 20, '凝結成雲', { b: 1, fs: 14 })}${T(240, 98, '降雨', { b: 1, fs: 14, a: 'end' })}${T(410, 48, '蒸散', { b: 1, fs: 14, c: '#15803d' })}${T(120, 234, '海', { b: 1, c: '#fff' })}${T(345, 230, '河流流回大海', { b: 1, fs: 13 })}`)
+  };
+
+  const PL = [['水星', 34, 3, '#a8a29e', 3], ['金星', 48, 5, '#fbbf24', 4.5], ['地球', 62, 7, '#3b82f6', 4.5], ['火星', 78, 10, '#ef4444', 3.5], ['木星', 108, 16, '#d97706', 9], ['土星', 134, 22, '#eab308', 7.5], ['天王星', 162, 30, '#67e8f9', 6], ['海王星', 190, 40, '#2563eb', 6]];
+  FIG.es4a = {
+    after: 1, anim: true, title: '動畫：八大行星繞太陽', cap: '行星都繞著太陽轉，離太陽越遠，轉一圈越久。（示意動畫，大小、距離和速度都沒有照比例）',
+    v: S(440, 252, '太陽系八大行星繞太陽公轉，越外面的行星轉得越慢',
+      `<rect width="440" height="215" rx="10" fill="#0f172a"/>
+${PL.map(([, r]) => `<ellipse cx="220" cy="108" rx="${r}" ry="${(r * 0.42).toFixed(1)}" fill="none" stroke="#475569" stroke-width="1"/>`).join('')}
+<circle cx="220" cy="108" r="16" fill="#fbbf24"/><circle cx="220" cy="108" r="21" fill="none" stroke="#fde68a" stroke-width="2" opacity=".5"/>
+${PL.map(([, r, d, c, s], i) => { const ry = (r * 0.42).toFixed(1); return `<g><animateMotion dur="${d}s" begin="${(-d * ((i * 0.37) % 1)).toFixed(2)}s" repeatCount="indefinite" path="M${220 + r} 108 A${r} ${ry} 0 1 0 ${220 - r} 108 A${r} ${ry} 0 1 0 ${220 + r} 108"/><circle r="${s}" fill="${c}"/>${i === 5 ? `<ellipse rx="${s + 5}" ry="2.5" fill="none" stroke="#fde68a" stroke-width="1.5"/>` : ''}</g>`; }).join('')}
+${PL.map(([n, , , c], i) => `<circle cx="${22 + i * 53}" cy="236" r="5" fill="${c}" stroke="#334155" stroke-width="1"/>${T(30 + i * 53, 241, n, { a: 'start', fs: 12, b: 1 })}`).join('')}`)
+  };
+
+  const SKY = { P: [204, 150], dip: [[224, 230], [228, 246], [254, 252], [256, 232], [276, 228], [294, 222], [312, 230]], cas: [[128, 64], [140, 82], [152, 68], [166, 86], [178, 66]] };
+  FIG.es4b = {
+    after: 0, anim: true, title: '動畫：星星繞著北極星轉', cap: '面向北方，星星一整晚繞著北極星逆時針轉動（動畫加速顯示）。把北斗七星勺口的兩顆星連起來，往勺口方向延長約 5 倍，就找到北極星。',
+    v: S(440, 305, '北斗七星和仙后座繞著北極星逆時針轉動；勺口兩顆星延長約五倍就是北極星',
+      `<rect width="440" height="305" rx="10" fill="#0f172a"/>${[[30, 30], [400, 50], [380, 260], [60, 250], [350, 120], [90, 150], [420, 190], [40, 100]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="1.5" fill="#94a3b8"/>`).join('')}
+<g><animateTransform attributeName="transform" type="rotate" values="0 204 150;-360 204 150" dur="24s" repeatCount="indefinite"/>
+<path d="M${SKY.dip.slice(0, 4).map(p => p.join(' ')).join(' L')} Z M${SKY.dip.slice(3).map(p => p.join(' ')).join(' L')}" fill="none" stroke="#64748b" stroke-width="1.5"/>
+${L(228, 246, 204, 150, '#f59e0b', { w: 2, d: '5 5' })}<path d="M${SKY.cas.map(p => p.join(' ')).join(' L')}" fill="none" stroke="#64748b" stroke-width="1.5"/>
+${SKY.dip.concat(SKY.cas).map(([x, y]) => `<circle cx="${x}" cy="${y}" r="3.5" fill="#fde68a"/>`).join('')}</g>
+<circle cx="204" cy="150" r="5.5" fill="#fff" stroke="#fde68a" stroke-width="2"/>${T(216, 155, '北極星', { a: 'start', fs: 14, b: 1, c: '#fde68a' })}
+${T(220, 296, '勺子形：北斗七星　W 形：仙后座　虛線：找北極星', { fs: 12, c: '#e2e8f0' })}`)
+  };
+
+  FIG.es4c = {
+    after: 0, anim: true, title: '動畫：地球自轉，有白天和黑夜', cap: '從北極上方往下看，地球由西向東（逆時針）自轉，大約 24 小時轉一圈。面向太陽的一半是白天，另一半是黑夜。紅點是臺灣。（示意動畫，加速顯示）',
+    v: S(440, 230, '從北極上方看地球逆時針自轉，面向太陽的一半是白天',
+      `<defs>${AR('es4ca', '#f59e0b')}</defs><circle cx="34" cy="115" r="26" fill="#fbbf24"/>${T(34, 160, '太陽', { b: 1, fs: 14 })}
+${[75, 115, 155].map(y => L(68, y, 150, y, '#f59e0b', { w: 3, m: 'es4ca' })).join('')}
+<g><animateTransform attributeName="transform" type="rotate" values="0 260 115;-360 260 115" dur="8s" repeatCount="indefinite"/>
+<circle cx="260" cy="115" r="80" fill="#60a5fa" stroke="#1d4ed8" stroke-width="2"/>
+<path d="M230 60 C255 50 280 62 290 80 C270 92 245 90 230 60 Z M205 120 C215 105 240 112 238 135 C226 150 206 142 205 120 Z M285 130 C300 120 322 128 318 150 C305 165 286 158 285 130 Z" fill="#4ade80"/>
+<circle cx="296" cy="72" r="6" fill="#dc2626" stroke="#fff" stroke-width="2"/></g>
+<path d="M260 35 A80 80 0 0 1 260 195 Z" fill="#0f172a" opacity=".6"/><circle cx="260" cy="115" r="4" fill="#fff"/>
+${T(214, 22, '白天', { b: 1, fs: 15, c: '#b45309' })}${T(310, 22, '黑夜', { b: 1, fs: 15, c: '#334155' })}${T(260, 218, '從北極上方往下看', { fs: 13, c: MUT })}`)
+  };
+
+  /* ---------- 五年級 ---------- */
+  FIG.es5a = {
+    after: 0, anim: true, title: '動畫：板塊擠壓與地震', cap: '菲律賓海板塊往西北擠壓歐亞板塊，把臺灣的山擠高；累積的力量突然釋放，就在震源發生地震，震波向四面八方傳出去。（示意動畫）',
+    v: S(440, 230, '菲律賓海板塊擠壓歐亞板塊，臺灣山脈隆起，震源釋放震波',
+      `<defs>${AR('es5aa', '#dc2626')}<clipPath id="es5ac"><rect width="440" height="200"/></clipPath></defs>
+<rect x="0" y="0" width="440" height="120" fill="#e0f2fe"/><rect x="0" y="120" width="222" height="80" fill="#c8b39b" stroke="#78716c"/>
+<g><animateTransform attributeName="transform" type="translate" values="0 0;-6 0;-6 0;0 0" keyTimes="0;0.5;0.55;1" dur="6s" repeatCount="indefinite"/><rect x="222" y="120" width="218" height="80" fill="#a8a29e" stroke="#57534e"/>${L(400, 145, 330, 145, '#dc2626', { w: 4, m: 'es5aa' })}</g>
+<g><animateTransform attributeName="transform" type="translate" values="0 0;0 0;-3 0;3 0;-2 0;0 0;0 0" keyTimes="0;0.5;0.53;0.56;0.6;0.64;1" dur="6s" repeatCount="indefinite"/>
+<path d="M150 120 L196 70 L214 82 L232 56 L290 120 Z" fill="#65a30d" stroke="#3f6212" stroke-width="2"/><rect x="330" y="98" width="24" height="22" fill="#f8fafc" stroke="#475569"/><path d="M326 98 L342 86 L358 98 Z" fill="#dc2626"/></g>
+<g clip-path="url(#es5ac)">${[0, 0.06].map(o => `<circle cx="222" cy="160" r="0" fill="none" stroke="#dc2626" stroke-width="3"><animate attributeName="r" values="0;0;150;150" keyTimes="0;${0.5 + o};${0.85 + o};1" dur="6s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0;0" keyTimes="0;${0.5 + o};${0.85 + o};1" dur="6s" repeatCount="indefinite"/></circle>`).join('')}</g>
+<path d="M222 150 l3 7 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1 Z" fill="#facc15" stroke="#b45309"/>
+${T(222, 40, '臺灣（山被擠高）', { b: 1, fs: 14 })}${T(110, 220, '歐亞板塊', { b: 1, fs: 14 })}${T(330, 220, '菲律賓海板塊', { b: 1, fs: 14 })}${T(236, 186, '震源', { a: 'start', fs: 13, b: 1, c: '#b91c1c' })}`)
+  };
+
+  FIG.es5b = {
+    after: 0, anim: true, title: '動畫：火山爆發與溫泉', cap: '地底的岩漿從裂縫往上升，噴出地面就是火山爆發，流出來的叫熔岩；地下水被岩漿加熱，冒出地面就是溫泉。（示意動畫）',
+    v: S(440, 255, '火山剖面：岩漿庫的岩漿沿通道上升噴發，地下水被加熱形成溫泉',
+      `<rect x="0" y="0" width="440" height="200" fill="#e0f2fe"/><rect x="0" y="200" width="440" height="55" fill="#d6b48a"/>
+<path d="M120 200 L203 72 L237 72 L320 200 Z" fill="#92400e" stroke="#78350f" stroke-width="2"/><rect x="212" y="72" width="16" height="140" fill="#f97316"/>
+<ellipse cx="220" cy="228" rx="82" ry="20" fill="#ea580c" stroke="#9a3412" stroke-width="2"/>
+${[0, 0.7, 1.4].map(b => `<circle cx="220" cy="214" r="5" fill="#fde047"><animate attributeName="cy" values="214;74" dur="2.1s" begin="${b}s" repeatCount="indefinite"/></circle>`).join('')}
+${[[-30, 0], [0, 0.9], [26, 1.8]].map(([dx, b]) => `<circle cx="220" cy="64" r="10" fill="#64748b" opacity="0"><animate attributeName="cy" values="64;8" dur="2.7s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="cx" values="220;${220 + dx}" dur="2.7s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="r" values="8;20" dur="2.7s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.85;0" dur="2.7s" begin="${b}s" repeatCount="indefinite"/></circle>`).join('')}
+<path d="M236 76 C252 110 268 140 290 180" stroke="#f97316" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="14 8"><animate attributeName="stroke-dashoffset" values="44;0" dur="1.4s" repeatCount="indefinite"/></path>
+<path d="M20 214 C70 216 110 222 140 226" stroke="#38bdf8" stroke-width="4" fill="none" stroke-dasharray="8 6"/><path d="M50 200 C46 208 54 214 50 222" stroke="#38bdf8" stroke-width="4" fill="none"/>
+<ellipse cx="50" cy="199" rx="22" ry="5" fill="#7dd3fc" stroke="#0284c7"/>${[40, 52, 62].map((x, i) => `<path d="M${x} 190 c-4 -6 4 -10 0 -16" stroke="#94a3b8" stroke-width="2.5" fill="none"><animate attributeName="opacity" values="0;1;0" dur="2s" begin="${i * 0.6}s" repeatCount="indefinite"/></path>`).join('')}
+${T(244, 66, '火山口', { a: 'start', fs: 13, b: 1 })}${T(296, 172, '熔岩', { a: 'start', fs: 13, b: 1, c: '#c2410c' })}${T(310, 244, '岩漿庫', { a: 'start', fs: 13, b: 1, c: '#9a3412' })}${T(50, 168, '溫泉', { fs: 14, b: 1, c: '#0369a1' })}${T(80, 244, '地下水被加熱', { fs: 12, c: INK })}`)
+  };
+
+  FIG.es5c = {
+    after: 2, anim: true, title: '動畫：漲潮和退潮', cap: '海水一天大約漲潮、退潮各兩次（大約 12 小時 25 分鐘一個循環）。退潮時露出來的「潮間帶」可以觀察螃蟹和貝類。（示意動畫，加速顯示）',
+    v: S(440, 215, '海水漲潮淹過潮間帶，退潮時露出螃蟹和貝類',
+      `<defs><clipPath id="es5cc"><path d="M0 0 L440 0 L440 78 L300 108 L0 182 Z"/></clipPath></defs><rect width="440" height="200" fill="#e0f2fe"/>${T(36, 40, '🌙', { fs: 26 })}${T(64, 44, '月球的引力拉動海水', { a: 'start', fs: 13, c: MUT })}
+<path d="M0 200 L0 182 L300 108 L440 78 L440 200 Z" fill="#fcd34d" stroke="#b45309" stroke-width="2"/>
+${T(232, 132, '🦀', { fs: 20 })}${T(178, 150, '🐚', { fs: 18 })}
+<rect x="0" y="165" width="440" height="100" fill="#38bdf8" opacity=".6" clip-path="url(#es5cc)"><animate attributeName="y" values="165;110;165" ${SINE} dur="8s" repeatCount="indefinite"/></rect>
+${L(0, 110, 300, 110, '#0369a1', { w: 1.5, d: '6 5' })}${L(0, 165, 300, 165, '#0369a1', { w: 1.5, d: '6 5' })}
+${T(8, 104, '滿潮（漲潮）', { a: 'start', fs: 13, b: 1, c: '#0369a1' })}${T(8, 160, '乾潮（退潮）', { a: 'start', fs: 13, b: 1, c: '#0369a1' })}${T(200, 190, '潮間帶：兩條虛線之間的海岸', { fs: 13, b: 1, c: '#92400e' })}`)
+  };
+
+  /* ---------- 六年級 ---------- */
+  const LAY = [[200, '#a16207'], [165, '#ca8a04'], [130, '#d6b48a'], [95, '#a8a29e'], [60, '#e7c9a0']];
+  FIG.es6a = {
+    after: 0, anim: true, title: '動畫：地層一層一層堆起來', cap: '泥沙一層一層往上堆積：沒有被翻動的話，越下面的地層越老，越上面越新；被埋在地層裡的生物遺骸可能變成化石。（示意動畫）',
+    v: S(440, 245, '地層從下往上一層一層堆積，下面的老、上面的新，化石埋在地層中',
+      `${LAY.map(([y, c], i) => `<g transform="translate(0 -300)"><animateTransform attributeName="transform" type="translate" values="0 -300;0 -300;0 0;0 0" keyTimes="0;${(i * 0.14).toFixed(2)};${(i * 0.14 + 0.1).toFixed(2)};1" dur="9s" repeatCount="indefinite"/><rect x="20" y="${y}" width="330" height="35" fill="${c}" stroke="#78350f"/>
+${i === 1 ? `<path d="M110 182 a9 9 0 1 1 -9 -9 a6 6 0 1 1 -6 6 a3 3 0 1 1 -3 -3" stroke="#44403c" stroke-width="2" fill="none"/>` : ''}${i === 3 ? `<path d="M230 112 l30 0 m-30 0 l-10 -6 m10 6 l-10 6 m14 -6 l0 -6 m8 6 l0 -6 m8 6 l0 -6 m-16 6 l0 6 m8 -6 l0 6 m8 -6 l0 6 m6 -6 a5 5 0 1 0 0.1 0" stroke="#44403c" stroke-width="2" fill="none"/>` : ''}</g>`).join('')}
+${L(380, 222, 380, 70, '#475569', { w: 3 })}<path d="M380 62 L372 76 L388 76 Z" fill="#475569"/>${T(392, 74, '新', { a: 'start', b: 1 })}${T(392, 224, '老', { a: 'start', b: 1 })}${T(185, 30, '泥沙一層一層往上堆', { fs: 14, b: 1 })}`)
+  };
+
+  FIG.es6b = {
+    after: 1, anim: true, title: '動畫：光一秒繞地球七圈半', cap: '光每秒大約跑 30 萬公里，一秒可以繞地球七圈半。動畫放慢 10 倍：黃點 10 秒繞 7 圈半，代表真實的 1 秒。（示意動畫）',
+    v: S(440, 215, '光一秒繞地球七圈半，以及光從月球、太陽、比鄰星到地球要走多久',
+      `<circle cx="105" cy="105" r="42" fill="#60a5fa" stroke="#1d4ed8" stroke-width="2"/><path d="M80 85 C95 75 110 85 112 98 C100 108 85 104 80 85 Z M100 118 C112 112 128 120 124 134 C112 140 100 132 100 118 Z" fill="#4ade80"/>
+<circle cx="105" cy="105" r="56" fill="none" stroke="#fde68a" stroke-width="2" stroke-dasharray="4 4"/>
+<circle r="6" fill="#facc15" stroke="#b45309"><animateMotion dur="1.333s" repeatCount="indefinite" path="M161 105 A56 56 0 1 0 49 105 A56 56 0 1 0 161 105"/></circle>
+${T(105, 190, '光 1 秒繞地球 7 圈半', { b: 1, fs: 14 })}${T(105, 208, '（放慢 10 倍）', { fs: 12, c: MUT })}
+${T(208, 46, '光到地球要走多久？', { a: 'start', b: 1, fs: 14 })}
+${[['🌕', '月球', '1 秒多', 84], ['☀️', '太陽', '8 分多', 124], ['⭐', '比鄰星', '4 年多', 164]].map(([e, n, t, y]) => T(214, y, e, { fs: 20 }) + T(234, y - 2, n, { a: 'start', fs: 14, b: 1 }) + T(300, y - 2, '→ 地球：', { a: 'start', fs: 13, c: MUT }) + T(432, y - 2, t, { a: 'end', fs: 14, b: 1, c: '#b45309' })).join('')}`)
+  };
+
+  FIG.es6c = {
+    after: 0, anim: true, title: '動畫：地球的水，能用的很少', cap: '把地球的水分成 100 格：97 格是海水，只有 3 格是淡水；淡水裡大部分是冰川和地下水，河川湖泊只占很少一部分。（比例為大約值）',
+    v: S(440, 230, '地球的水 100 格中 97 格是海水、3 格是淡水；淡水中約 69% 是冰、30% 是地下水、1% 是河湖等',
+      `${Array.from({ length: 100 }, (_, i) => { const x = 40 + (i % 20) * 18, y = 30 + Math.floor(i / 20) * 18, t = (i / 100 * 0.6).toFixed(3); return `<rect x="${x}" y="${y}" width="15" height="15" rx="2" fill="${i < 97 ? '#0ea5e9' : '#34d399'}" opacity="0"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;${t};${(+t + 0.01).toFixed(3)};1" dur="8s" repeatCount="indefinite"/></rect>`; }).join('')}
+<rect x="40" y="136" width="15" height="15" rx="2" fill="#0ea5e9"/>${T(62, 148, '海水 97 格', { a: 'start', fs: 13, b: 1 })}<rect x="180" y="136" width="15" height="15" rx="2" fill="#34d399"/>${T(202, 148, '淡水 3 格', { a: 'start', fs: 13, b: 1 })}
+${T(40, 178, '淡水裡：', { a: 'start', fs: 13, b: 1 })}<rect x="100" y="166" width="207" height="18" fill="#e0f2fe" stroke="#64748b"/><rect x="307" y="166" width="90" height="18" fill="#a16207"/><rect x="397" y="166" width="5" height="18" fill="#0ea5e9"/>
+${T(203, 204, '冰川、冰帽 約 69%', { fs: 12, b: 1 })}${T(352, 204, '地下水 約 30%', { fs: 12, b: 1 })}${L(399, 186, 410, 212, '#475569', { w: 1.5 })}${T(410, 224, '河湖等 約 1%', { a: 'end', fs: 12, b: 1, c: '#0369a1' })}`)
   };
 
   for (const id in FIG) { const u = U(id); if (!u) continue; const f = FIG[id]; u.lesson.splice(f.after + 1, 0, { t: 'svg', title: f.title, v: f.v, cap: f.cap, anim: !!f.anim }); }
