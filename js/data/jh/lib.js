@@ -53,7 +53,10 @@ window.JH = (function () {
     art: { name: '藝術島', icon: '🎨', color: '#9333ea', land: '#e9d5ff' },
     pe: { name: '體育島', icon: '⚽', color: '#16a34a', land: '#bbf7d0' },
     finance: { name: '理財島', icon: '💰', color: '#ca8a04', land: '#fde68a' },
-    world: { name: '國際世界觀島', icon: '🌏', color: '#be185d', land: '#f9a8d4' }
+    world: { name: '國際世界觀島', icon: '🌏', color: '#be185d', land: '#f9a8d4' },
+    think: { name: '思考實驗島', icon: '🧠', color: '#0f766e', land: '#99f6e4' },
+    physics: { name: '物理島', icon: '⚛️', color: '#0284c7', land: '#bae6fd' },
+    chem: { name: '化學島', icon: '🧪', color: '#059669', land: '#a7f3d0' }
   };
   return { u, sub, pairs, tf, R, near, B, G, sup };
 })();
