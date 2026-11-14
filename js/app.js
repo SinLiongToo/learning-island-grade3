@@ -142,7 +142,7 @@
   function subjectStars(s) { return s.units.reduce((t, u) => t + starsOf(u.id), 0); }
   function updateTop() {
     $('#starCount').textContent = gradeSubjects().reduce((t, s) => t + subjectStars(s), 0);
-    $('#brandName').textContent = `${GNAME[grade]}學習島`;
+    $('#brandName').textContent = `學習島・${GNAME[grade]}`;
     $('#wrongCount').textContent = Object.keys(store.wrong).length;
   }
 
