@@ -11,11 +11,25 @@
 window.SUBJECTS = window.SUBJECTS || [];
 window.JH = (function () {
   const G = () => window.G3;
+  const fmt = s => typeof s === 'string' ? s.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>') : s;
+  function normBlock(b) {
+    if (b && !b.t && b.h) {
+      const p = typeof b.p === 'string' ? b.p.split('\n').map(fmt) : (Array.isArray(b.p) ? b.p.map(fmt) : b.p);
+      return { t: 'h', v: b.h, p };
+    }
+    if (b && b.t === 'key' && !Array.isArray(b.v)) {
+      return Object.assign({}, b, { v: String(b.v).split('；').map(fmt) });
+    }
+    if (b && typeof b.p === 'string') {
+      return Object.assign({}, b, { p: b.p.split('\n').map(fmt) });
+    }
+    return b;
+  }
   function u(id, icon, title, summary, o) {
-    const lesson = (o.L || []).slice();
+    const lesson = (o.L || []).map(normBlock);
     (o.T || []).forEach(([q, steps, ask]) => lesson.push({ t: 'think', q, steps, ask }));
-    if (o.K) lesson.push({ t: 'key', v: o.K });
-    if (o.tip) lesson.push({ t: 'tip', v: o.tip });
+    if (o.K) lesson.push({ t: 'key', v: Array.isArray(o.K) ? o.K : String(o.K).split('；').map(fmt) });
+    if (o.tip) lesson.push({ t: 'tip', v: fmt(o.tip) });
     const quiz = (o.Q || []).map(([q, opts, exp, logic]) => Object.assign({ q, opts, ans: 0, exp }, logic ? { logic: true } : {}));
     return Object.assign({ id, icon, title, summary, lesson, quiz }, o.gen ? { gen: o.gen } : {});
   }
@@ -49,6 +63,7 @@ window.JH = (function () {
     social: { name: '社會島', icon: '🏛️', color: '#7c3aed', land: '#c4b5fd' },
     taigi: { name: '台語島', icon: '🗣️', color: '#0f766e', land: '#99f6e4' },
     tech: { name: '資訊科技島', icon: '💻', color: '#0369a1', land: '#bae6fd' },
+    code: { name: '程式設計島', icon: '👨‍💻', color: '#4f46e5', land: '#c7d2fe' },
     health: { name: '健康島', icon: '💪', color: '#e11d48', land: '#fecdd3' },
     art: { name: '藝術島', icon: '🎨', color: '#9333ea', land: '#e9d5ff' },
     pe: { name: '體育島', icon: '⚽', color: '#16a34a', land: '#bbf7d0' },
