@@ -28,7 +28,7 @@
   }));
   SUBJECTS.forEach(s => { s.grade = s.grade || 3; s.units.forEach((u, i) => { u.subject = s; u.no = i + 1; UNITS[u.id] = u; }); });
   const GRADES = [...new Set(SUBJECTS.map(s => s.grade))].sort((a, b) => a - b);
-  const GNAME = { 3: '三年級', 4: '四年級', 5: '五年級', 6: '六年級', 7: '國中一年級', 8: '國中二年級', 9: '國中三年級' };
+  const GNAME = { 3: '三年級', 4: '四年級', 5: '五年級', 6: '六年級', 7: '國中一年級', 8: '國中二年級', 9: '國中三年級', 10: '高中一年級', 11: '高中二年級', 12: '高中三年級' };
 
   const ROUND = 10;          // 每回合題數
   const FIXED_IN_GEN = 5;    // 有自動出題的單元，每回合放幾題固定題
@@ -274,7 +274,7 @@
     const totalUnits = subs.reduce((t, s) => t + s.units.length, 0);
 
     $('#view').innerHTML = `
-      <div class="grade-tabs" role="tablist" aria-label="選擇年級">${GRADES.map(g => `${g === 7 && GRADES[0] < 7 ? '<span class="tab-break" aria-hidden="true"></span>' : ''}<button type="button" role="tab" class="grade-tab${g === grade ? ' on' : ''}" aria-selected="${g === grade}" data-grade="${g}">${GNAME[g]}</button>`).join('')}</div>
+      <div class="grade-tabs" role="tablist" aria-label="選擇年級">${GRADES.map(g => `${(g === 7 || g === 10) && GRADES[0] < g ? '<span class="tab-break" aria-hidden="true"></span>' : ''}<button type="button" role="tab" class="grade-tab${g === grade ? ' on' : ''}" aria-selected="${g === grade}" data-grade="${g}">${GNAME[g]}</button>`).join('')}</div>
       <section class="hero">
         <h1>嗨！今天想去哪一座島？</h1>
         <p>${GNAME[grade]}：${subs.length} 個科目、${totalUnits} 個單元。每個單元先讀<b>蛋蛋老師的重點教學</b>，再做 10 題練習，答得越好星星越多（最多 3 顆）。</p>
