@@ -28,7 +28,7 @@
   }));
   SUBJECTS.forEach(s => { s.grade = s.grade || 3; s.units.forEach((u, i) => { u.subject = s; u.no = i + 1; UNITS[u.id] = u; }); });
   const GRADES = [...new Set(SUBJECTS.map(s => s.grade))].sort((a, b) => a - b);
-  const GNAME = { 3: '三年級', 4: '四年級', 5: '五年級', 6: '六年級', 7: '七年級', 8: '八年級', 9: '九年級' };
+  const GNAME = { 3: '三年級', 4: '四年級', 5: '五年級', 6: '六年級', 7: '國中一年級', 8: '國中二年級', 9: '國中三年級' };
 
   const ROUND = 10;          // 每回合題數
   const FIXED_IN_GEN = 5;    // 有自動出題的單元，每回合放幾題固定題
