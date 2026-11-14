@@ -125,7 +125,12 @@
   const GKEY = 'isle_grade';
   let grade = (() => { try { return +localStorage.getItem(GKEY); } catch (e) { return 0; } })();
   if (!GRADES.includes(grade)) grade = GRADES[0];
-  const gradeSubjects = () => SUBJECTS.filter(s => s.grade === grade);
+  const SH_ORDER = ['math', 'sci', 'chinese', 'english', 'soc', 'physics', 'chem', 'tech', 'code', 'fin', 'world', 'think', 'taigi'];
+  const shRank = id => { const k = id.replace(/\d+$/, ''); const i = SH_ORDER.indexOf(k); return i < 0 ? 99 : i; };
+  const gradeSubjects = () => {
+    const list = SUBJECTS.filter(s => s.grade === grade);
+    return grade >= 10 ? list.slice().sort((a, b) => shRank(a.id) - shRank(b.id)) : list;
+  };
   function setGrade(g) {
     if (g === grade || !GRADES.includes(g)) return;
     grade = g;
@@ -232,7 +237,9 @@
   const MAP_TALL13 = { w: 400, h: 1370, k: .86, pos: [[105, 105], [295, 115], [105, 300], [295, 310], [105, 495], [295, 505], [105, 690], [295, 700], [105, 885], [295, 895], [105, 1080], [295, 1090], [200, 1275]] };
   const MAP_WIDE14 = { w: 900, h: 640, k: .72, pos: [[90, 120], [270, 100], [450, 120], [630, 100], [810, 120], [90, 320], [270, 300], [450, 320], [630, 300], [810, 320], [115, 520], [340, 500], [565, 520], [790, 500]] };
   const MAP_TALL14 = { w: 400, h: 1370, k: .86, pos: [[105, 105], [295, 115], [105, 300], [295, 310], [105, 495], [295, 505], [105, 690], [295, 700], [105, 885], [295, 895], [105, 1080], [295, 1090], [105, 1275], [295, 1285]] };
-  const MAPS = { 6: [MAP_WIDE6, MAP_TALL6], 7: [MAP_WIDE7, MAP_TALL7], 8: [MAP_WIDE8, MAP_TALL8], 9: [MAP_WIDE9, MAP_TALL9], 10: [MAP_WIDE10, MAP_TALL10], 11: [MAP_WIDE11, MAP_TALL11], 12: [MAP_WIDE12, MAP_TALL12], 13: [MAP_WIDE13, MAP_TALL13], 14: [MAP_WIDE14, MAP_TALL14] };
+  const MAP_WIDE15 = { w: 900, h: 640, k: .72, pos: [[90, 120], [270, 100], [450, 120], [630, 100], [810, 120], [90, 320], [270, 300], [450, 320], [630, 300], [810, 320], [90, 520], [270, 500], [450, 520], [630, 500], [810, 520]] };
+  const MAP_TALL15 = { w: 400, h: 1565, k: .86, pos: [[105, 105], [295, 115], [105, 300], [295, 310], [105, 495], [295, 505], [105, 690], [295, 700], [105, 885], [295, 895], [105, 1080], [295, 1090], [105, 1275], [295, 1285], [200, 1470]] };
+  const MAPS = { 6: [MAP_WIDE6, MAP_TALL6], 7: [MAP_WIDE7, MAP_TALL7], 8: [MAP_WIDE8, MAP_TALL8], 9: [MAP_WIDE9, MAP_TALL9], 10: [MAP_WIDE10, MAP_TALL10], 11: [MAP_WIDE11, MAP_TALL11], 12: [MAP_WIDE12, MAP_TALL12], 13: [MAP_WIDE13, MAP_TALL13], 14: [MAP_WIDE14, MAP_TALL14], 15: [MAP_WIDE15, MAP_TALL15] };
   function islesSvg(map) {
     return gradeSubjects().map((s, i) => {
       const [x, y] = map.pos[i] || [100 + i * 120, 220];
@@ -280,7 +287,7 @@
         <p>${GNAME[grade]}：${subs.length} 個科目、${totalUnits} 個單元。每個單元先讀<b>蛋蛋老師的重點教學</b>，再做 10 題練習，答得越好星星越多（最多 3 顆）。</p>
         <form class="home-find" role="search" id="homeFind"><label class="sr" for="homeQ">找課程</label><input id="homeQ" type="search" enterkeyhint="search" autocomplete="off" placeholder="🔍 找課程：例如 颱風、分數"><button type="submit">搜尋</button></form>
       </section>
-      <div class="map-wrap">${(m => mapSvg(m[0], 'map-wide') + mapSvg(m[1], 'map-tall'))(MAPS[Math.min(14, Math.max(6, subs.length))])}</div>
+      <div class="map-wrap">${(m => mapSvg(m[0], 'map-wide') + mapSvg(m[1], 'map-tall'))(MAPS[Math.min(15, Math.max(6, subs.length))])}</div>
       <div class="quick-row">
         <a class="quick" href="#/mix"><b>🎲 綜合挑戰</b><span>${GNAME[grade]} ${subs.length} 科隨機各種題目，10 題一回合</span></a>
         <a class="quick alt" href="#/review"><b>📕 錯題本（${Object.keys(store.wrong).length} 題）</b><span>答錯的題目都在這裡，重做答對就會消失</span></a>
@@ -369,7 +376,10 @@
       default: return '';
     }
   }
-  const cardsHtml = v => `<div class="cards">${v.map(c => `<div class="card-mini">${c.e ? `<div class="e">${c.e}</div>` : ''}<b>${c.h}</b><span>${c.p}</span></div>`).join('')}</div>`;
+  const cardsHtml = v => `<div class="cards">${v.map(c => {
+    const [e, h, p] = Array.isArray(c) ? c : [c.e, c.h, c.p];
+    return `<div class="card-mini">${e ? `<div class="e">${e}</div>` : ''}<b>${h}</b><span>${p}</span></div>`;
+  }).join('')}</div>`;
   function wordsHtml(b) {
     const lang = b.lang || 'zh';
     const canSay = lang !== 'taigi';
