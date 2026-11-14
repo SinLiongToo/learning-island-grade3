@@ -337,6 +337,146 @@
       ${T(220, 198, 'H⁺ ＋ A⁻ → HA（把強酸轉成弱酸）', { fs: 12, c: MUT })}`)
   };
 
+  /* ════════ 擴充物理／化學單元動畫 ════════ */
+
+  // 13. 高一物理 s10p3：水平拋射與自由落體同時落地
+  FIG.s10p3 = {
+    after: 1, anim: true,
+    title: '動畫：水平拋射與自由落體同時落地',
+    cap: '藍球垂直自由落下，橘球水平射出做拋物線運動：兩球在每一秒的高度完全相同，因此一定同時落地！',
+    v: S(440, 215, '自由落體與水平拋射同一高度同時出發，每一瞬間高度相同並同時著地',
+      `${T(220, 22, '運動獨立性：平拋與自由落體同時著地', { b: 1, fs: 14 })}
+      <rect x="44" y="46" width="24" height="140" fill="#cbd5e1" stroke="#64748b"/>
+      ${L(20, 186, 420, 186, '#334155', { w: 3 })}
+      <path d="M68 46 Q210 46 340 180" fill="none" stroke="#fdba74" stroke-width="2" stroke-dasharray="5 5"/>
+      <circle cx="88" cy="46" r="8" fill="#0ea5e9" stroke="#0369a1" stroke-width="1.5">
+        <animate attributeName="cy" values="46;178;178" keyTimes="0;0.75;1" calcMode="spline" keySplines="0.4 0 1 1;0 0 1 1" dur="2.8s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="8" fill="#f97316" stroke="#c2410c" stroke-width="1.5">
+        <animate attributeName="cx" values="68;340;340" keyTimes="0;0.75;1" dur="2.8s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="46;178;178" keyTimes="0;0.75;1" calcMode="spline" keySplines="0.4 0 1 1;0 0 1 1" dur="2.8s" repeatCount="indefinite"/>
+      </circle>
+      ${T(118, 120, '自由落體', { fs: 12, b: 1, c: '#0369a1' })}
+      ${T(290, 96, '水平拋射軌跡', { fs: 12, b: 1, c: '#c2410c' })}
+      ${T(220, 204, '同一時刻 y 座標永遠相同！', { fs: 12, c: MUT })}`)
+  };
+
+  // 14. 高一物理 s10p4：力學能守恆（滑梯位能轉動能）
+  FIG.s10p4 = {
+    after: 2, anim: true,
+    title: '動畫：光滑軌道力學能守恆（U ↔ K）',
+    cap: '無摩擦時，小車在最高點位能 U 最大、動能 K＝0；滑到最低點時位能全部轉為動能，速率達到最大！',
+    v: S(440, 210, '小車沿U型光滑軌道滑動，位能與動能互相轉換而總力學能不變',
+      `${T(220, 22, '無摩擦滑道：K₁ ＋ U₁ ＝ K₂ ＋ U₂', { b: 1, fs: 14 })}
+      <path d="M70 60 Q220 215 370 60" fill="none" stroke="#475569" stroke-width="4"/>
+      <circle r="11" fill="#f97316" stroke="#9a3412" stroke-width="2">
+        <animateMotion dur="3.2s" repeatCount="indefinite" path="M70 60 Q220 215 370 60 Q220 215 70 60" calcMode="spline" keySplines="0.45 0.05 0.55 0.95;0.45 0.05 0.55 0.95" keyTimes="0;0.5;1"/>
+      </circle>
+      ${T(82, 48, '最高點：U 最大, v＝0', { fs: 11, b: 1, c: '#b45309' })}
+      ${T(358, 48, '最高點：U 最大, v＝0', { fs: 11, b: 1, c: '#b45309' })}
+      ${T(220, 174, '最低點：K 最大（速率最快）', { fs: 12, b: 1, c: '#0369a1' })}`)
+  };
+
+  // 15. 高一化學 s10ch3：氧化還原電子轉移（Zn + Cu²⁺）
+  FIG.s10ch3 = {
+    after: 1, anim: true,
+    title: '動畫：氧化還原＝電子的轉移（Zn → Cu²⁺）',
+    cap: '鋅原子（Zn）丟出 2 顆電子被氧化成 Zn²⁺；銅離子（Cu²⁺）搶走這 2 顆電子被還原成紅色銅金屬 Cu！',
+    v: S(440, 200, '鋅原子失去兩個電子給銅離子，完成氧化還原反應',
+      `${T(220, 22, 'Zn ＋ Cu²⁺ → Zn²⁺ ＋ Cu（轉移 2e⁻）', { b: 1, fs: 14 })}
+      <circle cx="110" cy="108" r="26" fill="#94a3b8" stroke="#334155" stroke-width="2"/>
+      ${T(110, 113, 'Zn → Zn²⁺', { b: 1, fs: 12, c: '#fff' })}
+      ${T(110, 152, '失電子（氧化／還原劑）', { fs: 11, b: 1, c: '#0369a1' })}
+      <circle cx="330" cy="108" r="26" fill="#f97316" stroke="#9a3412" stroke-width="2"/>
+      ${T(330, 113, 'Cu²⁺ → Cu', { b: 1, fs: 12, c: '#fff' })}
+      ${T(330, 152, '得電子（還原／氧化劑）', { fs: 11, b: 1, c: '#c2410c' })}
+      <circle r="6" fill="#facc15" stroke="#a16207" stroke-width="1.5">
+        <animateMotion dur="1.8s" repeatCount="indefinite" path="M140 96 Q220 56 300 96"/>
+      </circle>
+      <circle r="6" fill="#facc15" stroke="#a16207" stroke-width="1.5">
+        <animateMotion dur="1.8s" begin="0.35s" repeatCount="indefinite" path="M140 120 Q220 80 300 120"/>
+      </circle>
+      ${T(220, 62, '2 個電子（2e⁻）', { fs: 12, b: 1, c: '#b45309' })}`)
+  };
+
+  // 16. 高二物理 s11p3：等質量彈性碰撞（速度交換）
+  FIG.s11p3 = {
+    after: 2, anim: true,
+    title: '動畫：等質量正面彈性碰撞（交換速度）',
+    cap: '兩顆質量相同的球正面彈性碰撞：運動中的藍球撞上靜止的橘球後，藍球立刻停下，橘球以相同速度向前衝出！',
+    v: S(440, 180, '等質量兩球正面彈性碰撞後交換速度',
+      `${T(220, 22, '等質量彈性碰撞：動量守恆 ＋ 動能守恆', { b: 1, fs: 13 })}
+      ${L(30, 130, 410, 130, '#64748b', { w: 3 })}
+      <circle cy="112" r="16" fill="#0ea5e9" stroke="#0369a1" stroke-width="2">
+        <animate attributeName="cx" values="60;204;204;204" keyTimes="0;0.45;0.95;1" dur="3.0s" repeatCount="indefinite"/>
+      </circle>
+      <circle cy="112" r="16" fill="#f97316" stroke="#c2410c" stroke-width="2">
+        <animate attributeName="cx" values="236;236;380;380" keyTimes="0;0.45;0.95;1" dur="3.0s" repeatCount="indefinite"/>
+      </circle>
+      ${T(220, 160, '撞後交換速度：藍球停住、橘球接力前進！', { fs: 12, c: MUT })}`)
+  };
+
+  // 17. 高二物理 s11p4：駐波（節點與腹點）
+  FIG.s11p4 = {
+    after: 1, anim: true,
+    title: '動畫：弦上駐波（3 個波腹，相鄰節點距 ＝ ½λ）',
+    cap: '兩端固定弦上的駐波：紅點（節點）永遠不動，波腹上下振盪，相鄰兩個節點之間的距離剛好等於半個波長（λ/2）！',
+    v: S(440, 195, '兩端固定弦形成三個波腹的駐波，標示節點與半波長距離',
+      `${T(220, 22, '駐波：3 個波腹 ＝ 1.5 個波長', { b: 1, fs: 14 })}
+      ${L(50, 105, 390, 105, '#cbd5e1', { w: 1.5, d: '4 4' })}
+      <path fill="none" stroke="#0284c7" stroke-width="3">
+        <animate attributeName="d"
+          values="M50 105 Q107 40 163 105 Q220 170 277 105 Q333 40 390 105;M50 105 Q107 170 163 105 Q220 40 277 105 Q333 170 390 105;M50 105 Q107 40 163 105 Q220 170 277 105 Q333 40 390 105"
+          dur="1.6s" repeatCount="indefinite"/>
+      </path>
+      ${[50, 163, 277, 390].map(x => `<circle cx="${x}" cy="105" r="5" fill="#dc2626"/>`).join('')}
+      ${T(163, 130, '節點(不動)', { fs: 11, b: 1, c: '#dc2626' })}
+      ${T(220, 178, '相鄰節點距 ＝ ½ λ', { fs: 12, b: 1, c: MUT })}`)
+  };
+
+  // 18. 高三物理 s12p3：法拉第電磁感應（磁鐵插拔線圈）
+  FIG.s12p3 = {
+    after: 2, anim: true,
+    title: '動畫：磁鐵移動改變磁通量，線圈產生感應電流',
+    cap: '只有當磁鐵相對線圈「移動」使磁通量改變時，檢流計指針才會偏轉；磁鐵停住不動時電流為 0！',
+    v: S(440, 200, '磁鐵進出線圈改變磁通量產生感應電流並使檢流計指針偏轉',
+      `${T(220, 22, '法拉第定律：磁通量有變化才感應電流', { b: 1, fs: 13 })}
+      ${[190, 206, 222, 238, 254].map(x => `<ellipse cx="${x}" cy="108" rx="8" ry="34" fill="none" stroke="#b45309" stroke-width="3"/>`).join('')}
+      <g>
+        <animateTransform attributeName="transform" type="translate" values="-40 0;55 0;-40 0" dur="3.0s" repeatCount="indefinite"/>
+        <rect x="65" y="94" width="38" height="28" fill="#3b82f6"/>
+        <rect x="103" y="94" width="38" height="28" fill="#ef4444"/>
+        ${T(84, 113, 'S', { b: 1, fs: 13, c: '#fff' })}${T(122, 113, 'N', { b: 1, fs: 13, c: '#fff' })}
+      </g>
+      <circle cx="355" cy="108" r="30" fill="#fff" stroke="#334155" stroke-width="2"/>
+      ${T(355, 152, '檢流計 G', { fs: 12, b: 1 })}
+      <line x1="355" y1="108" x2="355" y2="84" stroke="#dc2626" stroke-width="2.5" stroke-linecap="round">
+        <animateTransform attributeName="transform" type="rotate" values="35 355 108;-35 355 108;35 355 108" dur="3.0s" repeatCount="indefinite"/>
+      </line>`)
+  };
+
+  // 19. 高三化學 s12ch3：鋅銅電池（電子流與鹽橋離子）
+  FIG.s12ch3 = {
+    after: 0, anim: true,
+    title: '動畫：鋅銅伏打電池（電子由負極 Zn 流向正極 Cu）',
+    cap: '導線上電子從 Zn（負極）流向 Cu（正極）；鹽橋中陽離子移向 Cu 杯、陰離子移向 Zn 杯維持電中性！',
+    v: S(440, 215, '鋅銅電池運作時電子沿導線由鋅片流向銅片，鹽橋維持兩杯電中性',
+      `${T(220, 22, 'Zn－Cu 伏打電池：陽氧陰還、電子 Zn → Cu', { b: 1, fs: 13 })}
+      <rect x="52" y="92" width="110" height="86" fill="#e2e8f0" opacity="0.6"/>
+      <path d="M52 78 L52 178 L162 178 L162 78" fill="none" stroke="#334155" stroke-width="2.5"/>
+      <rect x="278" y="92" width="110" height="86" fill="#bae6fd" opacity="0.7"/>
+      <path d="M278 78 L278 178 L388 178 L388 78" fill="none" stroke="#334155" stroke-width="2.5"/>
+      <rect x="78" y="64" width="18" height="90" fill="#94a3b8" stroke="#334155"/>
+      ${T(87, 194, 'Zn 負極(氧化)', { fs: 11, b: 1, c: '#334155' })}
+      <rect x="344" y="64" width="18" height="90" fill="#f97316" stroke="#9a3412"/>
+      ${T(353, 194, 'Cu 正極(還原)', { fs: 11, b: 1, c: '#c2410c' })}
+      <path d="M138 118 L138 66 L302 66 L302 118" fill="none" stroke="#cbd5e1" stroke-width="14" stroke-linecap="round"/>
+      ${T(220, 70, '鹽橋 KNO₃', { fs: 10, b: 1, c: '#334155' })}
+      <path d="M87 64 L87 38 L353 38 L353 64" fill="none" stroke="#475569" stroke-width="2.5"/>
+      ${[0, 0.7, 1.4].map(d => `<circle r="4.5" fill="#facc15" stroke="#a16207"><animateMotion dur="2.1s" begin="${d}s" repeatCount="indefinite" path="M87 64 L87 38 L353 38 L353 64"/></circle>`).join('')}
+      ${T(220, 32, 'e⁻ 電子流 →', { fs: 11, b: 1, c: '#b45309' })}`)
+  };
+
   for (const id in FIG) {
     const u = U(id);
     if (!u) continue;
