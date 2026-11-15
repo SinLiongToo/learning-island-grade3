@@ -147,7 +147,7 @@
   function subjectStars(s) { return s.units.reduce((t, u) => t + starsOf(u.id), 0); }
   function updateTop() {
     $('#starCount').textContent = gradeSubjects().reduce((t, s) => t + subjectStars(s), 0);
-    $('#brandName').textContent = `學習島・${GNAME[grade]}`;
+    $('#brandName').textContent = `自我學習島・${GNAME[grade]}`;
     $('#wrongCount').textContent = Object.keys(store.wrong).length;
   }
 
@@ -265,7 +265,7 @@
   }
   function mapSvg(map, cls) {
     return `
-        <svg class="${cls}" viewBox="0 0 ${map.w} ${map.h}" role="img" aria-label="學習島地圖">
+        <svg class="${cls}" viewBox="0 0 ${map.w} ${map.h}" role="img" aria-label="自我學習島地圖">
           <g class="wave" fill="none" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round" opacity=".8">
             <path d="M20 ${map.h / 2} q20 -12 40 0 t40 0"/><path d="M${map.w / 3} ${map.h / 2 - 10} q20 -12 40 0 t40 0"/>
             <path d="M${map.w * .66} ${map.h / 2 - 5} q20 -12 40 0 t40 0"/><path d="M${map.w - 80} 60 q15 -10 30 0 t30 0"/>
